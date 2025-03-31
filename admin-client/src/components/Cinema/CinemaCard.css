@@ -1,0 +1,53 @@
+.cinema-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: left;
+  cursor: pointer; /* Add pointer cursor */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cinema-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.cinema-name {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.cinema-location,
+.cinema-screens,
+.cinema-contact {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.cinema-rooms {
+  margin-top: 1rem;
+}
+
+.cinema-rooms h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.cinema-rooms ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cinema-rooms ul li {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.3rem 0;
+}
