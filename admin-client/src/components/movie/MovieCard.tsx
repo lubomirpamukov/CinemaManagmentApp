@@ -2,6 +2,7 @@ import MovieDetails, { MovieDetailsProps } from "./MovieDetails";
 import MovieCast from "./MovieCast";
 import "./MovieCard.css";
 import ActionButton, { ActionButtonProps } from "../buttons/ActionButton";
+import { deleteMovie } from "../../services/movieService";
 
 export interface MovieCardProps {
   id: string;
@@ -14,6 +15,7 @@ export interface MovieCardProps {
   director?: string;
   cast?: { name: string; role: string }[];
   imgURL?: string;
+  onRefresh: () => void; // Function to refresh the movie list
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -27,6 +29,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   cast,
   description,
   imgURL,
+  onRefresh,
 }) => {
   // Define the props for the MovieDetails component
   const movieDetailsProps: MovieDetailsProps = {
@@ -51,24 +54,18 @@ const MovieCard: React.FC<MovieCardProps> = ({
     label: "Delete",
     id: id,
     type: "delete",
-    onClick: () => handlesDelete(id)
+    onClick: () => handlesDelete(id),
   };
 
   // Function to handle delete action
   const handlesDelete = async (id: string) => {
-    
-   try{
-    const response = await fetch(`http://localhost:3000/movies/${id}`, {
-      method: "DELETE",
-    });
-    if (!response.ok) {
-      throw new Error("Failed to delete movie");
+    try {
+      await deleteMovie(id);
+      // Refresh the movie list after deletion
+      onRefresh();
+    } catch (error) {
+      console.error("Error deleting movie:", error);
     }
-    console.log(`Movie with id ${id} deleted successfully`);
-   }catch (error) {
-    console.error("Error deleting movie:", error);
-   }
-
   };
 
   return (

@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import MovieCard, { MovieCardProps } from "./MovieCard";
 import "./MovieList.css";
+import { getMovies } from "../../services/movieService";
 
 const MovieList: React.FC = () => {
   const [movies, setMovies] = React.useState<MovieCardProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch("http://localhost:3000/movies");
-        if (!response.ok) {
-          throw new Error("Failed to fetch movies");
-        }
-        const data: MovieCardProps[] = await response.json();
+        const data = await getMovies();
         setMovies(data);
       } catch (err: any) {
         setError(err.message);
@@ -23,20 +21,24 @@ const MovieList: React.FC = () => {
       }
     };
     fetchMovies();
-  }, [movies]);
+  }, [refreshKey]);
 
-  if(loading) {
+  const handleRefresh = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  }
+
+  if (loading) {
     return <div>Loading...</div>; // to do loading spinner
   }
 
-  if(error){
-    return <p>Error: {error}</p> // to do error message
+  if (error) {
+    return <p>Error: {error}</p>; // to do error message
   }
 
   return (
     <div className="movie-list">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} {...movie} />
+      {movies.map(({ onRefresh, ...movie }) => (
+        <MovieCard onRefresh={handleRefresh} key={movie.id} {...movie} />
       ))}
     </div>
   );
