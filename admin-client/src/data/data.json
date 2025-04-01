@@ -213,12 +213,46 @@
       "year": 2014,
       "director": "Christopher Nolan",
       "cast": [
-        { "name": "Matthew McConaughey", "role": "Cooper" },
-        { "name": "Anne Hathaway", "role": "Brand" },
-        { "name": "Jessica Chastain", "role": "Murph" }
+        {
+          "name": "Matthew McConaughey",
+          "role": "Cooper"
+        },
+        {
+          "name": "Anne Hathaway",
+          "role": "Brand"
+        },
+        {
+          "name": "Jessica Chastain",
+          "role": "Murph"
+        }
       ],
       "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    },
+    {
+      "id": "4132",
+      "title": "titanic",
+      "duration": "1234",
+      "pgRating": "16+",
+      "genre": "Drama",
+      "year": "1996",
+      "director": "HAhaer",
+      "cast": [
+        {
+          "name": "asdfasdf",
+          "role": "asdfasdf"
+        },
+        {
+          "name": "asdfasdf",
+          "role": "asdfasdf"
+        },
+        {
+          "name": "asdfasdf",
+          "role": "asdfasdf"
+        }
+      ],
+      "description": "adferaerae",
+      "imgURL": "afadf"
     }
   ]
 }
