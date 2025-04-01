@@ -1,0 +1,45 @@
+import React from "react";
+import "./MovieDetails.css";
+export interface MovieDetailsProps {
+    genre: string;
+    year: number;
+    duration: number;
+    description: string;
+    pgRating: string;
+    director?: string;
+}
+
+const MovieDetails: React.FC<MovieDetailsProps> = ({
+  genre,
+  year,
+  duration,
+  description,
+  pgRating,
+  director,
+}) => {
+  return (
+    <div className="movie-details">
+      <p>
+        <strong>Genre:</strong> {genre}
+      </p>
+      <p>
+        <strong>Year:</strong> {year}
+      </p>
+      <p>
+        <strong>Duration:</strong> {duration} minutes
+      </p>
+      <p>{description}</p>
+      <p>
+        <strong>PG Rating:</strong> {pgRating}
+      </p>
+      {director && (
+        <p>
+          <strong>Director:</strong> {director}
+        </p>
+      )}
+    </div>
+  );
+};
+
+
+export default MovieDetails;

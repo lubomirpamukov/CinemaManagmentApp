@@ -1,0 +1,39 @@
+/* filepath: /home/lubaka/Desktop/CinemaApp/CinemaManagmentApp/admin-client/src/components/common/ActionButton.css */
+.action-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button.add {
+  background-color: #4caf50;
+  color: white;
+}
+
+.action-button.add:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.action-button.edit {
+  background-color: #2196f3;
+  color: white;
+}
+
+.action-button.edit:hover {
+  background-color: #1e88e5;
+  transform: scale(1.05);
+}
+
+.action-button.delete {
+  background-color: #f44336;
+  color: white;
+}
+
+.action-button.delete:hover {
+  background-color: #e53935;
+  transform: scale(1.05);
+}

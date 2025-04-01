@@ -1,20 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
-import CinemasPage from './pages/CinemasPage';
-import MoviesPage from './pages/MoviesPage';
-import CinemaDetailsPage from './pages/CinemaDetailsPage'; // Import the new page
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MoviePage from "./pages/MoviePage";
 
 function App() {
   return (
     <Router>
-      <div className="app-container">
-        <Navbar />
-      </div>
       <Routes>
-        <Route path="/cinemas" element={<CinemasPage />} />
-        <Route path="/movies" element={<MoviesPage />} />
-        <Route path="/cinemas/:cinemaId" element={<CinemaDetailsPage />} /> {/* Use the new page */}
+        <Route path="/movies" element={<MoviePage />} />
       </Routes>
     </Router>
   );

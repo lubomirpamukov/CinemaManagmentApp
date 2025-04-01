@@ -1,0 +1,224 @@
+{
+  "cinemas": [
+    {
+      "id": "1",
+      "name": "Grand Cinema",
+      "location": "Downtown",
+      "roomsId": [
+        "101",
+        "102",
+        "103"
+      ],
+      "snackId": [
+        "201",
+        "202",
+        "203"
+      ],
+      "moviesId": [
+        "301",
+        "302",
+        "303"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "City Lights Cinema",
+      "location": "Uptown",
+      "roomsId": [
+        "104",
+        "105"
+      ],
+      "snackId": [
+        "204",
+        "205"
+      ],
+      "moviesId": [
+        "304",
+        "305"
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "id": "101",
+      "name": "Room A",
+      "capacity": 100,
+      "type": "IMAX",
+      "schedule": [
+        {
+          "movieId": "301",
+          "time": "10:00 AM"
+        },
+        {
+          "movieId": "302",
+          "time": "1:00 PM"
+        },
+        {
+          "movieId": "303",
+          "time": "4:00 PM"
+        }
+      ]
+    },
+    {
+      "id": "102",
+      "name": "Room B",
+      "capacity": 80,
+      "type": "Standard",
+      "schedule": [
+        {
+          "movieId": "304",
+          "time": "11:00 AM"
+        },
+        {
+          "movieId": "305",
+          "time": "2:00 PM"
+        }
+      ]
+    }
+  ],
+  "snacks": [
+    {
+      "id": "201",
+      "name": "Popcorn",
+      "price": 5
+    },
+    {
+      "id": "202",
+      "name": "Soda",
+      "price": 3
+    },
+    {
+      "id": "203",
+      "name": "Nachos",
+      "price": 4
+    },
+    {
+      "id": "204",
+      "name": "Candy",
+      "price": 2
+    },
+    {
+      "id": "205",
+      "name": "Hot Dog",
+      "price": 6
+    }
+  ],
+  "movies": [
+    {
+      "id": "301",
+      "title": "Inception",
+      "duration": 148,
+      "pgRating": "PG-13",
+      "genre": "Sci-Fi",
+      "year": 2010,
+      "director": "Christopher Nolan",
+      "cast": [
+        {
+          "name": "Leonardo DiCaprio",
+          "role": "Cobb"
+        },
+        {
+          "name": "Joseph Gordon-Levitt",
+          "role": "Arthur"
+        },
+        {
+          "name": "Elliot Page",
+          "role": "Ariadne"
+        }
+      ],
+      "description": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.",
+      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    },
+    {
+      "id": "303",
+      "title": "The Dark Knight",
+      "duration": 152,
+      "pgRating": "PG-13",
+      "genre": "Action",
+      "year": 2008,
+      "director": "Christopher Nolan",
+      "cast": [
+        {
+          "name": "Christian Bale",
+          "role": "Bruce Wayne / Batman"
+        },
+        {
+          "name": "Heath Ledger",
+          "role": "Joker"
+        },
+        {
+          "name": "Aaron Eckhart",
+          "role": "Harvey Dent"
+        }
+      ],
+      "description": "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham.",
+      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    },
+    {
+      "id": "304",
+      "title": "Avatar",
+      "duration": 162,
+      "pgRating": "PG-13",
+      "genre": "Fantasy",
+      "year": 2009,
+      "director": "James Cameron",
+      "cast": [
+        {
+          "name": "Sam Worthington",
+          "role": "Jake Sully"
+        },
+        {
+          "name": "Zoe Saldana",
+          "role": "Neytiri"
+        },
+        {
+          "name": "Sigourney Weaver",
+          "role": "Dr. Grace Augustine"
+        }
+      ],
+      "description": "A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.",
+      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    },
+    {
+      "id": "305",
+      "title": "Titanic",
+      "duration": 194,
+      "pgRating": "PG-13",
+      "genre": "Romance",
+      "year": 1997,
+      "director": "James Cameron",
+      "cast": [
+        {
+          "name": "Leonardo DiCaprio",
+          "role": "Jack Dawson"
+        },
+        {
+          "name": "Kate Winslet",
+          "role": "Rose DeWitt Bukater"
+        },
+        {
+          "name": "Billy Zane",
+          "role": "Cal Hockley"
+        }
+      ],
+      "description": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
+      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    },
+    {
+      "id": "302",
+      "title": "Interstellar",
+      "duration": 179,
+      "pgRating": "PG-13",
+      "genre": "Sci-Fi",
+      "year": 2014,
+      "director": "Christopher Nolan",
+      "cast": [
+        { "name": "Matthew McConaughey", "role": "Cooper" },
+        { "name": "Anne Hathaway", "role": "Brand" },
+        { "name": "Jessica Chastain", "role": "Murph" }
+      ],
+      "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    }
+  ]
+}
