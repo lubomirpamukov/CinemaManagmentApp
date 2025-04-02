@@ -52,7 +52,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
     pgRating,
     genre,
     year,
-    director,
+    director: director ?? '',
     cast: cast || [], // Ensure cast is an array
     description,
     imgURL,

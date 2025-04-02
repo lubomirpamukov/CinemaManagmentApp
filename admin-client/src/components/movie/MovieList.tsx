@@ -13,7 +13,12 @@ const MovieList: React.FC = () => {
     const fetchMovies = async () => {
       try {
         const data = await getMovies();
-        setMovies(data);
+        const moviesWithActions: MovieCardProps[] = data.map((movie) => ({
+          ...movie,
+          onRefresh: handleRefresh, // Attach the handleRefresh function
+          id: movie.id ?? '' 
+        }));
+        setMovies(moviesWithActions);
       } catch (err: any) {
         setError(err.message);
       } finally {
