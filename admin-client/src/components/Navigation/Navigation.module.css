@@ -1,0 +1,41 @@
+/* Navbar container */
+.navbar {
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Navigation list */
+  .navList {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navigation item */
+  .navItem {
+    margin: 0;
+  }
+  
+  /* Navigation link */
+  .navLink {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  /* Active link styling */
+  .active {
+    color: #ffcc00;
+  }
+  
+  /* Hover effect */
+  .navLink:hover {
+    color: #ffcc00;
+  }
