@@ -7,7 +7,7 @@ import { deleteMovie } from "../../services/movieService";
 import styles from "./MovieCard.module.css"; // Import module CSS
 import { MovieFormValues } from "./MovieForm";
 
-export interface MovieCardProps {
+export type MovieCardProps = {
   id: string;
   title: string;
   duration: number;

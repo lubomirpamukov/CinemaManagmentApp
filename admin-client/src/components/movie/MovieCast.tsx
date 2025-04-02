@@ -1,11 +1,11 @@
 import React from "react";
 
-export interface CastMember{
+export type CastMember = {
     name: string;
     role: string;
 }
 
-export interface MovieCastProps {
+export type MovieCastProps = {
     cast: CastMember[];
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./MovieDetails.module.css";
-export interface MovieDetailsProps {
+export type MovieDetailsProps = {
     genre: string;
     year: number;
     duration: number;
