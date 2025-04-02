@@ -1,27 +1,20 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 import { createMovie, updateMovie } from "../../services/movieService";
 import styles from "./MovieForm.module.css";
 import CastForm from "./CastForm";
 import { DEFAULT_MOVIE_VALUES } from "../../utils/constants/movieConstants";
+import { movieSchema } from "../../utils/MovieFormValidationSchema";
 
-export interface MovieFormProps {
+export type MovieFormProps = {
   initialValues?: MovieFormValues;
-  onSubmitSuccess: () => void; // Fixed typo in prop name
-}
+  onSubmitSuccess: () => void;
+};
 
-export interface MovieFormValues {
-  id?: string;
-  title?: string;
-  duration: number;
-  pgRating: string;
-  genre: string;
-  year: number;
-  director?: string;
-  cast: { name: string; role: string }[];
-  description: string;
-  imgURL?: string;
-}
+export type MovieFormValues = z.infer<typeof movieSchema>;
 
 const MovieForm: React.FC<MovieFormProps> = ({
   initialValues,
@@ -32,9 +25,10 @@ const MovieForm: React.FC<MovieFormProps> = ({
     register, //register input fields
     handleSubmit, //handlke form submission
     control, //Control object for managing dynamic fields => cast[]
-    formState: {}, //form state object errors
+    formState: { isSubmitting , errors}, //form state object errors
     reset, // function to reset the form
   } = useForm<MovieFormValues>({
+    resolver: zodResolver(movieSchema),  
     defaultValues: initialValues || DEFAULT_MOVIE_VALUES,
   });
 
@@ -47,7 +41,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
   }, [initialValues, reset]);
 
   //handle form submission
-  const onSubmit = async (data: MovieFormValues) => {
+  const onSubmit: SubmitHandler<MovieFormValues> = async (data) => {
     try {
       //if initialValues.id is provided , that means the form is used to update a movie
       if (initialValues?.id) {
@@ -66,6 +60,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.movieForm}>
+
       {/* Title field*/}
       <label htmlFor="title" className={styles.formField}>
         Title
@@ -74,7 +69,8 @@ const MovieForm: React.FC<MovieFormProps> = ({
           type="text"
           placeholder="Title"
           {...register("title")}
-        />
+          />
+          {errors.title && <p className={styles.error}>{errors.title.message}</p>}
       </label>
 
       {/* Duration field*/}
@@ -84,10 +80,12 @@ const MovieForm: React.FC<MovieFormProps> = ({
           type="number"
           id="duration"
           placeholder="Duration"
-          {...register("duration")}
+          {...register("duration", {valueAsNumber: true})}
         />
+        {errors.duration && <p className={styles.error}>{errors.duration.message}</p>}
       </label>
 
+        {/* PG Rating */}
       <label htmlFor="pgRating" className={styles.formField}>
         PG Rating
         <input
@@ -96,6 +94,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
           placeholder="PG Rating"
           {...register("pgRating")}
         />
+        {errors.pgRating && <p className={styles.error}>{errors.pgRating.message}</p>}
       </label>
 
       {/* Genre field*/}
@@ -107,6 +106,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
           placeholder="Genre"
           {...register("genre")}
         />
+        {errors.genre && <p className={styles.error}>{errors.genre.message}</p>}
       </label>
 
       {/* Year field*/}
@@ -116,8 +116,9 @@ const MovieForm: React.FC<MovieFormProps> = ({
           type="number"
           id="year"
           placeholder="Year"
-          {...register("year")}
+          {...register("year", {valueAsNumber: true})}
         />
+        {errors.year && <p className={styles.error}>{errors.year.message}</p>}
       </label>
 
       {/* Director field*/}
@@ -129,6 +130,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
           placeholder="Director"
           {...register("director")}
         />
+        {errors.director && <p className={styles.error}>{errors.director.message}</p>}
       </label>
 
       {/* Description field*/}
@@ -139,6 +141,7 @@ const MovieForm: React.FC<MovieFormProps> = ({
           placeholder="Movie description"
           {...register("description")}
         ></textarea>
+        {errors.description && <p className={styles.error}>{errors.description.message}</p>}
       </label>
 
       {/* Image URL field*/}
@@ -150,14 +153,20 @@ const MovieForm: React.FC<MovieFormProps> = ({
           placeholder="Image URL"
           {...register("imgURL")}
         />
+        {errors.imgURL && <p className={styles.error}>{errors.imgURL.message}</p>}
       </label>
 
       {/* Cast field array*/}
       <CastForm control={control} register={register} />
+      {errors.cast && <p className={styles.error}>{errors.cast.message}</p>}
 
       {/* Submit button */}
-      <button className={styles.button} type="submit">
-        {initialValues ? "Update Movie" : "Create Movie"}
+      <button disabled={isSubmitting} className={styles.button} type="submit">
+        {isSubmitting
+          ? "Submitting..."
+          : initialValues
+          ? "Update Movie"
+          : "Create Movie"}
       </button>
     </form>
   );
