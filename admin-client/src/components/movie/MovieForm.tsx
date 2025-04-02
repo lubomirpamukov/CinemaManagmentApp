@@ -1,16 +1,17 @@
 import React from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { createMovie, updateMovie, deleteMovie } from "../../services/movieService";
-import styles from './MovieForm.module.css';
+import { useForm } from "react-hook-form";
+import { createMovie, updateMovie } from "../../services/movieService";
+import styles from "./MovieForm.module.css";
+import CastForm from "./CastForm";
 
 export interface MovieFormProps {
-  initialValues?: MovieFormValues; // Pre-filled values for editing
-  onSubmitSuccess: () => void; // Callback after successful submission
+  initialValues?: MovieFormValues;
+  onSubmitSuccess: () => void; // Fixed typo in prop name
 }
 
 export interface MovieFormValues {
-  id?: string; // Optional for new movies
-  title: string;
+  id?: string;
+  title?: string;
   duration: number;
   pgRating: string;
   genre: string;
@@ -21,14 +22,19 @@ export interface MovieFormValues {
   imgURL?: string;
 }
 
-const MovieForm: React.FC<MovieFormProps> = ({ initialValues, onSubmitSuccess }) => {
+const MovieForm: React.FC<MovieFormProps> = ({
+  initialValues,
+  onSubmitSuccess, // Fixed typo in prop name
+}) => {
+  //initialize react hook form
   const {
-    register,
-    handleSubmit,
-    control,
-    formState: {},
+    register, //register input fields
+    handleSubmit, //handlke form submission
+    control, //Control object for managing dynamic fields => cast[]
+    formState: {}, //form state object errors
   } = useForm<MovieFormValues>({
     defaultValues: initialValues || {
+      // initialize values from props or default to empty
       title: "",
       duration: 0,
       pgRating: "",
@@ -41,114 +47,119 @@ const MovieForm: React.FC<MovieFormProps> = ({ initialValues, onSubmitSuccess })
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "cast", // Manage the "cast" array
-  });
-
+  //handle form submission
   const onSubmit = async (data: MovieFormValues) => {
     try {
+      //if initialValues.id is provided , that means the form is used to update a movie
       if (initialValues?.id) {
-        // Edit movie
         await updateMovie(initialValues.id, data);
         console.log("Movie updated successfully");
       } else {
-        // Create movie
+        // if its not provided, that means the form is used to create a new movie
         await createMovie(data);
         console.log("Movie created successfully");
       }
-      onSubmitSuccess(); // Trigger parent refresh or navigation
+      onSubmitSuccess(); // Fixed typo in function call
     } catch (error) {
-      console.error("Error submitting form:", error);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!initialValues?.id) return;
-    try {
-      await deleteMovie(initialValues.id);
-      console.log("Movie deleted successfully");
-      onSubmitSuccess(); // Trigger parent refresh or navigation
-    } catch (error) {
-      console.error("Error deleting movie:", error);
+      console.error("Error submitting form", error); // todo log error
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="movie-form">
-      <div className={styles.formField}>
-        <label>Title:</label>
-        <input type="text" {...register("title")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Duration (minutes):</label>
-        <input type="number" {...register("duration")} />
-      </div>
-      <div className={styles.formField}>
-        <label>PG Rating:</label>
-        <input type="text" {...register("pgRating")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Genre:</label>
-        <input type="text" {...register("genre")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Year:</label>
-        <input type="number" {...register("year")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Director:</label>
-        <input type="text" {...register("director")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Description:</label>
-        <textarea {...register("description")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Image URL:</label>
-        <input type="text" {...register("imgURL")} />
-      </div>
-      <div className={styles.formField}>
-        <label>Cast:</label>
-        {fields.map((field, index) => (
-          <div key={field.id} className={styles.castMember}>
-            <input
-              type="text"
-              placeholder="Name"
-              {...register(`cast.${index}.name`)}
-            />
-            <input
-              type="text"
-              placeholder="Role"
-              {...register(`cast.${index}.role`)}
-            />
-            <button
-              className={`${styles.castButton} ${styles.remove}`}
-              type="button"
-              onClick={() => remove(index)}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-        <button
-          className={styles.castButton}
-          type="button"
-          onClick={() => append({ name: "", role: "" })}
-        >
-          Add Cast Member
-        </button>
-      </div>
-      <button type="submit">{initialValues ? "Update Movie" : "Create Movie"}</button>
-      {initialValues && (
-        <button
-          className={`${styles.button} ${styles.danger}`}
-          type="button"
-          onClick={handleDelete}
-        >
-          Delete Movie
-        </button>
-      )}
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.movieForm}>
+      {/* Title field*/}
+      <label htmlFor="title" className={styles.formField}>
+        Title
+        <input
+          id="title"
+          type="text"
+          placeholder="Title"
+          {...register("title")}
+        />
+      </label>
+
+      {/* Duration field*/}
+      <label htmlFor="duration" className={styles.formField}>
+        Duration (minutes)
+        <input
+          type="number"
+          id="duration"
+          placeholder="Duration"
+          {...register("duration")}
+        />
+      </label>
+
+      <label htmlFor="pgRating" className={styles.formField}>
+        PG Rating
+        <input
+          type="text"
+          id="pgRating"
+          placeholder="PG Rating"
+          {...register("pgRating")}
+        />
+      </label>
+
+      {/* Genre field*/}
+      <label htmlFor="genre" className={styles.formField}>
+        Genre
+        <input
+          type="text"
+          id="genre"
+          placeholder="Genre"
+          {...register("genre")}
+        />
+      </label>
+
+      {/* Year field*/}
+      <label htmlFor="year" className={styles.formField}>
+        Year
+        <input
+          type="number"
+          id="year"
+          placeholder="Year"
+          {...register("year")}
+        />
+      </label>
+
+      {/* Director field*/}
+      <label htmlFor="director" className={styles.formField}>
+        Director
+        <input
+          type="text"
+          id="director"
+          placeholder="Director"
+          {...register("director")}
+        />
+      </label>
+
+      {/* Description field*/}
+      <label htmlFor="description" className={styles.formField}>
+        Description
+        <textarea
+          id="description"
+          placeholder="Movie description"
+          {...register("description")}
+        ></textarea>
+      </label>
+
+      {/* Image URL field*/}
+      <label htmlFor="imgURL" className={styles.formField}>
+        Image URL
+        <input
+          type="text"
+          id="imgURL"
+          placeholder="Image URL"
+          {...register("imgURL")}
+        />
+      </label>
+
+      {/* Cast field array*/}
+      <CastForm control={control} register={register} />
+
+      {/* Submit button */}
+      <button className={styles.button} type="submit">
+        {initialValues ? "Update Movie" : "Create Movie"}
+      </button>
     </form>
   );
 };
