@@ -44,3 +44,5 @@ export const movieSchema = z.object({
     .max(700, { message: MovieValidation.description }),
   imgURL: z.string().url({ message: MovieValidation.url }).optional().or(z.literal("").transform(() => undefined)),
 });
+
+export type Movie = Zod.infer<typeof movieSchema>

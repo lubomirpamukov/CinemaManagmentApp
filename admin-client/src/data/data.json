@@ -1,40 +1,80 @@
 {
   "cinemas": [
     {
-      "id": "1",
-      "name": "Grand Cinema",
-      "location": "Downtown",
-      "roomsId": [
-        "101",
-        "102",
-        "103"
+      "city": "Los Angeles",
+      "name": "Hollywood Cinema",
+      "halls": [
+        "hall_201",
+        "hall_202",
+        "hall_203"
       ],
-      "snackId": [
-        "201",
-        "202",
-        "203"
-      ],
-      "moviesId": [
-        "301",
-        "302",
-        "303"
+      "snacks": [
+        {
+          "name": "Popcorn",
+          "description": "Large popcorn bucket",
+          "price": 6.99
+        },
+        {
+          "name": "Soda",
+          "description": "500ml soda bottle",
+          "price": 3.49
+        },
+        {
+          "name": "Candy",
+          "description": "Assorted candy pack",
+          "price": 4.49
+        }
       ]
     },
     {
-      "id": "2",
-      "name": "City Lights Cinema",
-      "location": "Uptown",
-      "roomsId": [
-        "104",
-        "105"
+      "city": "Chicago",
+      "name": "Windy City Cinema",
+      "halls": [
+        "hall_301",
+        "hall_302"
       ],
-      "snackId": [
-        "204",
-        "205"
+      "snacks": [
+        {
+          "name": "Pretzel",
+          "description": "Freshly baked pretzel",
+          "price": 3.99
+        },
+        {
+          "name": "Hot Dog",
+          "description": "Classic hot dog with condiments",
+          "price": 5.49
+        },
+        {
+          "name": "Ice Cream",
+          "description": "Vanilla ice cream cup",
+          "price": 3.99
+        }
+      ]
+    },
+    {
+      "city": "San Francisco",
+      "name": "Bay Area Cinema",
+      "halls": [
+        "hall_401",
+        "hall_402",
+        "hall_403"
       ],
-      "moviesId": [
-        "304",
-        "305"
+      "snacks": [
+        {
+          "name": "Nachos",
+          "description": "Cheesy nachos with dip",
+          "price": 5.49
+        },
+        {
+          "name": "Coffee",
+          "description": "Freshly brewed coffee",
+          "price": 2.99
+        },
+        {
+          "name": "Tea",
+          "description": "Hot tea with lemon",
+          "price": 2.49
+        }
       ]
     }
   ],
@@ -74,33 +114,6 @@
           "time": "2:00 PM"
         }
       ]
-    }
-  ],
-  "snacks": [
-    {
-      "id": "201",
-      "name": "Popcorn",
-      "price": 5
-    },
-    {
-      "id": "202",
-      "name": "Soda",
-      "price": 3
-    },
-    {
-      "id": "203",
-      "name": "Nachos",
-      "price": 4
-    },
-    {
-      "id": "204",
-      "name": "Candy",
-      "price": 2
-    },
-    {
-      "id": "205",
-      "name": "Hot Dog",
-      "price": 6
     }
   ],
   "movies": [
