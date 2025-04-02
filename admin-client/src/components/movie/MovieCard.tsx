@@ -1,8 +1,9 @@
+import React from "react";
 import MovieDetails, { MovieDetailsProps } from "./MovieDetails";
 import MovieCast from "./MovieCast";
-import "./MovieCard.css";
 import ActionButton, { ActionButtonProps } from "../buttons/ActionButton";
 import { deleteMovie } from "../../services/movieService";
+import styles from "./MovieCard.module.css"; // Import module CSS
 
 export interface MovieCardProps {
   id: string;
@@ -15,7 +16,7 @@ export interface MovieCardProps {
   director?: string;
   cast?: { name: string; role: string }[];
   imgURL?: string;
-  onRefresh: () => void; // Function to refresh the movie list
+  onRefresh: () => void;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -31,7 +32,6 @@ const MovieCard: React.FC<MovieCardProps> = ({
   imgURL,
   onRefresh,
 }) => {
-  // Define the props for the MovieDetails component
   const movieDetailsProps: MovieDetailsProps = {
     genre,
     year,
@@ -41,8 +41,6 @@ const MovieCard: React.FC<MovieCardProps> = ({
     director,
   };
 
-  // Define the props for the ActionButton component
-  // These buttons are for editing and deleting the movie
   const editButtonProps: ActionButtonProps = {
     label: "Edit",
     id: id,
@@ -57,11 +55,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
     onClick: () => handlesDelete(id),
   };
 
-  // Function to handle delete action
   const handlesDelete = async (id: string) => {
     try {
       await deleteMovie(id);
-      // Refresh the movie list after deletion
       onRefresh();
     } catch (error) {
       console.error("Error deleting movie:", error);
@@ -69,13 +65,13 @@ const MovieCard: React.FC<MovieCardProps> = ({
   };
 
   return (
-    <div className="movie-card">
-      {imgURL && <img src={imgURL} alt={title} className="movie-card-img" />}
-      <div className="movie-card-content">
-        <h2 className="movie-title">{title}</h2>
+    <div className={styles.movieCard}>
+      {imgURL && <img src={imgURL} alt={title} className={styles.movieCardImg} />}
+      <div className={styles.movieCardContent}>
+        <h2 className={styles.movieTitle}>{title}</h2>
         <MovieDetails {...movieDetailsProps} />
         {cast && <MovieCast cast={cast} />}
-        <div className="movie-actions">
+        <div className={styles.movieActions}>
           <ActionButton {...editButtonProps} />
           <ActionButton {...deleteButtonProps} />
         </div>

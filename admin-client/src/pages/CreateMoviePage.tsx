@@ -8,10 +8,10 @@ const CreateMoviePage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Create Movie</h1>
+    <>
+      <h1 style={{textAlign:"center"}}>Create Movie</h1>
       <MovieForm onSubmitSuccess={handleSuccess} />
-    </div>
+    </>
   );
 };
 

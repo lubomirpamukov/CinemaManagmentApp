@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MovieCard, { MovieCardProps } from "./MovieCard";
-import "./MovieList.css";
+import styles from "./MovieList.module.css";
 import { getMovies } from "../../services/movieService";
 
 const MovieList: React.FC = () => {
@@ -36,7 +36,7 @@ const MovieList: React.FC = () => {
   }
 
   return (
-    <div className="movie-list">
+    <div className={styles.movieList}>
       {movies.map(({ onRefresh, ...movie }) => (
         <MovieCard onRefresh={handleRefresh} key={movie.id} {...movie} />
       ))}

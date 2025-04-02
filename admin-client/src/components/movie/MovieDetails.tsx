@@ -1,5 +1,5 @@
 import React from "react";
-import "./MovieDetails.css";
+import styles from "./MovieDetails.module.css";
 export interface MovieDetailsProps {
     genre: string;
     year: number;
@@ -18,7 +18,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
   director,
 }) => {
   return (
-    <div className="movie-details">
+    <div className={styles.MovieDetails}>
       <p>
         <strong>Genre:</strong> {genre}
       </p>

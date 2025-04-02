@@ -1,14 +1,14 @@
 import React from "react";
 import MovieList from "../components/movie/MovieList";
-import "./MoviePage.css";
+import styles from "./MoviePage.module.css";
 
 const MoviePage: React.FC = () =>{
     return (
-        <div className="movie-page">
-            <header className="movie-page-header">
+        <div className={styles.moviePage}>
+            <header className={styles.moviePageHeader}>
                 <h1>Movies</h1>
             </header>
-            <main className="movie-page-content">
+            <main className={styles.moviePageContent}>
                 <MovieList />
             </main>
         </div>
