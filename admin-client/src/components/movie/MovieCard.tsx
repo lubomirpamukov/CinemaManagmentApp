@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import MovieDetails, { MovieDetailsProps } from "./MovieDetails";
 import MovieCast from "./MovieCast";
 import ActionButton, { ActionButtonProps } from "../buttons/ActionButton";
 import { deleteMovie } from "../../services/movieService";
 import styles from "./MovieCard.module.css"; // Import module CSS
+import { MovieFormValues } from "./MovieForm";
 
 export interface MovieCardProps {
   id: string;
@@ -41,11 +43,30 @@ const MovieCard: React.FC<MovieCardProps> = ({
     director,
   };
 
+  
+  // Create movieData object using destructured props
+  const movieData: MovieFormValues = {
+    id,
+    title,
+    duration,
+    pgRating,
+    genre,
+    year,
+    director,
+    cast: cast || [], // Ensure cast is an array
+    description,
+    imgURL,
+  };
+
+  const navigate = useNavigate();
+
   const editButtonProps: ActionButtonProps = {
     label: "Edit",
     id: id,
     type: "edit",
-    onClick: () => console.log(`Edit button clicked for ${id}`),
+    onClick: () => navigate("/movies/create",{
+      state: movieData
+    })
   };
 
   const deleteButtonProps: ActionButtonProps = {

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { createMovie, updateMovie } from "../../services/movieService";
 import styles from "./MovieForm.module.css";
 import CastForm from "./CastForm";
+import { DEFAULT_MOVIE_VALUES } from "../../utils/constants/movieConstants";
 
 export interface MovieFormProps {
   initialValues?: MovieFormValues;
@@ -24,7 +25,7 @@ export interface MovieFormValues {
 
 const MovieForm: React.FC<MovieFormProps> = ({
   initialValues,
-  onSubmitSuccess, // Fixed typo in prop name
+  onSubmitSuccess,
 }) => {
   //initialize react hook form
   const {
@@ -32,20 +33,18 @@ const MovieForm: React.FC<MovieFormProps> = ({
     handleSubmit, //handlke form submission
     control, //Control object for managing dynamic fields => cast[]
     formState: {}, //form state object errors
+    reset, // function to reset the form
   } = useForm<MovieFormValues>({
-    defaultValues: initialValues || {
-      // initialize values from props or default to empty
-      title: "",
-      duration: 0,
-      pgRating: "",
-      genre: "",
-      year: new Date().getFullYear(),
-      director: "",
-      cast: [{ name: "", role: "" }],
-      description: "",
-      imgURL: "",
-    },
+    defaultValues: initialValues || DEFAULT_MOVIE_VALUES,
   });
+
+  React.useEffect(() => {
+    if (initialValues) {
+      reset(initialValues); // Reset the form with the new initialValues
+    } else {
+      reset(DEFAULT_MOVIE_VALUES); // Reset to default empty values
+    }
+  }, [initialValues, reset]);
 
   //handle form submission
   const onSubmit = async (data: MovieFormValues) => {

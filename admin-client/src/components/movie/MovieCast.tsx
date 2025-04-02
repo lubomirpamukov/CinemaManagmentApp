@@ -13,7 +13,7 @@ const MovieCast: React.FC<MovieCastProps> = ({ cast }) => {
     return (
         <div className="movie-cast">
         <strong>Cast:</strong>
-        <ul>
+        <ul style={{listStyle: "none"}}>
             {cast.map((actor, index) => (
             <li key={index}>
                 {actor.name} as <em>{actor.role}</em>
