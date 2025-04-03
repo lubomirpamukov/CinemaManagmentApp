@@ -12,16 +12,19 @@
       ],
       "snacks": [
         {
+          "id": "snack_1",
           "name": "Popcorn",
           "description": "Large popcorn bucket",
           "price": 6.99
         },
         {
+          "id": "snack_2",
           "name": "Soda",
           "description": "500ml soda bottle",
           "price": 3.49
         },
         {
+          "id": "snack_3",
           "name": "Candy",
           "description": "Assorted candy pack",
           "price": 4.49
@@ -39,23 +42,25 @@
       ],
       "snacks": [
         {
+          "id": "snack_4",
           "name": "Pretzel",
           "description": "Freshly baked pretzel",
           "price": 3.99
         },
         {
+          "id": "snack_5",
           "name": "Hot Dog",
           "description": "Classic hot dog with condiments",
           "price": 5.49
         },
         {
+          "id": "snack_6",
           "name": "Ice Cream",
           "description": "Vanilla ice cream cup",
           "price": 3.99
         }
       ]
-    },
-    {
+    },{
       "id": "cinema_3",
       "city": "San Francisco",
       "name": "Bay Area Cinema",
@@ -67,57 +72,22 @@
       ],
       "snacks": [
         {
+          "id": "snack_7",
           "name": "Nachos",
           "description": "Cheesy nachos with dip",
           "price": 5.49
         },
         {
+          "id": "snack_8",
           "name": "Coffee",
           "description": "Freshly brewed coffee",
           "price": 2.99
         },
         {
+          "id": "snack_9",
           "name": "Tea",
           "description": "Hot tea with lemon",
           "price": 2.49
-        }
-      ]
-    }
-  ],
-  "rooms": [
-    {
-      "id": "101",
-      "name": "Room A",
-      "capacity": 100,
-      "type": "IMAX",
-      "schedule": [
-        {
-          "movieId": "301",
-          "time": "10:00 AM"
-        },
-        {
-          "movieId": "302",
-          "time": "1:00 PM"
-        },
-        {
-          "movieId": "303",
-          "time": "4:00 PM"
-        }
-      ]
-    },
-    {
-      "id": "102",
-      "name": "Room B",
-      "capacity": 80,
-      "type": "Standard",
-      "schedule": [
-        {
-          "movieId": "304",
-          "time": "11:00 AM"
-        },
-        {
-          "movieId": "305",
-          "time": "2:00 PM"
         }
       ]
     }

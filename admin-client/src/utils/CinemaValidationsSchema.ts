@@ -8,6 +8,7 @@ export const cinemaSchema = z.object({
     name: z.string().min(4, CinemaValidation.name).max(100, CinemaValidation.name),
     halls: z.array(z.string()),
     snacks: z.array(z.object({
+        id: z.string(),
         name: z.string().min(1, CinemaValidation.snackName).max(100, CinemaValidation.snackName),
         description: z.string().min(1, CinemaValidation.snackDescription).max(300, CinemaValidation.snackDescription),
         price: z.number().min(0.10, CinemaValidation.snackPrice).max(1000, CinemaValidation.snackPrice)

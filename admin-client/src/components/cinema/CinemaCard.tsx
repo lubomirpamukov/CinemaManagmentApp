@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ActionButton ,{ ActionButtonProps } from "../buttons/ActionButton";
 import { Cinema } from "../../utils/CinemaValidationsSchema";
 import { deleteCinema } from "../../services/cinemaService";
+import CinemaDetails from "./CinemaDetails";
 
 export const CinemaCard: React.FC<CinemaWithAction> = ({
   id,
@@ -26,6 +27,15 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
     snacks,
     imgURL,
   };
+
+  // Cinema details props
+  const cinemaDetailsProps = {
+    id,
+    name,
+    city,
+    halls,
+    snacks,
+  }
 
   //Edit buttons props
   const editButtonProps: ActionButtonProps = {
@@ -49,6 +59,7 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
   const handlesDelete = async (id: string) => {
     try{
         await deleteCinema(id)
+        onRefresh(); // Refresh the cinema list after deletion
 
     }catch(error){
         console.log(`Error deleting cinema ${error}`) //to do log
@@ -56,14 +67,15 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
   }
 
   return (
-    <div className={styles.movieCard}>
+    <div className={styles.cinemaCard}>
       {imgURL && (
         <img src={imgURL} alt={name} className={styles.cinemaCardImg} />
       )}
       <div className={styles.cinemaCardContent}>
         <h2 className={styles.cinemaName}>{name}</h2>
         {/* cinema details component */}
-        <div className={styles.movieActions}>
+        <CinemaDetails {...cinemaDetailsProps} />
+        <div className={styles.cinemaActions}>
           <ActionButton {...editButtonProps} />
           <ActionButton {...deleteButtonProps} />
         </div>
