@@ -15,7 +15,7 @@ const CastForm: React.FC<CastFormProps> = ({ control, register }) => {
 
   return (
     <div className={styles.formField}>
-      <label>Cast:</label>
+      <h3>Cast:</h3>
       {fields.map((field, index) => (
         <div key={field.id} className={styles.castMember}>
           {/* Render each cast member Name */}

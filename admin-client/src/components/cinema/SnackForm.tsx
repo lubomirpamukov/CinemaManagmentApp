@@ -44,7 +44,7 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
     >
       <h2>Edit Snacks</h2>
       {fields.map((field, index) => (
-        <section key={field.id}>
+        <div key={field.id}>
           {/* Name field */}
           <label htmlFor={`snackName-${index}`} className={styles.formField}>
             Name:
@@ -100,7 +100,7 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
           >
             Remove Snack
           </button>
-        </section>
+        </div>
       ))}
       <button
         className={styles.buttonAdd}
