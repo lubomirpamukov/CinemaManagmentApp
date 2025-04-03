@@ -5,11 +5,7 @@
       "city": "Los Angeles",
       "name": "Hollywood Cinema",
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "halls": [
-        "hall_201",
-        "hall_202",
-        "hall_203"
-      ],
+      "halls": ["hall_201", "hall_202", "hall_203"],
       "snacks": [
         {
           "id": "snack_1",
@@ -35,10 +31,7 @@
       "id": "cinema_2",
       "city": "Chicago",
       "name": "Windy City Cinema",
-      "halls": [
-        "hall_301",
-        "hall_302"
-      ],
+      "halls": ["hall_301", "hall_302"],
       "snacks": [
         {
           "id": "snack_4",
@@ -71,11 +64,7 @@
       "id": "cinema_3",
       "city": "San Francisco",
       "name": "Bay Area Cinema",
-      "halls": [
-        "hall_401",
-        "hall_402",
-        "hall_403"
-      ],
+      "halls": ["hall_401", "hall_402", "hall_403"],
       "snacks": [
         {
           "id": "snack_7",
@@ -132,7 +121,7 @@
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
     },
     {
-      "id": "303",
+      "id": "302",
       "title": "The Dark Knight",
       "duration": 152,
       "pgRating": "PG-13",
@@ -157,7 +146,7 @@
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
     },
     {
-      "id": "304",
+      "id": "303",
       "title": "Avatar",
       "duration": 162,
       "pgRating": "PG-13",
@@ -186,7 +175,7 @@
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
     },
     {
-      "id": "305",
+      "id": "304",
       "title": "Titanic",
       "duration": 194,
       "pgRating": "PG-13",
@@ -211,7 +200,7 @@
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
     },
     {
-      "id": "302",
+      "id": "305",
       "title": "Interstellar",
       "duration": 179,
       "pgRating": "PG-13",
@@ -234,6 +223,149 @@
       ],
       "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
+    }
+  ],
+  "halls": [
+    {
+      "id": "room_1",
+      "cinemaId": "cinema_1",
+      "name": "Room A",
+      "layout": {
+        "rows": 10,
+        "columns": 15
+      },
+      "movieProgram": [
+        {
+          "movieId": "303",
+          "startTime": "2025-04-03T14:00:00",
+          "endTime": "2025-04-03T16:00:00"
+        },
+        {
+          "movieId": "305",
+          "startTime": "2025-04-03T16:30:00",
+          "endTime": "2025-04-03T18:30:00"
+        }
+      ],
+      "seats": [
+        {
+          "row": 1,
+          "column": 1,
+          "seatNumber": "A1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "seatNumber": "A2",
+          "isAvailable": "reserved",
+          "type": "vip",
+          "price": 20
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "seatNumber": "B1",
+          "isAvailable": "sold",
+          "type": "couple",
+          "price": 30
+        }
+      ]
+    },
+    {
+      "id": "room_2",
+      "cinemaId": "cinema_2",
+      "name": "Room B",
+      "layout": {
+        "rows": 8,
+        "columns": 12
+      },
+      "movieProgram": [
+        {
+          "movieId": "301",
+          "startTime": "2025-04-03T12:00:00",
+          "endTime": "2025-04-03T14:00:00"
+        },
+        {
+          "movieId": "304",
+          "startTime": "2025-04-03T14:30:00",
+          "endTime": "2025-04-03T16:30:00"
+        }
+      ],
+      "seats": [
+        {
+          "row": 1,
+          "column": 1,
+          "seatNumber": "A1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 8
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "seatNumber": "A2",
+          "isAvailable": "reserved",
+          "type": "vip",
+          "price": 15
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "seatNumber": "B1",
+          "isAvailable": "sold",
+          "type": "couple",
+          "price": 25
+        }
+      ]
+    },
+    {
+      "id": "room_3",
+      "cinemaId": "cinema_3",
+      "name": "Room C",
+      "layout": {
+        "rows": 12,
+        "columns": 20
+      },
+      "movieProgram": [
+        {
+          "movieId": "304",
+          "startTime": "2025-04-03T10:00:00",
+          "endTime": "2025-04-03T12:30:00"
+        },
+        {
+          "movieId": "301",
+          "startTime": "2025-04-03T13:00:00",
+          "endTime": "2025-04-03T15:30:00"
+        }
+      ],
+      "seats": [
+        {
+          "row": 1,
+          "column": 1,
+          "seatNumber": "A1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 12
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "seatNumber": "A2",
+          "isAvailable": "reserved",
+          "type": "vip",
+          "price": 18
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "seatNumber": "B1",
+          "isAvailable": "sold",
+          "type": "couple",
+          "price": 35
+        }
+      ]
     }
   ]
 }
