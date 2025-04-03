@@ -3,7 +3,7 @@ import styles from "./SnackList.module.css";
 import ActionButton from "../buttons/ActionButton";
 import { useNavigate } from "react-router-dom";
 
-type Snack = {
+export type Snack = {
   id: string;
   name: string;
   price: number;

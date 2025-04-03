@@ -1,0 +1,31 @@
+.snackPage {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .snackPage h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .loading {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .error {
+    font-size: 1rem;
+    color: red;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  

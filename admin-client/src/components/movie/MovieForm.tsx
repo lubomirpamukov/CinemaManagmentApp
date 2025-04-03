@@ -8,6 +8,7 @@ import styles from "./MovieForm.module.css";
 import CastForm from "./CastForm";
 import { DEFAULT_MOVIE_VALUES } from "../../utils/constants/movieConstants";
 import { movieSchema } from "../../utils/MovieValidationSchema";
+import { useNavigate } from "react-router-dom";
 
 export type MovieFormProps = {
   initialValues?: MovieFormValues;
@@ -40,6 +41,8 @@ const MovieForm: React.FC<MovieFormProps> = ({
     }
   }, [initialValues, reset]);
 
+  const navigator = useNavigate();
+
   //handle form submission
   const onSubmit: SubmitHandler<MovieFormValues> = async (data) => {
     try {
@@ -47,10 +50,12 @@ const MovieForm: React.FC<MovieFormProps> = ({
       if (initialValues?.id) {
         await updateMovie(initialValues.id, data);
         console.log("Movie updated successfully");
+        navigator(`/movies`);
       } else {
         // if its not provided, that means the form is used to create a new movie
         await createMovie(data);
         console.log("Movie created successfully");
+        navigator(`/movies`);
       }
       onSubmitSuccess(); // Fixed typo in function call
     } catch (error) {

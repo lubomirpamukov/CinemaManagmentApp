@@ -59,7 +59,7 @@ export const createCinema = async (cinema: CinemaInput): Promise<Cinema> => {
 };
 
 //Update existing cinema
-export const updateCinema = async (id:string ,cinema: Partial<CinemaInput>): Promise<Cinema> => {
+export const updateCinema = async (id:string ,cinema: Cinema): Promise<Cinema> => {
     try{
         const response = await fetch(`${BASE_URL}/${id}`, {
             method: "PUT",

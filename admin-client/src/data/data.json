@@ -60,11 +60,11 @@
           "price": 3.99
         }
       ]
-    },{
+    },
+    {
       "id": "cinema_3",
       "city": "San Francisco",
       "name": "Bay Area Cinema",
-      "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "halls": [
         "hall_401",
         "hall_402",
@@ -84,12 +84,19 @@
           "price": 2.99
         },
         {
-          "id": "snack_9",
-          "name": "Tea",
-          "description": "Hot tea with lemon",
-          "price": 2.49
+          "id": "9620e9d2-2156-4d5f-bd72-ba2823c2b70e",
+          "name": "Pizza",
+          "description": "Italian style margarita",
+          "price": 12
+        },
+        {
+          "id": "1880ddae-f85f-4ccf-b2b9-1669cbea8387",
+          "name": "Ice cream",
+          "description": "chocolate fudge",
+          "price": 6.99
         }
-      ]
+      ],
+      "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     }
   ],
   "movies": [
