@@ -1,8 +1,10 @@
 {
   "cinemas": [
     {
+      "id": "cinema_1",
       "city": "Los Angeles",
       "name": "Hollywood Cinema",
+      "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "halls": [
         "hall_201",
         "hall_202",
@@ -27,8 +29,10 @@
       ]
     },
     {
+      "id": "cinema_2",
       "city": "Chicago",
       "name": "Windy City Cinema",
+      "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "halls": [
         "hall_301",
         "hall_302"
@@ -52,8 +56,10 @@
       ]
     },
     {
+      "id": "cinema_3",
       "city": "San Francisco",
       "name": "Bay Area Cinema",
+      "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "halls": [
         "hall_401",
         "hall_402",

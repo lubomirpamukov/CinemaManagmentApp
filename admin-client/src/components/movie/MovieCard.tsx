@@ -19,7 +19,7 @@ export type MovieCardProps = {
   cast?: { name: string; role: string }[];
   imgURL?: string;
   onRefresh: () => void;
-}
+};
 
 const MovieCard: React.FC<MovieCardProps> = ({
   id,
@@ -43,7 +43,6 @@ const MovieCard: React.FC<MovieCardProps> = ({
     director,
   };
 
-  
   // Create movieData object using destructured props
   const movieData: MovieFormValues = {
     id,
@@ -52,7 +51,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
     pgRating,
     genre,
     year,
-    director: director ?? '',
+    director: director ?? "",
     cast: cast || [], // Ensure cast is an array
     description,
     imgURL,
@@ -64,9 +63,10 @@ const MovieCard: React.FC<MovieCardProps> = ({
     label: "Edit",
     id: id,
     type: "edit",
-    onClick: () => navigate("/movies/create",{
-      state: movieData
-    })
+    onClick: () =>
+      navigate("/movies/create", {
+        state: movieData,
+      }),
   };
 
   const deleteButtonProps: ActionButtonProps = {
@@ -87,7 +87,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   return (
     <div className={styles.movieCard}>
-      {imgURL && <img src={imgURL} alt={title} className={styles.movieCardImg} />}
+      {imgURL && (
+        <img src={imgURL} alt={title} className={styles.movieCardImg} />
+      )}
       <div className={styles.movieCardContent}>
         <h2 className={styles.movieTitle}>{title}</h2>
         <MovieDetails {...movieDetailsProps} />
