@@ -21,13 +21,14 @@ const MovieList: React.FC = () => {
     return <p>Error: {error}</p>; // to do error message
   }
 
+
   return (
     <div className={styles.movieList}>
       {movies.map(({ onRefresh, ...movie }) => (
         <MovieCard 
-          onRefresh={refresh} 
-          key={movie.id} 
-          {...movie} 
+        onRefresh={refresh} 
+        key={movie.id} 
+        {...movie} 
         />
       ))}
     </div>

@@ -20,7 +20,7 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
   const navigate = useNavigate();
 
   const cinemaData: Cinema = {
-    id: id,
+    id,
     name,
     city,
     halls,
