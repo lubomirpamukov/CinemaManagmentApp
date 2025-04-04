@@ -12,9 +12,9 @@ export const seatsSchema = z.object({
 
 export const movieProgramSchema = z.object({
     movieId: z.string(),
-    startTime: z.date(),
-    endTime: z.date(),
-})
+    startTime: z.string().transform((val) => new Date(val)),
+    endTime: z.string().transform((val) => new Date(val)),
+  })
 
 export const hallSchema = z
   .object({

@@ -5,7 +5,11 @@
       "city": "Los Angeles",
       "name": "Hollywood Cinema",
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "halls": ["hall_201", "hall_202", "hall_203"],
+      "halls": [
+        "room_1",
+        "room_2",
+        "room_3"
+      ],
       "snacks": [
         {
           "id": "snack_1",
@@ -31,7 +35,11 @@
       "id": "cinema_2",
       "city": "Chicago",
       "name": "Windy City Cinema",
-      "halls": ["hall_301", "hall_302"],
+      "halls": [
+        "room_1",
+        "room_2",
+        "room_3"
+      ],
       "snacks": [
         {
           "id": "snack_4",
@@ -64,7 +72,11 @@
       "id": "cinema_3",
       "city": "San Francisco",
       "name": "Bay Area Cinema",
-      "halls": ["hall_401", "hall_402", "hall_403"],
+      "halls": [
+        "room_1",
+        "room_2",
+        "room_3"
+      ],
       "snacks": [
         {
           "id": "snack_7",
@@ -167,7 +179,7 @@
           "role": "Dr. Grace Augustine"
         },
         {
-          "name": "Grey Oslowt",
+          "name": "Grey Oslowt11",
           "role": "Sip"
         }
       ],
