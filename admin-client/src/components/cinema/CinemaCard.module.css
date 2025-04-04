@@ -8,7 +8,7 @@
     padding: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    max-width: 20rem;
+    max-width: 35rem;
     margin: 1rem auto;
   }
   
@@ -24,6 +24,7 @@
   }
   
   .cinemaCardContent {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
