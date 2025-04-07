@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { HallValidation } from "./constants/hallConstants";
 
+export type HallFormValues = z.infer<typeof hallSchema>;
+
 export const seatsSchema = z.object({
   row: z.number(),
   column: z.number(),
@@ -12,8 +14,18 @@ export const seatsSchema = z.object({
 
 export const movieProgramSchema = z.object({
     movieId: z.string(),
-    startTime: z.string().transform((val) => new Date(val)),
-    endTime: z.string().transform((val) => new Date(val)),
+    startTime: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid start time",
+    }),
+  endTime: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), {
+      message: "Invalid end time",
+    })
   })
 
 export const hallSchema = z

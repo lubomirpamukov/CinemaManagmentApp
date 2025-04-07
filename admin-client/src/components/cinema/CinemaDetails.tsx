@@ -15,6 +15,7 @@ const CinemaDetails: React.FC<CinemaDetailsProps> = ({
   snacks,
 }) => {
 
+  console.log(halls)
   return (
     <div className={styles.cinemaDetails}>
       <p>

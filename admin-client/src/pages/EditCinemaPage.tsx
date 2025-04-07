@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import CinemaCard from "../components/cinema/CinemaCard";
-import { useCinema } from "../hooks/useCinemaById";
+import { useCinemaById } from "../hooks/useCinemaById";
 
 const EditCinemaPage: React.FC = () => {
   const { cinemaId } = useParams<{ cinemaId: string }>();
-  const { cinema, loading, error } = useCinema(cinemaId!);
+  const { cinema, loading, error } = useCinemaById(cinemaId!);
 
   if (loading) {
     return <div>Loading cinema...</div>;

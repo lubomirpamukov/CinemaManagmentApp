@@ -1,11 +1,8 @@
-
+import HallForm from "../components/Hall/HallForm";
 
 const CreateHallPage = () => {
   return (
-    <div>
-      <h1>Create Hall</h1>
-      <p>Form to create a new hall will go here.</p>
-    </div>
+    <HallForm />
   );
 }
 export default CreateHallPage;
