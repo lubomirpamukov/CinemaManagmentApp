@@ -19,6 +19,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1em;
   }
   
   .hallCard:hover {
@@ -42,7 +43,7 @@
     color: #555;
   }
   
-  .viewButton {
+  .viewButton{
     display: inline-block;
     background-color: #4a90e2;
     color: white;
@@ -55,7 +56,7 @@
   }
   
   .viewButton:hover {
-    background-color: #3a7bc8;
+    background-color: #0056b3;
   }
   
   .error {
@@ -65,3 +66,29 @@
     border-radius: 4px;
     margin-bottom: 1rem;
   }
+
+  .addHallLink {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .addHallLink:hover {
+    background-color: #45a049; 
+    transform: translateY(-2px); 
+  }
+  
+  .addHallLink:active {
+    background-color: #45a049; 
+    transform: translateY(0); 
+  }
+
+ 

@@ -1,18 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Cinema } from "../utils/CinemaValidationsSchema";
 import { getCinemas } from "../services/cinemaService";
 
-export type CinemaWithAction = Cinema & { onRefresh: () => void };
-
 /**
- * Custom hook for fetching and managing cinema data with refresh capability
+ * Custom hook for fetching and managing cinema data
  * 
  * This hook:
  * 1. Fetches cinema data from the API
  * 2. Handles loading and error states
- * 3. Provides a refresh function to reload data when needed
- * 4. Attaches the refresh function to each cinema item
- * 
  * @returns {Object} An object containing:
  *   - cinemas: Array of cinema objects with attached refresh function
  *   - loading: Boolean indicating if data is currently being fetched
@@ -50,7 +45,7 @@ export type CinemaWithAction = Cinema & { onRefresh: () => void };
  */
 export const useCinemas = () => {
   // Track cinema data with the refresh function attached
-  const [cinemas, setCinemas] = useState<CinemaWithAction[]>([]);
+  const [cinemas, setCinemas] = useState<Cinema[]>([]);
   
   // Track loading state to show/hide loading indicators
   const [loading, setLoading] = useState(true);
@@ -58,18 +53,6 @@ export const useCinemas = () => {
   // Track error state for displaying error messages
   const [error, setError] = useState<string | null>(null);
   
-  // refreshKey is used to trigger re-fetching data when incremented
-  const [refreshKey, setRefreshKey] = useState(0);
-
-  /**
-   * Refresh function to reload cinema data
-   * - Wrapped in useCallback to maintain reference stability
-   * - Can be passed to child components to allow them to trigger refresh
-   * - Increments refreshKey which triggers the useEffect dependency
-   */
-  const refresh = useCallback(() => {
-    setRefreshKey(prevKey => prevKey + 1);
-  }, []);
 
   /**
    * Effect to fetch cinema data
@@ -81,16 +64,13 @@ export const useCinemas = () => {
       setLoading(true); // Start loading
       try {
         // Fetch cinema data from API
-        const data = await getCinemas();
+        const data: Cinema[] = await getCinemas();
         
         // Attach refresh function to each cinema object
         // This allows individual cinema cards to trigger a refresh
-        const cinemasWithAction: CinemaWithAction[] = data.map((cinema) => ({
-          ...cinema,
-          onRefresh: refresh
-        }));
+      
         
-        setCinemas(cinemasWithAction);
+        setCinemas(data);
         setError(null); // Clear any previous errors
       } catch (err: any) {
         // Handle and store error message
@@ -102,8 +82,8 @@ export const useCinemas = () => {
     };
 
     fetchCinemas();
-  }, [refreshKey, refresh]); // Dependencies: refreshKey and refresh function
+  }, []); // Dependencies: refreshKey and refresh function
 
   // Return all necessary data and functions
-  return { cinemas, loading, error, refresh };
+  return { cinemas, loading, error};
 };

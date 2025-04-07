@@ -30,6 +30,7 @@ const SnackPage: React.FC = () => {
     fetchCinema();
   }, [cinemaId]);
 
+
   // Handle form submission
   const handleSnackSubmit = async (updatedSnacks: Snack[]) => {
     try {

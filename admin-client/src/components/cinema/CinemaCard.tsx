@@ -15,7 +15,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
   halls,
   snacks,
   imgURL,
-  onRefresh,
 }) => {
   const navigate = useNavigate();
 
@@ -59,7 +58,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
   const handlesDelete = async (id: string) => {
     try {
       await deleteCinema(id);
-      onRefresh(); // Refresh the cinema list after deletion
     } catch (error) {
       console.log(`Error deleting cinema ${error}`); //to do log
     }

@@ -60,10 +60,10 @@
           "price": 3.99
         },
         {
-          "id": "dadb186d-6f4f-49aa-9101-8fd0f909d997",
-          "name": "Banana shake",
-          "description": "500 ml",
-          "price": 7.99
+          "id": "458f6b76-9a73-4073-9f27-ba10edbd62f3",
+          "name": "banan shake",
+          "description": "mmm banana",
+          "price": 122
         }
       ],
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

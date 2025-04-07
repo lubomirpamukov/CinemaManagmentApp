@@ -18,12 +18,12 @@ const CinemaDetails: React.FC<CinemaDetailsProps> = ({
   return (
     <div className={styles.cinemaDetails}>
       <p>
-        <strong>Name:</strong> {name}
+        <strong>Name:</strong> {name} {/* Make this part a form*/}
       </p>
       <p>
         <strong>City:</strong> {city}
       </p>
-      < HallList hallIds={halls} />
+      < HallList cinemaId={id} hallIds={halls} />
       <SnackList cinemaId={id} snacks={snacks} />
     </div>
   );

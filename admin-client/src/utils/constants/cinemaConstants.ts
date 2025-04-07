@@ -1,3 +1,16 @@
+import { cinemaSchema } from "../CinemaValidationsSchema"
+import { z } from "zod";
+
+type CinemaFormValues = z.infer<typeof cinemaSchema>;
+export const DEFAULT_CINEMA_VALUES: CinemaFormValues = {
+    id: "",
+    name: "",
+    city: "",
+    halls: [],
+    snacks:[],
+    imgURL: "",
+}
+
 export const CinemaValidation = {
     city: "City must be between 3 and 150 characters long.",
     name: "Cinema must be between 4 and 100 characters long.",
@@ -6,3 +19,4 @@ export const CinemaValidation = {
     snackPrice: "Price must be between 0.10 and 1000",
     url: "Image URL must be valid URL."
 }
+

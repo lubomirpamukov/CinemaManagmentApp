@@ -1,18 +1,24 @@
 import React from "react";
 import { useHallDetails } from "../../hooks/fetchHallDetails";
 import styles from "./HallList.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-interface HallListProps {
+type HallListProps = {
   hallIds: string[];
+  cinemaId: string;
 }
 
-const HallList: React.FC<HallListProps> = ({ hallIds }) => {
+const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
   const { hallDetails, loading, error } = useHallDetails(hallIds);
   const navigator = useNavigate();
 
   //redirect
   function handleEdit(id: string) {
+    const windowConfirm = window.confirm(
+      "Are you sure you want to edit this hall?"
+    );
+    // If the user confirms, navigate to the edit page
+    if (!windowConfirm) return;
     navigator(`/halls/${id}/edit`);
   }
 
@@ -55,7 +61,7 @@ const HallList: React.FC<HallListProps> = ({ hallIds }) => {
           </div>
         ))}
       </div>
-
+        <Link to={`/cinemas/${cinemaId}/hall/create`} className={styles.addHallLink}>Add hall</Link>
     </div>
   );
 };

@@ -1,8 +1,53 @@
-.cinemaList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    padding: 1rem;
-  }
-  
+
+.cinemaList{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.cinemaCardLink {
+  text-decoration: none; 
+  color: inherit; 
+  display: flex; 
+  flex-direction: column;
+}
+
+.cinemaCard {
+  border: 0.1rem solid #ddd;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cinemaCard:hover {
+  transform: translateY(-0.2rem); 
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2); 
+}
+
+.cinemaImage {
+  width: 100%;
+  height: 12.5rem; 
+  object-fit: cover;
+}
+
+.cinemaContent {
+  padding: 1rem;
+}
+
+.cinemaName {
+  font-size: 1.25rem; 
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.cinemaLocation,
+.cinemaRooms {
+  font-size: 1rem; 
+  margin: 0.25rem 0;
+}
