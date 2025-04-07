@@ -55,6 +55,12 @@
     transition: background-color 0.2s ease;
   }
   
+  .deleteButton {
+    margin-left: 0.5em;
+    background-color: #e53935;
+ 
+  }
+
   .viewButton:hover {
     background-color: #0056b3;
   }

@@ -2,6 +2,9 @@ import React from "react";
 import { useHallDetails } from "../../hooks/fetchHallDetails";
 import styles from "./HallList.module.css";
 import { useNavigate, Link } from "react-router-dom";
+import { useCinemaById } from "../../hooks/useCinemaById";
+import { updateCinema } from "../../services/cinemaService";
+import { deleteHall } from "../../services/hallService";
 
 type HallListProps = {
   hallIds: string[];
@@ -11,6 +14,7 @@ type HallListProps = {
 const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
   const { hallDetails, loading, error } = useHallDetails(hallIds);
   const navigator = useNavigate();
+  const { cinema, refresh } = useCinemaById(cinemaId);
 
   //redirect
   function handleEdit(id: string) {
@@ -20,6 +24,28 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     // If the user confirms, navigate to the edit page
     if (!windowConfirm) return;
     navigator(`/halls/${id}/edit`);
+  }
+
+  async function handleDelete(id: string) {
+    const windowConfirm = window.confirm(
+      "Are you sure you want to delete this hall?"
+    );
+    // If the user confirms, navigate to the edit page
+    if (!windowConfirm) return;
+    
+    //Delete hall from cinema Array
+    
+    if(!cinema) {
+      console.error("Cinema not found");
+      return;
+    }
+    const updatedHalls = cinema.halls.filter((hall) => hall !== id);
+    cinema.halls = updatedHalls;
+    await updateCinema(cinemaId, cinema);
+
+    //Delete hall from hall collection
+    await deleteHall(id);
+    refresh();
   }
 
   if (loading) {
@@ -57,6 +83,12 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
               onClick={() => handleEdit(hall.id)}
             >
               Edit
+            </button>
+            <button 
+              className={`${styles.viewButton} ${styles.deleteButton}`}
+              onClick={() => handleDelete(hall.id)}
+            >
+              Delete
             </button>
           </div>
         ))}

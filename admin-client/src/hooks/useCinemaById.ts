@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Cinema } from "../utils/CinemaValidationsSchema";
 import { getCinemaById } from "../services/cinemaService";
 
@@ -17,11 +17,12 @@ export const useCinemaById = (cinemaId: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCinema = async () => {
+  // Function to fetch cinema data
+  const fetchCinema = useCallback(async () => {
     setLoading(true);
     try {
       const data = await getCinemaById(cinemaId); // Fetch cinema by ID
-      setCinema(data);
+      setCinema({...data});
       setError(null); // Clear any previous errors
     } catch (err: any) {
       setError(err.message || "Failed to fetch cinema");
@@ -29,17 +30,15 @@ export const useCinemaById = (cinemaId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [cinemaId]);
 
+  // Automatically fetch cinema data when cinemaId changes
   useEffect(() => {
     if (cinemaId) {
       fetchCinema();
     }
-  }, [cinemaId]); // Re-fetch if cinemaId changes
+  }, [cinemaId, fetchCinema]);
 
-  const refresh = () => {
-    fetchCinema();
-  };
-
-  return { cinema, loading, error, refresh };
+  // Expose the refresh function
+  return { cinema, loading, error, refresh: fetchCinema };
 };
