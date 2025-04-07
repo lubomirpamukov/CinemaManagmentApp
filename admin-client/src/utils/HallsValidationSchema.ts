@@ -14,18 +14,8 @@ export const seatsSchema = z.object({
 
 export const movieProgramSchema = z.object({
     movieId: z.string(),
-    startTime: z
-    .string()
-    .transform((val) => new Date(val))
-    .refine((date) => !isNaN(date.getTime()), {
-      message: "Invalid start time",
-    }),
-  endTime: z
-    .string()
-    .transform((val) => new Date(val))
-    .refine((date) => !isNaN(date.getTime()), {
-      message: "Invalid end time",
-    })
+    startTime: z.string(),
+    endTime: z.string(),
   })
 
 export const hallSchema = z
@@ -50,32 +40,5 @@ export const hallSchema = z
       path: ["seats"], // This helps associate the error message with the seats field
     }
   )
-  .refine(
-    (hall) => {
-      const { movieProgram } = hall;
-
-      // Check for overlapping movies
-      for (let i = 0; i < movieProgram.length; i++) {
-        for (let j = i + 1; j < movieProgram.length; j++) {
-          const movieA = movieProgram[i];
-          const movieB = movieProgram[j];
-
-          // Check if the time ranges overlap
-          const overlap =
-            movieA.startTime < movieB.endTime && movieA.endTime > movieB.startTime;
-
-          if (overlap) {
-            return false; // Overlap detected
-          }
-        }
-      }
-
-      return true; // No overlaps
-    },
-    {
-      message: HallValidation.movieOverlap,
-      path: ["movieProgram"], // This helps associate the error message with the movieProgram field
-    }
-  );
-
+  
   

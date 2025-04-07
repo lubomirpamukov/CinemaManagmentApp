@@ -41,7 +41,9 @@
         "room_3",
         "6fec6223-93d1-44be-859c-49428b489059",
         "716e787a-2b2d-4bcc-81bd-21fc6d09eafe",
-        "59319223-2cc9-4d3f-9f31-e3abd3d18adb"
+        "59319223-2cc9-4d3f-9f31-e3abd3d18adb",
+        "03938956-25b8-40f1-a009-901a5d939a90",
+        "e69ba085-9da6-462f-9499-d08e259f7cb2"
       ],
       "snacks": [
         {
@@ -459,6 +461,49 @@
           "price": 10
         }
       ]
+    },
+    {
+      "id": "03938956-25b8-40f1-a009-901a5d939a90",
+      "cinemaId": "cinema_2",
+      "name": "asdfasdf",
+      "layout": {
+        "rows": 1,
+        "columns": 1
+      },
+      "movieProgram": [
+        {
+          "movieId": "303",
+          "startTime": "2025-04-16T15:05:00.000Z",
+          "endTime": "2025-04-23T15:08:00.000Z"
+        }
+      ],
+      "seats": [
+        {
+          "row": 1,
+          "column": 1,
+          "seatNumber": "A1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
+        }
+      ]
+    },
+    {
+      "id": "e69ba085-9da6-462f-9499-d08e259f7cb2",
+      "cinemaId": "cinema_2",
+      "name": "gegege",
+      "layout": {
+        "rows": 5,
+        "columns": 5
+      },
+      "movieProgram": [
+        {
+          "movieId": "301",
+          "startTime": "2025-04-23T18:07",
+          "endTime": "2025-04-24T18:07"
+        }
+      ],
+      "seats": []
     }
   ]
 }

@@ -26,6 +26,8 @@ const movieTitles = getMoviesData.map((movie: Movie) => ({
 
 
 
+
+
 const HallForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -83,10 +85,8 @@ const HallForm: React.FC = () => {
   const onSubmit: SubmitHandler<HallFormValues> = async (data) => {
     setIsSubmitting(true);
     setError(null);
-
+    
     try {
-      // Here you would call your API service
-      // For example: await createHall(data);
       const hall = await createHall(data);
       console.log("Form submitted successfully:", data);
       cinema?.halls.push(hall.id); // Update the cinema data with the new hall ID
@@ -128,8 +128,9 @@ const HallForm: React.FC = () => {
       removeSeat(index);
     });
 
+
     newSeats.forEach((seat) => {
-      appendSeat(seat);
+      appendSeat(seatsSchema.parse(seat));
     });
   };
 
@@ -286,8 +287,8 @@ const HallForm: React.FC = () => {
             onClick={() =>
               appendMovie({
                 movieId: "",
-                startTime: new Date(),
-                endTime: new Date(),
+                startTime: '',
+                endTime: '',
               })
             }
             className={styles.addButton}
