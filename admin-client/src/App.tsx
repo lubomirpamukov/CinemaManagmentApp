@@ -6,6 +6,7 @@ import CinemaPage from "./pages/CinemaPage"
 import SnackPage from "./pages/SnackPage";
 import CreateHallPage from "./pages/CreateHallPage";
 import EditCinemaPage from "./pages/EditCinemaPage";
+import CreateCinemaPage from "./pages/CreateCinemaPage";
 
 function App() {
   console.log("App component rendered");
@@ -17,6 +18,7 @@ function App() {
         <Route path="/cinemas/:cinemaId/hall/create" element={<CreateHallPage />} />
         <Route path="/cinemas/:cinemaId/edit" element={<EditCinemaPage />}/>
         <Route path="/cinemas" element={<CinemaPage />}/>
+        <Route path="/cinemas/create" element={<CreateCinemaPage />}/>
         <Route path="/movies" element={<MoviePage />} />
         <Route path="/movies/create" element={<CreateMoviePage />} />
       </Routes>
