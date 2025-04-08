@@ -104,6 +104,35 @@
         }
       ],
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": "ea38b55c-c8d1-41f6-9ee3-27ce3fc4049b",
+      "city": "Toronto",
+      "name": "testHall2",
+      "halls": [
+        "19759697-3a54-4fe6-85ef-42136f198460"
+      ],
+      "snacks": [
+        {
+          "id": "test-id",
+          "name": "Snickers",
+          "price": 2.99
+        }
+      ]
+    },
+    {
+      "id": "82f979ec-971a-4a63-a912-dc5941876b50",
+      "city": "sofia",
+      "name": "Cinema city",
+      "halls": [],
+      "snacks": [
+        {
+          "id": "test-id",
+          "name": "No cnikers",
+          "description": "blqk",
+          "price": 0.99
+        }
+      ]
     }
   ],
   "movies": [
@@ -376,6 +405,56 @@
           "isAvailable": "sold",
           "type": "couple",
           "price": 35
+        }
+      ]
+    },
+    {
+      "id": "19759697-3a54-4fe6-85ef-42136f198460",
+      "cinemaId": "ea38b55c-c8d1-41f6-9ee3-27ce3fc4049b",
+      "name": "Room A",
+      "layout": {
+        "rows": 2,
+        "columns": 2
+      },
+      "movieProgram": [
+        {
+          "movieId": "303",
+          "startTime": "2025-04-12T14:57",
+          "endTime": "2025-04-08T14:59"
+        }
+      ],
+      "seats": [
+        {
+          "row": 1,
+          "column": 1,
+          "seatNumber": "A1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "seatNumber": "A2",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "seatNumber": "B1",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "seatNumber": "B2",
+          "isAvailable": "available",
+          "type": "regular",
+          "price": 10
         }
       ]
     }

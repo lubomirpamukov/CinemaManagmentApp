@@ -56,9 +56,7 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     return <p className={styles.error}>Error: {error}</p>;
   }
 
-  if (hallDetails.length === 0) {
-    return <p>No halls available.</p>;
-  }
+ 
 
   return (
     <div className={styles.hallList}>
