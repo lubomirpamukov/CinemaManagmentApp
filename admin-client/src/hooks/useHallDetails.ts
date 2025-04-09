@@ -92,7 +92,7 @@ export const useHallDetails = (hallIds: string[]) => {
 
     // Execute the fetch function
     fetchHallDetails();
-  }, [hallIds]); // Re-run effect when hallIds change
+  }, [hallIds,hallDetails.length]); // Re-run effect when hallIds change
 
   // Return all necessary data
   return { hallDetails, loading, error };

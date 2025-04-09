@@ -1,20 +1,21 @@
 import React from "react";
-import { useHallDetails } from "../../hooks/fetchHallDetails";
+import { useHallDetails } from "../../hooks/useHallDetails";
 import styles from "./HallList.module.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useCinemaById } from "../../hooks/useCinemaById";
 import { updateCinema } from "../../services/cinemaService";
 import { deleteHall } from "../../services/hallService";
+import ActionButton from "../buttons/ActionButton";
 
 type HallListProps = {
   hallIds: string[];
   cinemaId: string;
-}
+};
 
 const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
   const { hallDetails, loading, error } = useHallDetails(hallIds);
   const navigator = useNavigate();
-  const { cinema, refresh } = useCinemaById(cinemaId);
+  const { cinema } = useCinemaById(cinemaId);
 
   //redirect
   function handleEdit(id: string) {
@@ -32,10 +33,10 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     );
     // If the user confirms, navigate to the edit page
     if (!windowConfirm) return;
-    
+
     //Delete hall from cinema Array
-    
-    if(!cinema) {
+
+    if (!cinema) {
       console.error("Cinema not found");
       return;
     }
@@ -45,7 +46,6 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
 
     //Delete hall from hall collection
     await deleteHall(id);
-    refresh();
   }
 
   if (loading) {
@@ -56,8 +56,6 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     return <p className={styles.error}>Error: {error}</p>;
   }
 
- 
-
   return (
     <div className={styles.hallList}>
       <h2>Halls</h2>
@@ -67,7 +65,8 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
             <h3>{hall.name}</h3>
             <div className={styles.hallDetails}>
               <p>
-                <strong>Layout:</strong> {hall.layout.rows} rows × {hall.layout.columns} columns
+                <strong>Layout:</strong> {hall.layout.rows} rows ×{" "}
+                {hall.layout.columns} columns
               </p>
               <p>
                 <strong>Seats:</strong> {hall.layout.columns * hall.layout.rows}
@@ -76,22 +75,29 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
                 <strong>Movies Scheduled:</strong> {hall.movieProgram.length}
               </p>
             </div>
-            <button 
-              className={styles.viewButton} 
+
+            <ActionButton
+              label="Edit"
+              id="edit-button"
+              type="edit"
               onClick={() => handleEdit(hall.id)}
-            >
-              Edit
-            </button>
-            <button 
-              className={`${styles.viewButton} ${styles.deleteButton}`}
+              style={{ marginRight: "0.5em" }}
+            />
+            <ActionButton
+              label="Delete"
+              id="delete-button"
+              type="delete"
               onClick={() => handleDelete(hall.id)}
-            >
-              Delete
-            </button>
+            />
           </div>
         ))}
       </div>
-        <Link to={`/cinemas/${cinemaId}/hall/create`} className={styles.addHallLink}>Add hall</Link>
+      <Link
+        to={`/cinemas/${cinemaId}/hall/create`}
+        className={styles.addHallLink}
+      >
+        Add hall
+      </Link>
     </div>
   );
 };

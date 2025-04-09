@@ -43,28 +43,6 @@
     color: #555;
   }
   
-  .viewButton{
-    display: inline-block;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .deleteButton {
-    margin-left: 0.5em;
-    background-color: #e53935;
- 
-  }
-
-  .viewButton:hover {
-    background-color: #0056b3;
-  }
-  
   .error {
     color: #e53935;
     padding: 1rem;

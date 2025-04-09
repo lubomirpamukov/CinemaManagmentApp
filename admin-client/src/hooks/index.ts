@@ -1,3 +1,3 @@
-export * from './fetchHallDetails'
-export * from './useCinemas'
-export * from './useMovies'
+export * from "./useHallDetails";
+export * from "./useCinemas";
+export * from "./useMovies";
