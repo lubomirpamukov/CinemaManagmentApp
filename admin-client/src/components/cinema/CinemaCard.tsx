@@ -34,6 +34,7 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
     city,
     halls,
     snacks,
+    imgURL
   };
 
   //Edit buttons props

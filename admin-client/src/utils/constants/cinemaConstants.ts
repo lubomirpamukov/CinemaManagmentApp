@@ -7,7 +7,14 @@ export const DEFAULT_CINEMA_VALUES: CinemaFormValues = {
     name: "",
     city: "",
     halls: [],
-    snacks:[],
+    snacks:[
+        {
+            id: "default",
+            name: "Snickers",
+            description: "Chocolate bar",
+            price: 4.99,
+        }
+    ],
     imgURL: "",
 }
 

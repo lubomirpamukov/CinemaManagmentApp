@@ -37,8 +37,7 @@
       "name": "Windy City Cinema",
       "halls": [
         "room_1",
-        "room_3",
-        "c3e25500-4ae1-4532-a0fb-93b60169c54e"
+        "room_3"
       ],
       "snacks": [
         {
@@ -326,18 +325,23 @@
       ]
     },
     {
-      "id": "c3e25500-4ae1-4532-a0fb-93b60169c54e",
-      "cinemaId": "cinema_2",
-      "name": "Room AAAA",
+      "id": "room_3",
+      "cinemaId": "cinema_3",
+      "name": "Room C",
       "layout": {
-        "rows": 5,
-        "columns": 5
+        "rows": 12,
+        "columns": 20
       },
       "movieProgram": [
         {
           "movieId": "304",
-          "startTime": "2025-04-09T16:29",
-          "endTime": "2025-04-09T21:25"
+          "startTime": "2025-04-03T10:00:00",
+          "endTime": "2025-04-03T12:30:00"
+        },
+        {
+          "movieId": "301",
+          "startTime": "2025-04-03T13:00:00",
+          "endTime": "2025-04-03T15:30:00"
         }
       ],
       "seats": [
@@ -347,199 +351,23 @@
           "seatNumber": "A1",
           "isAvailable": "available",
           "type": "regular",
-          "price": 10
+          "price": 12
         },
         {
           "row": 1,
           "column": 2,
           "seatNumber": "A2",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 1,
-          "column": 3,
-          "seatNumber": "A3",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 1,
-          "column": 4,
-          "seatNumber": "A4",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 1,
-          "column": 5,
-          "seatNumber": "A5",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
+          "isAvailable": "reserved",
+          "type": "vip",
+          "price": 18
         },
         {
           "row": 2,
           "column": 1,
           "seatNumber": "B1",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 2,
-          "column": 2,
-          "seatNumber": "B2",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 2,
-          "column": 3,
-          "seatNumber": "B3",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 2,
-          "column": 4,
-          "seatNumber": "B4",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 2,
-          "column": 5,
-          "seatNumber": "B5",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 3,
-          "column": 1,
-          "seatNumber": "C1",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 3,
-          "column": 2,
-          "seatNumber": "C2",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 3,
-          "column": 3,
-          "seatNumber": "C3",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 3,
-          "column": 4,
-          "seatNumber": "C4",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 3,
-          "column": 5,
-          "seatNumber": "C5",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 4,
-          "column": 1,
-          "seatNumber": "D1",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 4,
-          "column": 2,
-          "seatNumber": "D2",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 4,
-          "column": 3,
-          "seatNumber": "D3",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 4,
-          "column": 4,
-          "seatNumber": "D4",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 4,
-          "column": 5,
-          "seatNumber": "D5",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 5,
-          "column": 1,
-          "seatNumber": "E1",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 5,
-          "column": 2,
-          "seatNumber": "E2",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 5,
-          "column": 3,
-          "seatNumber": "E3",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 5,
-          "column": 4,
-          "seatNumber": "E4",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
-        },
-        {
-          "row": 5,
-          "column": 5,
-          "seatNumber": "E5",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 10
+          "isAvailable": "sold",
+          "type": "couple",
+          "price": 35
         }
       ]
     }

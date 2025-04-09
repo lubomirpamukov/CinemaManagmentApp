@@ -50,4 +50,3 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 };
 
 export default ActionButton;
-  
