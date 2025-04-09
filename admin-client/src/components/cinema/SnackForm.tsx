@@ -2,11 +2,12 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Snack } from "./SnackList";
 import { snackFormSchema } from "../../utils/SnackValidationsSchema";
 import styles from "./SnackForm.module.css";
+import ActionButton from "../buttons/ActionButton";
 
 export type SnackFormProps = {
   snacks: Snack[];
@@ -30,11 +31,11 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
     control,
     name: "snacks",
   });
-
+  const cinemaId = useParams<{ cinemaId: string }>().cinemaId;
   const navigate = useNavigate();
   const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
     onSubmit(data.snacks);
-    navigate(`/cinemas`); // Redirect to the cinemas page after submission
+    navigate(`/cinemas/${cinemaId}/edit`); // Redirect to the cinemas page after submission
   };
 
   return (
@@ -69,7 +70,9 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
               id={`snackPrice-${index}`}
               placeholder="Snack Price"
               step="0.01"
-              {...register(`snacks.${index}.price` as const, {valueAsNumber: true})}
+              {...register(`snacks.${index}.price` as const, {
+                valueAsNumber: true,
+              })}
             />
             {errors.snacks?.[index]?.price && (
               <p className={styles.errors}>
@@ -93,26 +96,27 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
               </p>
             )}
           </label>
-          <button
-            className={styles.buttonRemove}
-            type="button"
+          <ActionButton
+            label="Remove Snack"
+            id={`remove-snack-${index}`}
+            type="delete"
+            buttonType="button"
             onClick={() => remove(index)}
-          >
-            Remove Snack
-          </button>
+          />
         </div>
       ))}
-      <button
-        className={styles.buttonAdd}
-        type="button"
+      <ActionButton
+        label="Add Snack"
+        buttonType="button"
+        id="add-snack-button"
         onClick={() => append({ id: "", name: "", price: 0, description: "" })}
-      >
-        Add Snack
-      </button>
-      
-      <button type="submit" className={styles.buttonSubmit}>
-        Submit
-      </button>
+      />
+      <ActionButton
+        label="Submit"
+        type="edit"
+        id="edit-button"
+        buttonType="submit"
+      />
     </form>
   );
 };

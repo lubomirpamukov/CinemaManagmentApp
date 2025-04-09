@@ -61,9 +61,9 @@
         },
         {
           "id": "458f6b76-9a73-4073-9f27-ba10edbd62f3",
-          "name": "banan shake",
-          "description": "mmm banana",
-          "price": 122
+          "name": "Banana Shake",
+          "description": "Banana chocolate flavor",
+          "price": 4.99
         }
       ],
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -75,7 +75,8 @@
       "halls": [
         "room_1",
         "room_2",
-        "room_3"
+        "room_3",
+        "e8784e9e-fa7f-4316-b5ee-ac0f911c9fd0"
       ],
       "snacks": [
         {
@@ -91,48 +92,13 @@
           "price": 2.99
         },
         {
-          "id": "9620e9d2-2156-4d5f-bd72-ba2823c2b70e",
-          "name": "Pizza",
-          "description": "Italian style margarita",
-          "price": 12
-        },
-        {
-          "id": "1880ddae-f85f-4ccf-b2b9-1669cbea8387",
-          "name": "Ice cream",
-          "description": "chocolate fudge",
-          "price": 6.99
+          "id": "32f4d43d-ff9e-467f-9106-4637ede48362",
+          "name": "Ice Cream",
+          "description": "Vanilla ice cream cup",
+          "price": 12.99
         }
       ],
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-      "id": "ea38b55c-c8d1-41f6-9ee3-27ce3fc4049b",
-      "city": "Toronto",
-      "name": "testHall2",
-      "halls": [
-        "19759697-3a54-4fe6-85ef-42136f198460"
-      ],
-      "snacks": [
-        {
-          "id": "test-id",
-          "name": "Snickers",
-          "price": 2.99
-        }
-      ]
-    },
-    {
-      "id": "82f979ec-971a-4a63-a912-dc5941876b50",
-      "city": "sofia",
-      "name": "Cinema city",
-      "halls": [],
-      "snacks": [
-        {
-          "id": "test-id",
-          "name": "No cnikers",
-          "description": "blqk",
-          "price": 0.99
-        }
-      ]
     }
   ],
   "movies": [
@@ -410,7 +376,7 @@
     },
     {
       "id": "19759697-3a54-4fe6-85ef-42136f198460",
-      "cinemaId": "ea38b55c-c8d1-41f6-9ee3-27ce3fc4049b",
+      "cinemaId": null,
       "name": "Room A",
       "layout": {
         "rows": 2,
@@ -457,6 +423,28 @@
           "price": 10
         }
       ]
+    },
+    {
+      "id": "e8784e9e-fa7f-4316-b5ee-ac0f911c9fd0",
+      "cinemaId": "cinema_3",
+      "name": "testHall1",
+      "layout": {
+        "rows": 5,
+        "columns": 5
+      },
+      "movieProgram": [],
+      "seats": []
+    },
+    {
+      "id": "8d241a05-86e0-4407-b4df-e1957d3c5eab",
+      "cinemaId": null,
+      "name": "testHall1",
+      "layout": {
+        "rows": 5,
+        "columns": 5
+      },
+      "movieProgram": [],
+      "seats": []
     }
   ]
 }

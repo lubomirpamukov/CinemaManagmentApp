@@ -30,7 +30,7 @@ export const useCinemaById = (cinemaId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [cinemaId]);
+  }, [cinema?.snacks.length, cinema?.halls.length]);
 
   // Automatically fetch cinema data when cinemaId changes
   useEffect(() => {

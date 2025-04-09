@@ -7,6 +7,7 @@ import { createCinema } from "../../services/cinemaService";
 import { v4 as uuidv4 } from "uuid";
 
 import { cinemaSchema } from "../../utils/CinemaValidationsSchema";
+import ActionButton from "../buttons/ActionButton";
 
   type CinemaFormValues = z.infer<typeof cinemaSchema>;
 
@@ -27,10 +28,10 @@ const CreateCinema: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const onSubmit = async (data: CinemaFormValues) => {
-        console.log("Cinema created successfully", data);
-        await createCinema(data);
-        navigate(`/cinemas/${data.id}/edit`);
+    const onSubmit = async (cinema: CinemaFormValues) => {
+        console.log("Cinema created successfully", cinema);
+        await createCinema(cinema);
+        navigate(`/cinemas/${cinema.id}/edit`);
     };
 
 
@@ -58,11 +59,7 @@ const CreateCinema: React.FC = () => {
                      />
                      {errors.city && <p className={styles.error}>{errors.city.message}</p>}
                 </label>
-
-                <button type="submit" className={styles.submitButton}>
-                    Create New Cinema
-                </button>
-
+                <ActionButton label="Create" id="create-cinema" buttonType="submit" />
             </form>
         </div>
     );

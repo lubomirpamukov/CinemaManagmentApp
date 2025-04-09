@@ -47,17 +47,11 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
       }),
   };
 
-  // Delete button props
-  const deleteButtonProps: ActionButtonProps = {
-    label: "Delete",
-    id: id,
-    type: "delete",
-    onClick: () => handlesDelete(id),
-  };
 
   const handlesDelete = async (id: string) => {
     try {
       await deleteCinema(id);
+      navigate("/cinemas");
     } catch (error) {
       console.log(`Error deleting cinema ${error}`); //to do log
     }
@@ -73,7 +67,7 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
         <CinemaDetails {...cinemaDetailsProps} />
         <div className={styles.cinemaActions}>
           <ActionButton {...editButtonProps} />
-          <ActionButton {...deleteButtonProps} />
+          <ActionButton label="Delete" id={`button-delete`} type="delete" onClick={() => handlesDelete(id)} />
         </div>
       </div>
     </div>

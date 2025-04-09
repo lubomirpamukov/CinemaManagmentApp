@@ -45,44 +45,5 @@
     margin-top: 0.25rem;
   }
   
-  .buttonRemove {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .buttonRemove:hover {
-    background-color: #e60000;
-  }
-  
-  .buttonAdd {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .buttonAdd:hover {
-    background-color: #218838;
-  }
-  
-  .buttonSubmit {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .buttonSubmit:hover {
-    background-color: #0056b3;
-  }
+
+
