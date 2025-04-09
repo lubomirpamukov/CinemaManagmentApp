@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHallDetails } from "../../hooks/useHallDetails";
 import styles from "./HallList.module.css";
 import { useNavigate, Link } from "react-router-dom";
@@ -13,39 +13,56 @@ type HallListProps = {
 };
 
 const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
-  const { hallDetails, loading, error } = useHallDetails(hallIds);
-  const navigator = useNavigate();
+  const { hallDetails: initialHallDetails, loading, error } = useHallDetails(hallIds);
   const { cinema } = useCinemaById(cinemaId);
+  const [hallDetails, setHallDetails] = useState(initialHallDetails); // Local state for hall details
+  const navigator = useNavigate();
 
-  //redirect
+  // Sync local state with fetched data
+  useEffect(() => {
+    setHallDetails(initialHallDetails);
+  }, [initialHallDetails]);
+
+  // Redirect to edit page
   function handleEdit(id: string) {
     const windowConfirm = window.confirm(
       "Are you sure you want to edit this hall?"
     );
-    // If the user confirms, navigate to the edit page
     if (!windowConfirm) return;
     navigator(`/halls/${id}/edit`);
   }
 
+  // Delete a hall
   async function handleDelete(id: string) {
     const windowConfirm = window.confirm(
       "Are you sure you want to delete this hall?"
     );
-    // If the user confirms, navigate to the edit page
     if (!windowConfirm) return;
-
-    //Delete hall from cinema Array
 
     if (!cinema) {
       console.error("Cinema not found");
       return;
     }
+
+    // Update cinema's halls locally
     const updatedHalls = cinema.halls.filter((hall) => hall !== id);
     cinema.halls = updatedHalls;
-    await updateCinema(cinemaId, cinema);
 
-    //Delete hall from hall collection
+    // Update hallDetails locally
+    const updatedHallDetails = hallDetails.filter((hall) => hall.id !== id);
+    setHallDetails(updatedHallDetails);
+
+    // Update the server
+    await updateCinema(cinemaId, { ...cinema, halls: updatedHalls });
     await deleteHall(id);
+  }
+
+  // Update a hall (example function for updating hall details)
+  function handleUpdate(updatedHall: any) {
+    const updatedHallDetails = hallDetails.map((hall) =>
+      hall.id === updatedHall.id ? updatedHall : hall
+    );
+    setHallDetails(updatedHallDetails); // Update local state
   }
 
   if (loading) {
@@ -65,8 +82,7 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
             <h3>{hall.name}</h3>
             <div className={styles.hallDetails}>
               <p>
-                <strong>Layout:</strong> {hall.layout.rows} rows ×{" "}
-                {hall.layout.columns} columns
+                <strong>Layout:</strong> {hall.layout.rows} rows × {hall.layout.columns} columns
               </p>
               <p>
                 <strong>Seats:</strong> {hall.layout.columns * hall.layout.rows}
@@ -75,7 +91,6 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
                 <strong>Movies Scheduled:</strong> {hall.movieProgram.length}
               </p>
             </div>
-
             <ActionButton
               label="Edit"
               id="edit-button"

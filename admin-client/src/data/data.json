@@ -74,9 +74,7 @@
       "name": "Bay Area Cinema",
       "halls": [
         "room_1",
-        "room_2",
-        "room_3",
-        "e8784e9e-fa7f-4316-b5ee-ac0f911c9fd0"
+        "room_2"
       ],
       "snacks": [
         {
@@ -99,26 +97,6 @@
         }
       ],
       "imgURL": "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    },
-    {
-      "id": "744780fd-cbf6-4256-9a6a-ad555e92c74a",
-      "city": "test",
-      "name": "testHall1",
-      "halls": [],
-      "snacks": [
-        {
-          "id": "test-id",
-          "name": "Snickers",
-          "description": "Cheesy nachos with dip",
-          "price": 2.99
-        },
-        {
-          "id": "c4c9bc95-3aa2-4691-8c11-ce9b3237b1ef",
-          "name": "Coffee",
-          "description": "Freshly brewed coffee",
-          "price": 2.99
-        }
-      ]
     }
   ],
   "movies": [
@@ -301,7 +279,7 @@
       ]
     },
     {
-      "id": "room_3",
+      "id": "room_2",
       "cinemaId": "cinema_3",
       "name": "Room C",
       "layout": {
@@ -346,17 +324,6 @@
           "price": 35
         }
       ]
-    },
-    {
-      "id": "e8784e9e-fa7f-4316-b5ee-ac0f911c9fd0",
-      "cinemaId": "cinema_3",
-      "name": "testHall1",
-      "layout": {
-        "rows": 5,
-        "columns": 5
-      },
-      "movieProgram": [],
-      "seats": []
     },
     {
       "id": "c3e25500-4ae1-4532-a0fb-93b60169c54e",
