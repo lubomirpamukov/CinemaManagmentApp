@@ -1,0 +1,181 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.2.12">
+  <diagram name="Page-1" id="T1HF94_pV0aO4in_FAbq">
+    <mxGraphModel dx="2068" dy="1093" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2336" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jApMvYi7QoUpjL_6ancB-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" target="jApMvYi7QoUpjL_6ancB-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="70" as="sourcePoint" />
+            <mxPoint x="300" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" target="jApMvYi7QoUpjL_6ancB-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" target="jApMvYi7QoUpjL_6ancB-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="110" />
+              <mxPoint x="690" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1470" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" target="jApMvYi7QoUpjL_6ancB-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1190" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-2" value="&amp;lt;App/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="880" y="30" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-4" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)Params.cinemaId&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;2) fetchCinema&lt;/font&gt;&lt;/div&gt;&amp;lt;SnackPage/&amp;gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)fetchCinema&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;2)updateCinema&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;3)Props.snacks[]&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="60" y="100" width="130" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-5" value="&amp;lt;CreateHallPage/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="240" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-6" target="jApMvYi7QoUpjL_6ancB-29" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-6" value="&amp;lt;EditCinemaPage/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)get param ID&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;2) fetch cinema&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;3)Para.cinema&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="420" y="130" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-7" target="jApMvYi7QoUpjL_6ancB-50" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-7" value="&amp;lt;CreateMoviePage/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1390" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-8" target="jApMvYi7QoUpjL_6ancB-39" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="690" y="270" />
+              <mxPoint x="690" y="270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-8" value="&amp;lt;CinemasPage/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="630" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-42" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-9" target="jApMvYi7QoUpjL_6ancB-41" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="930" y="240" />
+              <mxPoint x="810" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-9" value="&amp;lt;CreateCinemaPage/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="870" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-44" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-10" target="jApMvYi7QoUpjL_6ancB-43" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-10" value="&amp;lt;MoviePage/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1130" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.667;entryY=0.067;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-2" target="jApMvYi7QoUpjL_6ancB-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-23" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)Prop.snack[]&lt;/font&gt;&lt;/div&gt;&amp;lt;SnackForm/&amp;gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)updates snacks and redirects&lt;/font&gt;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="40" y="300" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-4" target="jApMvYi7QoUpjL_6ancB-23" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="300" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="70" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-27" value="&amp;lt;HallForm/&amp;gt;&lt;div&gt;*break it down&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="160" y="290" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.67;entryY=0.022;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-5" target="jApMvYi7QoUpjL_6ancB-27" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-29" value="&lt;div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;1)Param.cinema&lt;/font&gt;&lt;/div&gt;&amp;lt;CinemaCard/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)heletes request to API&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;2)Prop.cinemaDetails&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="330" y="290" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-33" target="jApMvYi7QoUpjL_6ancB-36" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-33" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)Prop.cinemaDetails&lt;/font&gt;&lt;/div&gt;&amp;lt;CinemaDetails/&amp;gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)updateCinema API&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;2) Props: cinemaId, hallIds[],snacks[]&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="390" y="450" width="120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-35" value="&lt;div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;1)Prop.cinemaId&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;2)Prop.hallsId[]&lt;/font&gt;&lt;/div&gt;&amp;lt;HallList/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)Fetch cinema API&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;2)Redirect to hall edit&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;3)delete hall&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;4) handle update&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="280" y="600" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-36" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)Props.cinemaId&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;2)Props.snacks[]&lt;/font&gt;&lt;/div&gt;&amp;lt;SnackList/&amp;gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)Redirects to edit snacks&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="530" y="620" width="110" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-39" value="&amp;lt;CinemaList/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)fetchCinemaData&amp;nbsp;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="580" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-41" value="&amp;lt;CreateCinema/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)sends data to API&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="780" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-43" target="jApMvYi7QoUpjL_6ancB-55" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-43" value="&amp;lt;MovieList/&amp;gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)useMoviesHook&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;2)Prop.movie&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1140" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-45" value="&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)Prop.details&lt;/font&gt;&lt;/div&gt;&amp;lt;MovieDetails/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="990" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-47" value="&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)Prop.cast&lt;/font&gt;&lt;/div&gt;&amp;lt;MovieCast/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1160" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-50" target="jApMvYi7QoUpjL_6ancB-52" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-50" value="&lt;div&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;lt;CreateMovieForm/&amp;gt;&lt;/font&gt;&lt;div&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1) updateMovieService&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;1&quot;&gt;2) createMovieService&lt;br&gt;&lt;/font&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;fontSize=4;" parent="1" vertex="1">
+          <mxGeometry x="1390" y="260" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-52" value="&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;1)RHF- control&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;2)RHF- register&lt;/font&gt;&lt;/div&gt;&amp;lt;MovieCastForm/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-58" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="jApMvYi7QoUpjL_6ancB-55" target="jApMvYi7QoUpjL_6ancB-47" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1220" y="460" />
+              <mxPoint x="1220" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-55" target="jApMvYi7QoUpjL_6ancB-45" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-55" value="&lt;div&gt;&lt;font size=&quot;1&quot;&gt;1)Prop.movie&lt;/font&gt;&lt;/div&gt;&amp;lt;MovieCard/&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="1130" y="380" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.407;entryY=0.073;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-29" target="jApMvYi7QoUpjL_6ancB-33" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jApMvYi7QoUpjL_6ancB-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.457;entryY=-0.02;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="jApMvYi7QoUpjL_6ancB-33" target="jApMvYi7QoUpjL_6ancB-35" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
