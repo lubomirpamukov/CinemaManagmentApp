@@ -16,6 +16,7 @@ export interface IUser extends Document {
         zipcode: string;
     };
     geolocation?: { lat: number; long: number };
+    /* reservations?:Reservation[] */
 }
 
 const UserSchema: Schema = new Schema(
