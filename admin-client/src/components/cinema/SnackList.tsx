@@ -1,7 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 import styles from "./SnackList.module.css";
 import ActionButton from "../buttons/ActionButton";
-import { useNavigate } from "react-router-dom";
 
 export type Snack = {
   id: string;

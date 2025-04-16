@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  hallSchema,
-  HallFormValues,
-  seatsSchema,
-} from "../../utils/HallsValidationSchema";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { hallSchema, HallFormValues, seatsSchema} from "../../utils";
 import Spinner from "../Spinner";
 import styles from "./HallForm.module.css";
-import { createHall } from "../../services/hallService";
+import { createHall } from "../../services";
 import { v4 as uuidv4 } from "uuid";
-import { getMovies } from "../../services/movieService";
-import { Movie } from "../../utils/MovieValidationSchema";
-import { useCinemaById } from "../../hooks/useCinemaById";
-import { updateCinema } from "../../services/cinemaService";
+import { getMovies } from "../../services";
+import { Movie } from "../../utils";
+import { useCinemaById } from "../../hooks";
+import { updateCinema } from "../../services";
 
 
 //Preload movie titles

@@ -1,5 +1,7 @@
 import React from "react";
+
 import styles from "./MovieDetails.module.css";
+
 export type MovieDetailsProps = {
     genre: string;
     year: number;

@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Cinema } from "../../utils/CinemaValidationsSchema";
-import { useCinemas } from "../../hooks/useCinemas";
+import { Cinema } from "../../utils";
+import { useCinemas } from "../../hooks";
 import styles from "./CinemaList.module.css";
 
 export type CinemaWithAction = Cinema;

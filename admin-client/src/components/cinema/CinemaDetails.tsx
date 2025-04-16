@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
-import { cinemaSchema } from "../../utils/CinemaValidationsSchema";
+import { cinemaSchema } from "../../utils";
 import SnackList from "./SnackList";
 import styles from "./CinemaDetails.module.css";
 import HallList from "../Hall/HallsList";
 import ActionButton from "../buttons/ActionButton";
-import { DEFAULT_CINEMA_VALUES } from "../../utils/constants/cinemaConstants";
-import { updateCinema } from "../../services/cinemaService";
-import { useNavigate } from "react-router-dom";
+import { DEFAULT_CINEMA_VALUES } from "../../utils/constants";
+import { updateCinema } from "../../services";
 
 type CinemaDetailsProps = z.infer<typeof cinemaSchema>;
 

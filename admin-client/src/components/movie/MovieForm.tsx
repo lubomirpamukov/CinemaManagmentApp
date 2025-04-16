@@ -2,13 +2,13 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 
-import { createMovie, updateMovie } from "../../services/movieService";
+import { createMovie, updateMovie } from "../../services";
 import styles from "./MovieForm.module.css";
 import CastForm from "./CastForm";
-import { DEFAULT_MOVIE_VALUES } from "../../utils/constants/movieConstants";
-import { movieSchema } from "../../utils/MovieValidationSchema";
-import { useNavigate } from "react-router-dom";
+import { DEFAULT_MOVIE_VALUES } from "../../utils/constants";
+import { movieSchema } from "../../utils";
 
 export type MovieFormProps = {
   initialValues?: MovieFormValues;

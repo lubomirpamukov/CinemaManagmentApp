@@ -5,7 +5,7 @@ import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { Snack } from "./SnackList";
-import { snackFormSchema } from "../../utils/SnackValidationsSchema";
+import { snackFormSchema } from "../../utils";
 import styles from "./SnackForm.module.css";
 import ActionButton from "../buttons/ActionButton";
 

@@ -2,11 +2,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import styles from "./CreateCinema.module.css";
-import { createCinema } from "../../services/cinemaService";
 import { v4 as uuidv4 } from "uuid";
 
-import { cinemaSchema } from "../../utils/CinemaValidationsSchema";
+import styles from "./CreateCinema.module.css";
+import { createCinema } from "../../services";
+import { cinemaSchema } from "../../utils";
 import ActionButton from "../buttons/ActionButton";
 
   type CinemaFormValues = z.infer<typeof cinemaSchema>;
