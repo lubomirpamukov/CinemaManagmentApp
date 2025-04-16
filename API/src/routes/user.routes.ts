@@ -8,14 +8,14 @@ const userRouter: Router = express.Router();
  * @desc    A protected route
  * @access  Admin/Distributor/Retailer
  */
-userRouter.get('/protected', authentication, protectedRoute);
+userRouter.get('/protected', authentication,authorizeRoles(['admin']), protectedRoute);
 
 /**
  * @route   GET /users/:id
  * @desc    Get a user by email
  * @access  Admin/Distributor/Retailer (self)
  */
-userRouter.get('/:id', authentication, getUserById);
+userRouter.get('/:id', authentication,authorizeRoles(['admin']), getUserById);
 
 /**
  * @route   DELETE /users/:id
@@ -29,6 +29,6 @@ userRouter.delete('/:id', authentication, authorizeRoles(['admin']), deleteUser)
  * @desc    Update user details
  * @access  Admin/Distributor/Retailer (self)
  */
-userRouter.put('/:id', authentication, updateUser);
+userRouter.put('/:id', authentication, authorizeRoles(['admin']) ,updateUser);
 
 export default userRouter;
