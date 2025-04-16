@@ -1,0 +1,31 @@
+.errorContainer {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    background-color: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .errorTitle {
+    color: #d32f2f;
+    margin-top: 0;
+  }
+  
+  .errorMessage {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  .errorStack {
+    white-space: pre-wrap;
+    overflow-x: auto;
+    background-color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #666;
+  }
