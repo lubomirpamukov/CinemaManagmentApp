@@ -13,7 +13,7 @@ userRouter.get('/protected', authentication,authorizeRoles(['admin']), protected
 /**
  * @route   GET /users/:id
  * @desc    Get a user by email
- * @access  Admin/Distributor/Retailer (self)
+ * @access  Admin
  */
 userRouter.get('/:id', authentication,authorizeRoles(['admin']), getUserById);
 
@@ -27,7 +27,7 @@ userRouter.delete('/:id', authentication, authorizeRoles(['admin']), deleteUser)
 /**
  * @route   PUT /users/:id
  * @desc    Update user details
- * @access  Admin/Distributor/Retailer (self)
+ * @access  Admin
  */
 userRouter.put('/:id', authentication, authorizeRoles(['admin']) ,updateUser);
 
