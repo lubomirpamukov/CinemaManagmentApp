@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useHallDetails } from "../../hooks/useHallDetails";
+import { Link } from "react-router-dom";
+
+import { useHallDetails } from "../../hooks";
 import styles from "./HallList.module.css";
-import { useNavigate, Link } from "react-router-dom";
-import { useCinemaById } from "../../hooks/useCinemaById";
-import { updateCinema } from "../../services/cinemaService";
-import { deleteHall } from "../../services/hallService";
+import { useCinemaById } from "../../hooks";
+import { updateCinema } from "../../services";
+import { deleteHall } from "../../services";
 import ActionButton from "../buttons/ActionButton";
+import Spinner from "../Spinner";
 
 type HallListProps = {
   hallIds: string[];
@@ -16,21 +18,10 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
   const { hallDetails: initialHallDetails, loading, error } = useHallDetails(hallIds);
   const { cinema } = useCinemaById(cinemaId);
   const [hallDetails, setHallDetails] = useState(initialHallDetails); // Local state for hall details
-  const navigator = useNavigate();
-
   // Sync local state with fetched data
   useEffect(() => {
     setHallDetails(initialHallDetails);
   }, [initialHallDetails]);
-
-  // Redirect to edit page
-  function handleEdit(id: string) {
-    const windowConfirm = window.confirm(
-      "Are you sure you want to edit this hall?"
-    );
-    if (!windowConfirm) return;
-    navigator(`/halls/${id}/edit`);
-  }
 
   // Delete a hall
   async function handleDelete(id: string) {
@@ -57,16 +48,8 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     await deleteHall(id);
   }
 
-  // Update a hall (example function for updating hall details)
-  function handleUpdate(updatedHall: any) {
-    const updatedHallDetails = hallDetails.map((hall) =>
-      hall.id === updatedHall.id ? updatedHall : hall
-    );
-    setHallDetails(updatedHallDetails); // Update local state
-  }
-
   if (loading) {
-    return <div>Loading halls...</div>;
+   return  <Spinner />
   }
 
   if (error) {
@@ -91,13 +74,6 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
                 <strong>Movies Scheduled:</strong> {hall.movieProgram.length}
               </p>
             </div>
-            <ActionButton
-              label="Edit"
-              id="edit-button"
-              type="edit"
-              onClick={() => handleEdit(hall.id)}
-              style={{ marginRight: "0.5em" }}
-            />
             <ActionButton
               label="Delete"
               id="delete-button"
