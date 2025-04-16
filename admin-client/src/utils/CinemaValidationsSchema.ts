@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { CinemaValidation } from "./constants/cinemaConstants";
 import { snackSchema } from "./SnackValidationsSchema";
 

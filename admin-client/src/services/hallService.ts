@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { hallSchema } from "../utils/HallsValidationSchema";
+
+import { hallSchema } from "../utils";
 
 const BASE_URL = "http://localhost:3000/halls";
 

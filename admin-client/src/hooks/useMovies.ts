@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getMovies } from '../services/movieService';
+
+import { getMovies } from '../services';
 import { MovieCardProps } from '../components/movie/MovieCard';
 
 /**
@@ -79,9 +80,8 @@ export const useMovies = () => {
       try {
         const data = await getMovies();
         const moviesWithActions: MovieCardProps[] = data.map((movie) => ({
-          ...movie,
+          movie,
           onRefresh: refresh, // Attach the refresh function
-          id: movie.id ?? '' 
         }));
         setMovies(moviesWithActions);
         setError(null); // Clear any previous errors

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
+
 import CinemaCard from "../components/cinema/CinemaCard";
-import { useCinemaById } from "../hooks/useCinemaById";
+import { useCinemaById } from "../hooks";
 
 const EditCinemaPage: React.FC = () => {
   const { cinemaId } = useParams<{ cinemaId: string }>();

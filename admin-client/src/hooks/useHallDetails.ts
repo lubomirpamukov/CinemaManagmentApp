@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Hall, getHallsByIds } from "../services/hallService";
+
+import { Hall, getHallsByIds } from "../services";
 
 /**
  * Custom hook to fetch hall details based on an array of hall IDs

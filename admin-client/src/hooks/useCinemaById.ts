@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Cinema } from "../utils/CinemaValidationsSchema";
-import { getCinemaById } from "../services/cinemaService";
+
+import { Cinema } from "../utils";
+import { getCinemaById } from "../services";
 
 /**
  * Custom hook for fetching a specific cinema by ID.

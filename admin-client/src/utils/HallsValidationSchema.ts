@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { HallValidation } from "./constants/hallConstants";
 
 export type HallFormValues = z.infer<typeof hallSchema>;

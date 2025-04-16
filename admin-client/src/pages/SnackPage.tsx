@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import SnackForm from "../components/cinema/SnackForm";
 import { Snack } from "../components/cinema/SnackList";
-import { getCinemaById, updateCinema } from "../services/cinemaService";
+import { getCinemaById, updateCinema } from "../services";
 import styles from "./SnackPage.module.css";
 
 const SnackPage: React.FC = () => {

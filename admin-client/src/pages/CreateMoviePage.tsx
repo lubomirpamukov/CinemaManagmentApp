@@ -1,7 +1,7 @@
 import React from "react";
-import MovieForm from "../components/movie/MovieForm";
 import { useLocation } from "react-router-dom";
-import { MovieFormValues } from "../components/movie/MovieForm";
+
+import MovieForm, { MovieFormValues } from "../components/movie/MovieForm";
 
 const CreateMoviePage: React.FC = () => {
   const location = useLocation();

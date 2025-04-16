@@ -1,4 +1,5 @@
 import {  z } from "zod";
+
 import { SnackValidation } from "./constants/snackConstants";
 
 export const snackSchema = z.object({

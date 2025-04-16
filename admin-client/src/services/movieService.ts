@@ -1,6 +1,5 @@
-import { Movie, movieSchema } from "../utils/MovieValidationSchema";
+import { Movie, movieSchema } from "../utils";
 const BASE_URL = "http://localhost:3000/movies";
-// TODO gives services types
 
 export const getMovies = async (): Promise<Movie[]> => {
   try {
@@ -54,10 +53,9 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
   }
 };
 
-//to do make interface for movie
 export const updateMovie = async (
   id: string,
-  movie: Partial<MovieInput>
+  movie: Movie
 ): Promise<Movie> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
@@ -89,13 +87,11 @@ export const deleteMovie = async (id: string): Promise<boolean> => {
       throw new Error("Failed to delete movie");
     }
 
-    // Handle 204 No Content explicitly
     if (response.status === 204) {
       console.log(`Movie with id ${id} deleted successfully`); // to do logger
       return true;
     }
 
-    // If the server returns a body (e.g., 200 OK), handle it here if needed
     console.log(`Movie with id ${id} deleted successfully`); // to do logger
     return true;
   } catch (error) {

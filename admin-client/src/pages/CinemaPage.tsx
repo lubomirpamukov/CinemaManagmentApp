@@ -1,4 +1,5 @@
 import React from "react";
+
 import CinemaList from "../components/cinema/CinemaList";
 import styles from "./CinemaPage.module.css";
 

@@ -1,4 +1,4 @@
-import { Cinema, cinemaSchema } from "../utils/CinemaValidationsSchema";
+import { Cinema, cinemaSchema } from "../utils";
 
 
 const BASE_URL = "http://localhost:3000/cinemas";
