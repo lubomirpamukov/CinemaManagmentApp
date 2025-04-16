@@ -36,8 +36,7 @@
       "city": "Chicago",
       "name": "Windy City Cinema",
       "halls": [
-        "room_1",
-        "room_3"
+        "room_1"
       ],
       "snacks": [
         {
@@ -202,31 +201,6 @@
       ],
       "description": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
       "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
-    },
-    {
-      "id": "305",
-      "title": "Interstellar",
-      "duration": 179,
-      "pgRating": "PG-13",
-      "genre": "Sci-Fi",
-      "year": 2014,
-      "director": "Christopher Nolan",
-      "cast": [
-        {
-          "name": "Matthew McConaughey",
-          "role": "Cooper"
-        },
-        {
-          "name": "Anne Hathaway",
-          "role": "Brand"
-        },
-        {
-          "name": "Jessica Chastain",
-          "role": "Murph"
-        }
-      ],
-      "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-      "imgURL": "https://cdn.pixabay.com/photo/2019/04/24/21/55/cinema-4153289_1280.jpg"
     }
   ],
   "halls": [
@@ -323,53 +297,310 @@
           "price": 35
         }
       ]
+    }
+  ],
+  "users": [
+    {
+      "id": "3",
+      "userName": "alicejohnson",
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "password": "password123",
+      "contact": "+1234567890",
+      "address": {
+        "line1": "123 Main St",
+        "city": "Los Angeles",
+        "state": "UK",
+        "zipcode": "90001"
+      },
+      "geoLocation": {
+        "lat": 34.0522,
+        "long": -118.2437
+      }
     },
     {
-      "id": "room_3",
-      "cinemaId": "cinema_3",
-      "name": "Room C",
-      "layout": {
-        "rows": 12,
-        "columns": 20
+      "id": "2",
+      "role": "admin",
+      "userName": "admin",
+      "name": "Bob Smith",
+      "email": "bob.smith@example.com",
+      "password": "adminpass",
+      "contact": "+1987654321",
+      "address": {
+        "line1": "456 Elm St",
+        "city": "Chicago",
+        "state": "IL",
+        "zipcode": "60601"
       },
-      "movieProgram": [
-        {
-          "movieId": "304",
-          "startTime": "2025-04-03T10:00:00",
-          "endTime": "2025-04-03T12:30:00"
-        },
-        {
-          "movieId": "301",
-          "startTime": "2025-04-03T13:00:00",
-          "endTime": "2025-04-03T15:30:00"
-        }
-      ],
-      "seats": [
-        {
-          "row": 1,
-          "column": 1,
-          "seatNumber": "A1",
-          "isAvailable": "available",
-          "type": "regular",
-          "price": 12
-        },
-        {
-          "row": 1,
-          "column": 2,
-          "seatNumber": "A2",
-          "isAvailable": "reserved",
-          "type": "vip",
-          "price": 18
-        },
-        {
-          "row": 2,
-          "column": 1,
-          "seatNumber": "B1",
-          "isAvailable": "sold",
-          "type": "couple",
-          "price": 35
-        }
-      ]
+      "geoLocation": {
+        "lat": 41.8781,
+        "long": -87.6298
+      }
+    },
+    {
+      "id": "1",
+      "role": "user",
+      "userName": "charlielee",
+      "name": "Charlie Lee",
+      "email": "charlie.lee@example.com",
+      "password": "charliepass",
+      "contact": "+1123456789",
+      "address": {
+        "line1": "789 Oak Ave",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipcode": "94102"
+      },
+      "geoLocation": {
+        "lat": 37.7749,
+        "long": -122.4194
+      }
+    },
+    {
+      "id": "4",
+      "userName": "danielgreEEEENNN",
+      "name": "Daniel Green",
+      "email": "daniel.green@example.com",
+      "password": "danielpass",
+      "contact": "+12125550101",
+      "address": {
+        "line1": "101 Maple St",
+        "city": "Seattle",
+        "state": "WA",
+        "zipcode": "98101"
+      },
+      "geoLocation": {
+        "lat": 47.6062,
+        "long": -122.3321
+      }
+    },
+    {
+      "id": "5",
+      "role": "user",
+      "userName": "emilywhite",
+      "name": "Emily White",
+      "email": "emily.white@example.com",
+      "password": "emilypass",
+      "contact": "+12125550102",
+      "address": {
+        "line1": "202 Pine St",
+        "city": "Portland",
+        "state": "OR",
+        "zipcode": "97201"
+      },
+      "geoLocation": {
+        "lat": 45.5152,
+        "long": -122.6784
+      }
+    },
+    {
+      "id": "6",
+      "role": "user",
+      "userName": "frankbrown",
+      "name": "Frank Brown",
+      "email": "frank.brown@example.com",
+      "password": "frankpass",
+      "contact": "+12125550103",
+      "address": {
+        "line1": "303 Cedar St",
+        "city": "Denver",
+        "state": "CO",
+        "zipcode": "80202"
+      },
+      "geoLocation": {
+        "lat": 39.7392,
+        "long": -104.9903
+      }
+    },
+    {
+      "id": "7",
+      "role": "user",
+      "userName": "gracewilliams",
+      "name": "Grace Williams",
+      "email": "grace.williams@example.com",
+      "password": "gracepass",
+      "contact": "+12125550104",
+      "address": {
+        "line1": "404 Birch St",
+        "city": "Austin",
+        "state": "TX",
+        "zipcode": "73301"
+      },
+      "geoLocation": {
+        "lat": 30.2672,
+        "long": -97.7431
+      }
+    },
+    {
+      "id": "8",
+      "role": "user",
+      "userName": "henrymartin",
+      "name": "Henry Martin",
+      "email": "henry.martin@example.com",
+      "password": "henrypass",
+      "contact": "+12125550105",
+      "address": {
+        "line1": "505 Walnut St",
+        "city": "Boston",
+        "state": "MA",
+        "zipcode": "02108"
+      },
+      "geoLocation": {
+        "lat": 42.3601,
+        "long": -71.0589
+      }
+    },
+    {
+      "id": "9",
+      "role": "user",
+      "userName": "isabellamurphy",
+      "name": "Isabella Murphy",
+      "email": "isabella.murphy@example.com",
+      "password": "isabellapass",
+      "contact": "+12125550106",
+      "address": {
+        "line1": "606 Spruce St",
+        "city": "Miami",
+        "state": "FL",
+        "zipcode": "33101"
+      },
+      "geoLocation": {
+        "lat": 25.7617,
+        "long": -80.1918
+      }
+    },
+    {
+      "id": "10",
+      "role": "user",
+      "userName": "jacksonclark",
+      "name": "Jackson Clark",
+      "email": "jackson.clark@example.com",
+      "password": "jacksonpass",
+      "contact": "+12125550107",
+      "address": {
+        "line1": "707 Chestnut St",
+        "city": "Dallas",
+        "state": "TX",
+        "zipcode": "75201"
+      },
+      "geoLocation": {
+        "lat": 32.7767,
+        "long": -96.797
+      }
+    },
+    {
+      "id": "11",
+      "role": "user",
+      "userName": "karenyoung",
+      "name": "Karen Young",
+      "email": "karen.young@example.com",
+      "password": "karenpass",
+      "contact": "+12125550108",
+      "address": {
+        "line1": "808 Willow St",
+        "city": "San Diego",
+        "state": "CA",
+        "zipcode": "92101"
+      },
+      "geoLocation": {
+        "lat": 32.7157,
+        "long": -117.1611
+      }
+    },
+    {
+      "id": "12",
+      "role": "user",
+      "userName": "liamking",
+      "name": "Liam King",
+      "email": "liam.king@example.com",
+      "password": "liampass",
+      "contact": "+12125550109",
+      "address": {
+        "line1": "909 Aspen St",
+        "city": "Houston",
+        "state": "TX",
+        "zipcode": "77001"
+      },
+      "geoLocation": {
+        "lat": 29.7604,
+        "long": -95.3698
+      }
+    },
+    {
+      "id": "13",
+      "role": "user",
+      "userName": "madisonhill",
+      "name": "Madison Hill",
+      "email": "madison.hill@example.com",
+      "password": "madisonpass",
+      "contact": "+12125550110",
+      "address": {
+        "line1": "1010 Poplar St",
+        "city": "Philadelphia",
+        "state": "PA",
+        "zipcode": "19103"
+      },
+      "geoLocation": {
+        "lat": 39.9526,
+        "long": -75.1652
+      }
+    },
+    {
+      "id": "14",
+      "role": "user",
+      "userName": "nathanadams",
+      "name": "Nathan Adams",
+      "email": "nathan.adams@example.com",
+      "password": "nathanpass",
+      "contact": "+12125550111",
+      "address": {
+        "line1": "1111 Magnolia St",
+        "city": "Phoenix",
+        "state": "AZ",
+        "zipcode": "85001"
+      },
+      "geoLocation": {
+        "lat": 33.4484,
+        "long": -112.074
+      }
+    },
+    {
+      "id": "15",
+      "role": "user",
+      "userName": "oliviabaker",
+      "name": "Olivia Baker",
+      "email": "olivia.baker@example.com",
+      "password": "oliviapass",
+      "contact": "+12125550112",
+      "address": {
+        "line1": "1212 Palm St",
+        "city": "San Jose",
+        "state": "CA",
+        "zipcode": "95101"
+      },
+      "geoLocation": {
+        "lat": 37.3382,
+        "long": -121.8863
+      }
+    },
+    {
+      "id": "16",
+      "role": "user",
+      "userName": "paulroberts",
+      "name": "Paul Roberts",
+      "email": "paul.roberts@example.com",
+      "password": "paulpass",
+      "contact": "+12125550113",
+      "address": {
+        "line1": "1313 Cypress St",
+        "city": "San Antonio",
+        "state": "TX",
+        "zipcode": "78205"
+      },
+      "geoLocation": {
+        "lat": 29.4241,
+        "long": -98.4936
+      }
     }
   ]
 }
