@@ -1,11 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { CinemaWithAction } from "./CinemaList";
 import styles from "./CinemaCard.module.css";
-import { useNavigate } from "react-router-dom";
-import ActionButton, { ActionButtonProps } from "../buttons/ActionButton";
-import { Cinema } from "../../utils/CinemaValidationsSchema";
-import { deleteCinema } from "../../services/cinemaService";
+import ActionButton from "../buttons/ActionButton";
+import { deleteCinema } from "../../services";
 import CinemaDetails from "./CinemaDetails";
 
 export const CinemaCard: React.FC<CinemaWithAction> = ({
@@ -18,15 +17,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
 }) => {
   const navigate = useNavigate();
 
-  const cinemaData: Cinema = {
-    id,
-    name,
-    city,
-    halls,
-    snacks,
-    imgURL,
-  };
-
   // Cinema details props
   const cinemaDetailsProps = {
     id,
@@ -36,18 +26,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
     snacks,
     imgURL
   };
-
-  //Edit buttons props
-  const editButtonProps: ActionButtonProps = {
-    label: "Edit",
-    id: id,
-    type: "edit",
-    onClick: () =>
-      navigate("cinemas/create", {
-        state: cinemaData,
-      }),
-  };
-
 
   const handlesDelete = async (id: string) => {
     try {
@@ -67,7 +45,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
         <h2 className={styles.cinemaName}>{name}</h2>
         <CinemaDetails {...cinemaDetailsProps} />
         <div className={styles.cinemaActions}>
-          <ActionButton {...editButtonProps} />
           <ActionButton label="Delete" id={`button-delete`} type="delete" onClick={() => handlesDelete(id)} />
         </div>
       </div>
