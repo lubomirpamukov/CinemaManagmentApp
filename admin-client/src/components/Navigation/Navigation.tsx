@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+
 import styles from "./Navigation.module.css";
 
 const Navigation: React.FC = () => {
@@ -13,32 +14,7 @@ const Navigation: React.FC = () => {
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
             }
           >
-
             Movies
-          </NavLink>
-        </li>
-
-        <li className={styles.navItem}>
-          <NavLink
-            to="/cinemas"
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-
-            Cinemas
-          </NavLink>
-        </li>
-
-        <li className={styles.navItem}>
-          <NavLink
-            to="/cinemas/create"
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-
-            Create Cinema
           </NavLink>
         </li>
 
@@ -50,6 +26,39 @@ const Navigation: React.FC = () => {
             }
           >
             Create Movie
+          </NavLink>
+        </li>
+
+        <li className={styles.navItem}>
+          <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Users
+          </NavLink>
+        </li>
+
+        <li className={styles.navItem}>
+          <NavLink
+            to="/cinemas"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Cinemas
+          </NavLink>
+        </li>
+
+        <li className={styles.navItem}>
+          <NavLink
+            to="/cinemas/create"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Create Cinema
           </NavLink>
         </li>
       </ul>
