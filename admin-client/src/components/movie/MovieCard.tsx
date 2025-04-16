@@ -1,39 +1,33 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
 import MovieDetails, { MovieDetailsProps } from "./MovieDetails";
 import MovieCast from "./MovieCast";
 import ActionButton, { ActionButtonProps } from "../buttons/ActionButton";
-import { deleteMovie } from "../../services/movieService";
-import styles from "./MovieCard.module.css"; // Import module CSS
+import { deleteMovie } from "../../services";
+import styles from "./MovieCard.module.css";
 import { MovieFormValues } from "./MovieForm";
+import { Movie } from "../../utils";
 
 export type MovieCardProps = {
-  id: string;
-  title: string;
-  duration: number;
-  description: string;
-  pgRating: string;
-  genre: string;
-  year: number;
-  director?: string;
-  cast?: { name: string; role: string }[];
-  imgURL?: string;
-  onRefresh: () => void;
+  movie: Movie
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  id,
-  title,
-  duration,
-  pgRating,
-  genre,
-  year,
-  director,
-  cast,
-  description,
-  imgURL,
-  onRefresh,
-}) => {
+const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
+
+  const {
+    id,
+    title,
+    genre,
+    year,
+    duration,
+    description,
+    pgRating,
+    director,
+    cast,
+    imgURL,
+  } = movie;
+  
   const movieDetailsProps: MovieDetailsProps = {
     genre,
     year,
@@ -57,11 +51,15 @@ const MovieCard: React.FC<MovieCardProps> = ({
     imgURL,
   };
 
+  if(!movie.id){
+    throw new Error("Movie ID is required");
+  }
+
   const navigate = useNavigate();
 
   const editButtonProps: ActionButtonProps = {
     label: "Edit",
-    id: id,
+    id: id!,
     type: "edit",
     onClick: () =>
       navigate("/movies/create", {
@@ -71,15 +69,14 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
   const deleteButtonProps: ActionButtonProps = {
     label: "Delete",
-    id: id,
+    id: id!,
     type: "delete",
-    onClick: () => handlesDelete(id),
+    onClick: () => handlesDelete(id!),
   };
 
   const handlesDelete = async (id: string) => {
     try {
       await deleteMovie(id);
-      onRefresh();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }
