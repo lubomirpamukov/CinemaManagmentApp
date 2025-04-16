@@ -1,0 +1,63 @@
+.userCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    max-width: 30rem;
+    margin: 1rem auto;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .userCard:hover {
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .userName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: #1e3a8a;
+  }
+  
+  .userEmail {
+    font-size: 1rem;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+  
+  .userContact {
+    font-size: 1rem;
+    color: #2563eb;
+    margin-bottom: 0.5rem;
+  }
+  
+  .userAddress,
+  .userGeo {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+  }
+  
+  .userLabel {
+    font-weight: bold;
+    color: #2563eb;
+    margin-right: 0.25rem;
+  }
+  
+  .userActions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
+  .buttons{
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+  }
