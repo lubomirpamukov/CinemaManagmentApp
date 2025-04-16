@@ -27,6 +27,7 @@ export type ActionButtonProps = {
   type?: "add" | "edit" | "delete"; // Type of button for styling
   buttonType?: "button" | "submit" | "reset"; // Type of button element
   style?: React.CSSProperties; // Inline styles for the button
+  className?: string; // Optional class name for additional styling
 };
 
 const ActionButton: React.FC<ActionButtonProps> = ({
@@ -35,11 +36,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   id,
   type = "add",
   buttonType = "button",
-  style, // Accept the style prop
+  style,
+  className = "",
 }) => {
   return (
     <button
-      className={`action-button ${type}`}
+      className={`action-button ${type} ${className}`} // Apply the type and any additional class names
       type={buttonType}
       onClick={() => onClick?.(id)}
       style={style} // Apply the inline styles
