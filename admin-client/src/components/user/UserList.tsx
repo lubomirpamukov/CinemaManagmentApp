@@ -18,7 +18,7 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
 
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/users/edit");
+    navigate("/users/create");
   }
 
   return (

@@ -27,7 +27,7 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/users" element={<UserPage />} />
-          <Route path="/users/edit" element={<EditCreateUserPage />} />
+          <Route path="/users/create" element={<EditCreateUserPage />} />
           <Route path="/users/:userId/edit" element={<EditCreateUserPage />} />
           <Route
             path="/cinemas/:cinemaId/snacks/edit"

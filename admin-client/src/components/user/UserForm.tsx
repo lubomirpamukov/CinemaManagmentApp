@@ -53,7 +53,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
           <input 
             id="userName"
             {...register("userName")} 
-            placeholder="Enter username"
+            placeholder="Username"
             className={errors.userName ? styles.inputError : ""}
           />
           {errors.userName && (
@@ -66,7 +66,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
           <input 
             id="name"
             {...register("name")} 
-            placeholder="Enter full name"
+            placeholder="Full name"
             className={errors.name ? styles.inputError : ""}
           />
           {errors.name && (
@@ -82,7 +82,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
             id="email"
             type="email"
             {...register("email")} 
-            placeholder="Enter email address"
+            placeholder="email"
             className={errors.email ? styles.inputError : ""}
           />
           {errors.email && (
@@ -110,7 +110,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
         <input 
           id="contact"
           {...register("contact")} 
-          placeholder="Enter contact number"
+          placeholder="Contact number"
           className={errors.contact ? styles.inputError : ""}
         />
         {errors.contact && (
@@ -122,11 +122,11 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
         <legend>Address Information</legend>
         
         <div className={styles.formGroup}>
-          <label htmlFor="addressLine1">Address Line</label>
+          <label htmlFor="addressLine1">Address</label>
           <input 
             id="addressLine1"
             {...register("address.line1")} 
-            placeholder="Enter street address"
+            placeholder="Address"
             className={errors.address?.line1 ? styles.inputError : ""}
           />
           {errors.address?.line1 && (
@@ -140,7 +140,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
             <input 
               id="city"
               {...register("address.city")} 
-              placeholder="Enter city"
+              placeholder="City"
               className={errors.address?.city ? styles.inputError : ""}
             />
             {errors.address?.city && (
@@ -153,7 +153,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
             <input 
               id="state"
               {...register("address.state")} 
-              placeholder="Enter state"
+              placeholder="State"
               className={errors.address?.state ? styles.inputError : ""}
             />
             {errors.address?.state && (
@@ -166,7 +166,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
             <input 
               id="zipcode"
               {...register("address.zipcode")} 
-              placeholder="Enter zipcode"
+              placeholder="Zipcode"
               className={errors.address?.zipcode ? styles.inputError : ""}
             />
             {errors.address?.zipcode && (
