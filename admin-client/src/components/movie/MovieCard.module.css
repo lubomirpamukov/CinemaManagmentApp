@@ -12,6 +12,10 @@
   margin: 1rem auto;
 }
 
+.movieCard:hover{
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
 .movieCardImg {
   width: 70%;
   height: auto;
