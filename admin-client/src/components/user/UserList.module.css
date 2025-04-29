@@ -1,4 +1,14 @@
-.centeredButton {
-    display: block;
-    margin: 1rem auto;
-  }
+.buttonSearchbarContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.buttonAdd{
+  height: 2.25em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.buttonAdd:hover{
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}

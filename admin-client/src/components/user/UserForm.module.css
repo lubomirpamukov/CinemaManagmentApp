@@ -1,140 +1,147 @@
 .form {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  }
-  
-  .formHeader {
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  .formHeader h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #2563eb;
-  }
-  
-  .formHeader p {
-    margin-top: 0.5rem;
-    color: #6b7280;
-    font-size: 0.95rem;
-  }
-  
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8fafc;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.formHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.formHeader h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2563eb;
+}
+
+.formHeader p {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
   .formRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    grid-template-columns: 1fr;
   }
-  
-  @media (max-width: 768px) {
-    .formRow {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  .formGroup {
-    margin: 1rem;
-  }
-  
-  .formGroup label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #374151;
-    font-size: 0.9rem;
-  }
-  
-  .formGroup input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 1rem;
-    color: #1e293b;
-    background-color: #f8fafc;
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-  
-  .formGroup input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    outline: none;
-  }
-  
-  .inputError {
-    border-color: #ef4444 !important;
-    background-color: #fff5f5 !important;
-  }
-  
-  .errorMessage {
-    display: block;
-    margin-top: 0.5rem;
-    color: #ef4444;
-    font-size: 0.85rem;
-  }
-  
-  .fieldset {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    background-color: #f8fafc;
-  }
-  
-  .fieldset legend {
-    padding: 0 0.5rem;
-    font-weight: 600;
-    color: #475569;
-    font-size: 1rem;
-  }
-  
-  .formActions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .submitButton, .cancelButton {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.15s, transform 0.1s;
-    font-size: 0.95rem;
-  }
-  
-  .submitButton {
-    background-color: #2563eb;
-    color: #fff;
-  }
-  
-  .submitButton:hover:not(:disabled) {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-  }
-  
-  .submitButton:active:not(:disabled) {
-    transform: translateY(1px);
-  }
-  
-  .submitButton:disabled {
-    background-color: #93c5fd;
-    cursor: not-allowed;
-  }
-  
-  .cancelButton {
-    background-color: #f1f5f9;
-    color: #475569;
-  }
-  
-  .cancelButton:hover {
-    background-color: #e2e8f0;
-  }
+}
+
+.formGroup {
+  margin: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #1e293b;
+  background-color: #ffff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.formGroup input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+.inputStyle {
+  background-color: red !important; /* Light blue background for normal input */
+}
+
+.inputError {
+  background-color: #ffe6e6; /* Light red background for error */
+  border: 1px solid #ff4d4d; /* Red border for error */
+}
+
+.errorMessage {
+  display: block;
+  margin-top: 0.5rem;
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+.fieldset {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.fieldset legend {
+  padding: 0 0.5rem;
+  font-weight: 600;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  font-size: 0.95rem;
+}
+
+.submitButton {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submitButton:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.cancelButton:hover {
+  background-color: #e2e8f0;
+}
+
+
