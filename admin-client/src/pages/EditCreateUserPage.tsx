@@ -8,7 +8,7 @@ import UserForm from "../components/user/UserForm";
 const EditCreateUserPage = () => {
   const { userId } = useParams<{ userId: string }>();
   const isEditMode = Boolean(userId);
-  const { user, loading, error } = useUserById(userId);
+  const { user, loading, error} = useUserById(userId);
 
 
   if (loading) {
@@ -19,7 +19,8 @@ const EditCreateUserPage = () => {
     return <div>{error}</div>;
   }
   
-  return <UserForm isEditMode={isEditMode} user={user} />;
+  return <UserForm isEditMode={isEditMode} user={user}/>;
 };
 
 export default EditCreateUserPage;
+

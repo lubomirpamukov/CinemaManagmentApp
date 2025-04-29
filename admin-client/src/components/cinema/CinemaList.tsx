@@ -57,3 +57,4 @@ const CinemaList: React.FC = () => {
 };
 
 export default CinemaList;
+

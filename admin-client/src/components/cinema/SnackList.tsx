@@ -55,3 +55,4 @@ const SnackList: React.FC<SnackListProps> = ({ snacks, cinemaId }) => {
 };
 
 export default SnackList;
+

@@ -301,43 +301,6 @@
   ],
   "users": [
     {
-      "id": "3",
-      "userName": "alicejohnson",
-      "name": "Alice Johnson",
-      "email": "alice.johnson@example.com",
-      "password": "password123",
-      "contact": "+1234567890",
-      "address": {
-        "line1": "123 Main St",
-        "city": "Los Angeles",
-        "state": "UK",
-        "zipcode": "90001"
-      },
-      "geoLocation": {
-        "lat": 34.0522,
-        "long": -118.2437
-      }
-    },
-    {
-      "id": "2",
-      "role": "admin",
-      "userName": "admin",
-      "name": "Bob Smith",
-      "email": "bob.smith@example.com",
-      "password": "adminpass",
-      "contact": "+1987654321",
-      "address": {
-        "line1": "456 Elm St",
-        "city": "Chicago",
-        "state": "IL",
-        "zipcode": "60601"
-      },
-      "geoLocation": {
-        "lat": 41.8781,
-        "long": -87.6298
-      }
-    },
-    {
       "id": "1",
       "role": "user",
       "userName": "charlielee",
@@ -372,25 +335,6 @@
       "geoLocation": {
         "lat": 47.6062,
         "long": -122.3321
-      }
-    },
-    {
-      "id": "5",
-      "role": "user",
-      "userName": "emilywhite",
-      "name": "Emily White",
-      "email": "emily.white@example.com",
-      "password": "emilypass",
-      "contact": "+12125550102",
-      "address": {
-        "line1": "202 Pine St",
-        "city": "Portland",
-        "state": "OR",
-        "zipcode": "97201"
-      },
-      "geoLocation": {
-        "lat": 45.5152,
-        "long": -122.6784
       }
     },
     {

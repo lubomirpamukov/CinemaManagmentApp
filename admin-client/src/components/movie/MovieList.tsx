@@ -7,9 +7,10 @@ import SearchBar from "../SearchBar";
 
 type MovieListProps = {
   movies: Movie[];
+  refresh: () => void;
 };
 
-const MovieList: React.FC<MovieListProps> = ({ movies }) => {
+const MovieList: React.FC<MovieListProps> = ({ movies, refresh }) => {
   return (
     <>
       <SearchBar
@@ -18,7 +19,7 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
       />
       <div className={styles.movieList}>
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard key={movie.id} movie={movie} refresh={refresh} />
         ))}
       </div>
     </>
@@ -26,3 +27,4 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
 };
 
 export default MovieList;
+

@@ -21,3 +21,4 @@ export const DEFAULT_HALL_VALUES: Hall = {
     movieProgram: [],
     seats: []
   };
+  

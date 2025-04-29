@@ -187,3 +187,4 @@ const MovieForm: React.FC<MovieFormProps> = ({
 };
 
 export default MovieForm;
+

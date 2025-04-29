@@ -25,3 +25,4 @@ const MovieCast: React.FC<MovieCastProps> = ({ cast }) => {
 }
 
 export default MovieCast;
+

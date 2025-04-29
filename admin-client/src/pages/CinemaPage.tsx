@@ -18,4 +18,4 @@ const CinemaPage: React.FC = () => {
     )
 }
 
-export default CinemaPage
+export default CinemaPage;

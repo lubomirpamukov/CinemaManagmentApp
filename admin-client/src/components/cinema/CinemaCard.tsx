@@ -53,3 +53,4 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
 };
 
 export default CinemaCard;
+

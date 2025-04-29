@@ -4,6 +4,7 @@ import styles from "./SearchBar.module.css";
 type SearchBarProps = {
   onSearch: (query: string) => void;
   placeholder?: string;
+  className?: string
 };
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search..." }) => {

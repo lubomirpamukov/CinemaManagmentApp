@@ -7,16 +7,6 @@ export const DEFAULT_USER_VALUES: User = {
     email: "",
     password: "",
     contact: "",
-    address: {
-      line1: "",
-      city: "",
-      state: "",
-      zipcode: ""
-    },
-    geoLocation: {
-      lat: 0,
-      long: 0
-    }
   };
 
 export const UserValidation = {

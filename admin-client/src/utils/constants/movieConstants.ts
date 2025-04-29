@@ -29,3 +29,4 @@ export const DEFAULT_MOVIE_VALUES: MovieFormValues = {
     description: "Description must be between 10 and 700 characters long.",
     url: "Image URL must be valid URL."
   }
+  

@@ -74,3 +74,4 @@ const SnackPage: React.FC = () => {
 };
 
 export default SnackPage;
+

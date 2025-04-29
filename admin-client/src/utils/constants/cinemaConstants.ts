@@ -27,3 +27,4 @@ export const CinemaValidation = {
     url: "Image URL must be valid URL."
 }
 
+

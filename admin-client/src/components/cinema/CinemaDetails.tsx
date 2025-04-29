@@ -109,3 +109,4 @@ const CinemaDetails: React.FC<CinemaDetailsProps> = ({
 };
 
 export default CinemaDetails;
+
