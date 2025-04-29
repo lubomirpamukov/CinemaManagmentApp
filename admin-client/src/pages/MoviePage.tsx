@@ -15,6 +15,7 @@ const MoviePage: React.FC = () =>{
         setCurrentPage,
         loading,
         error,
+        refresh
     } 
     = usePaginated("/movies", 3, z.array(movieSchema))
 
@@ -38,7 +39,7 @@ const MoviePage: React.FC = () =>{
                 <h1>Movies</h1>
             </header>
             <main className={styles.moviePageContent}>
-                <MovieList movies={movies} />
+                <MovieList movies={movies} refresh={refresh}/>
                 <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

@@ -11,9 +11,10 @@ import { Movie } from "../../utils";
 
 export type MovieCardProps = {
   movie: Movie
+  refresh: () => void;
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
 
   const {
     id,
@@ -76,7 +77,9 @@ const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
 
   const handlesDelete = async (id: string) => {
     try {
+      confirm(`Are you sure you want to delete ${title}?`)
       await deleteMovie(id);
+      refresh();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }
@@ -101,3 +104,4 @@ const MovieCard: React.FC<MovieCardProps> = ({movie}) => {
 };
 
 export default MovieCard;
+

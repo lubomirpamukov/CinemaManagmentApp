@@ -13,28 +13,46 @@ export const usePaginated = <T>(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAllData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`http://localhost:3000${endpoint}?_page=${currentPage}&_per_page=${pageSize}&q=Titanic`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const result = await response.json();
-        const parsedData = schema.parse(result.data);
-        setData(parsedData);
-        setTotalPages(result.pages);
-        setError(null);
-      } catch (err) {
-        setError("Error fetching data");
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3000${endpoint}?_page=${currentPage}&_per_page=${pageSize}&q=${searchQuery}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
       }
-    };
+      const result = await response.json();
+      const parsedData = schema.parse(result.data);
+      setData(parsedData);
+      setTotalPages(result.pages);
+      setError(null);
+    } catch (err) {
+      setError("Error fetching data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchAllData();
-  }, [endpoint, currentPage, pageSize]);
+  useEffect(() => {
+    fetchData();
+  }, [endpoint, currentPage, pageSize, searchQuery]);
 
-  return { data, currentPage, totalPages, loading, error, setCurrentPage, setSearchQuery};
+  const refresh = async () => {
+    await fetchData();
+  };
+
+  return {
+    data,
+    currentPage,
+    totalPages,
+    loading,
+    error,
+    setCurrentPage,
+    setSearchQuery,
+    refresh,
+  };
 };
+
+
+

@@ -7,9 +7,10 @@ import { deleteUser } from "../../services";
 
 type UserProps = {
   user: User;
+  refresh: () => void;
 };
 
-const UserShow: React.FC<UserProps> = ({ user }) => {
+const UserShow: React.FC<UserProps> = ({ user, refresh }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -21,6 +22,7 @@ const UserShow: React.FC<UserProps> = ({ user }) => {
       confirm(`Are you sure you want to delete ${user.name || user.userName}?`)
     ) {
       await deleteUser(user.id);
+      refresh();
       navigate("/users");
     }
   };
@@ -44,16 +46,11 @@ const UserShow: React.FC<UserProps> = ({ user }) => {
           {user.address.zipcode && `, ${user.address.zipcode}`}
         </div>
       )}
-      {user.geoLocation && (
-        <div className={styles.userGeo}>
-          <span className={styles.userLabel}>Location:</span>
-          {user.geoLocation.lat}, {user.geoLocation.long}
-        </div>
-      )}
+      
       <div className={styles.buttons}>
         <ActionButton
           id="edit-user-button"
-          label="Edit"
+          label="View"
           type="edit"
           onClick={handleClick}
         />
@@ -69,3 +66,4 @@ const UserShow: React.FC<UserProps> = ({ user }) => {
 };
 
 export default UserShow;
+

@@ -15,6 +15,7 @@ const UserPage: React.FC = () => {
     setCurrentPage,
     loading,
     error,
+    refresh
   } = usePaginated("/users", 4, z.array(userSchema));
 
   if (loading) {
@@ -35,7 +36,7 @@ const UserPage: React.FC = () => {
         <h1>Users</h1>
       </header>
       <main>
-        <UserList users={users} />
+        <UserList users={users} refresh={refresh} />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -47,3 +48,4 @@ const UserPage: React.FC = () => {
 };
 
 export default UserPage;
+
