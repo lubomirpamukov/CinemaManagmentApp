@@ -12,17 +12,17 @@ type UserFormProps = {
   user: User;
 };
 
-const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
+const UserForm: React.FC<UserFormProps> = ({ isEditMode, user }) => {
   const navigate = useNavigate();
-  
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
-    reset
+    reset,
   } = useForm<User>({
     resolver: zodResolver(userSchema),
-    defaultValues: user
+    defaultValues: user,
   });
 
   const onSubmit = async (user: User) => {
@@ -39,193 +39,64 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user}) => {
     }
   };
 
-  return (
-    
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.formHeader}>
-        <h2>{isEditMode ? "Edit User" : "CreateUser"}</h2>
-        <p>Fill in the information below</p>
-      </div>
-      
-      <div className={styles.formRow}>
-        <div className={styles.formGroup}>
-          <label htmlFor="userName">Username</label>
-          <input 
-            id="userName"
-            {...register("userName")} 
-            placeholder="Username"
-            className={errors.userName ? styles.inputError : ""}
-          />
-          {errors.userName && (
-            <span className={styles.errorMessage}>{errors.userName.message}</span>
+  const renderField = (key: string, value: any) => {
+    if (key === "id") return;
+    if (typeof value === "object" && value !== null) {
+      return (
+        <fieldset className={styles.fieldset} key={key}>
+          <legend>{key}</legend>
+          {Object.entries(value).map(([subKey, subValue]) =>
+            renderField(`${key}.${subKey}`, subValue)
           )}
-        </div>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="name">Full Name</label>
-          <input 
-            id="name"
-            {...register("name")} 
-            placeholder="Full name"
-            className={errors.name ? styles.inputError : ""}
-          />
-          {errors.name && (
-            <span className={styles.errorMessage}>{errors.name.message}</span>
-          )}
-        </div>
-      </div>
+        </fieldset>
+      );
+    }
 
-      <div className={styles.formRow}>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email</label>
-          <input 
-            id="email"
-            type="email"
-            {...register("email")} 
-            placeholder="email"
-            className={errors.email ? styles.inputError : ""}
-          />
-          {errors.email && (
-            <span className={styles.errorMessage}>{errors.email.message}</span>
-          )}
-        </div>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Password</label>
-          <input 
-            id="password"
-            type="password"
-            {...register("password")} 
-            placeholder={isEditMode ? "••••••••" : "Enter password"}
-            className={errors.password ? styles.inputError : ""}
-          />
-          {errors.password && (
-            <span className={styles.errorMessage}>{errors.password.message}</span>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.formGroup}>
-        <label htmlFor="contact">Contact Number</label>
-        <input 
-          id="contact"
-          {...register("contact")} 
-          placeholder="Contact number"
-          className={errors.contact ? styles.inputError : ""}
+    return (
+      <div className={styles.formGroup} key={key}>
+        <label htmlFor={key}>{key}</label>
+        <input
+          id={key}
+          {...register(key as keyof User)}
+          placeholder={key}
+          className={errors[key as keyof User] ? styles.inputError : ""}
         />
-        {errors.contact && (
-          <span className={styles.errorMessage}>{errors.contact.message}</span>
+        {errors[key as keyof User] && (
+          <span className={styles.errorMessage}>
+            {errors[key as keyof User]?.message}
+          </span>
         )}
       </div>
+    );
+  };
 
-      <fieldset className={styles.fieldset}>
-        <legend>Address Information</legend>
-        
-        <div className={styles.formGroup}>
-          <label htmlFor="addressLine1">Address</label>
-          <input 
-            id="addressLine1"
-            {...register("address.line1")} 
-            placeholder="Address"
-            className={errors.address?.line1 ? styles.inputError : ""}
-          />
-          {errors.address?.line1 && (
-            <span className={styles.errorMessage}>{errors.address.line1.message}</span>
-          )}
-        </div>
-        
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label htmlFor="city">City</label>
-            <input 
-              id="city"
-              {...register("address.city")} 
-              placeholder="City"
-              className={errors.address?.city ? styles.inputError : ""}
-            />
-            {errors.address?.city && (
-              <span className={styles.errorMessage}>{errors.address.city.message}</span>
-            )}
-          </div>
-          
-          <div className={styles.formGroup}>
-            <label htmlFor="state">State/Province</label>
-            <input 
-              id="state"
-              {...register("address.state")} 
-              placeholder="State"
-              className={errors.address?.state ? styles.inputError : ""}
-            />
-            {errors.address?.state && (
-              <span className={styles.errorMessage}>{errors.address.state.message}</span>
-            )}
-          </div>
-          
-          <div className={styles.formGroup}>
-            <label htmlFor="zipcode">Zip/Postal Code</label>
-            <input 
-              id="zipcode"
-              {...register("address.zipcode")} 
-              placeholder="Zipcode"
-              className={errors.address?.zipcode ? styles.inputError : ""}
-            />
-            {errors.address?.zipcode && (
-              <span className={styles.errorMessage}>{errors.address.zipcode.message}</span>
-            )}
-          </div>
-        </div>
-      </fieldset>
+  return (
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <div className={styles.formHeader}>
+        <h2>{isEditMode ? "User information" : "Create User"}</h2>
+        <p>Fill in the information below</p>
+      </div>
 
-      <fieldset className={styles.fieldset}>
-        <legend>Geo Location</legend>
-        
-        <div className={styles.formRow}>
-          <div className={styles.formGroup}>
-            <label htmlFor="lat">Latitude</label>
-            <input 
-              id="lat"
-              type="number" 
-              step="0.000001"
-              {...register("geoLocation.lat", { valueAsNumber: true })} 
-              placeholder="Enter latitude"
-              className={errors.geoLocation?.lat ? styles.inputError : ""}
-            />
-            {errors.geoLocation?.lat && (
-              <span className={styles.errorMessage}>{errors.geoLocation.lat.message}</span>
-            )}
-          </div>
-          
-          <div className={styles.formGroup}>
-            <label htmlFor="long">Longitude</label>
-            <input 
-              id="long"
-              type="number"
-              step="0.000001"
-              {...register("geoLocation.long", { valueAsNumber: true })} 
-              placeholder="Enter longitude"
-              className={errors.geoLocation?.long ? styles.inputError : ""}
-            />
-            {errors.geoLocation?.long && (
-              <span className={styles.errorMessage}>{errors.geoLocation.long.message}</span>
-            )}
-          </div>
-        </div>
-      </fieldset>
-
+      {Object.entries(user).map(([key, value]) => renderField(key, value))}
+      <h1>To do: rendering users reservations component here</h1>
       <div className={styles.formActions}>
-        <button 
-          type="button" 
+        <button
+          type="button"
           className={styles.cancelButton}
           onClick={() => navigate("/users")}
         >
           Cancel
         </button>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className={styles.submitButton}
           disabled={isSubmitting || (!isDirty && isEditMode)}
         >
-          {isSubmitting ? "Saving..." : isEditMode ? "Update User" : "Create User"}
+          {isSubmitting
+            ? "Saving..."
+            : isEditMode
+            ? "Update User"
+            : "Create User"}
         </button>
       </div>
     </form>
