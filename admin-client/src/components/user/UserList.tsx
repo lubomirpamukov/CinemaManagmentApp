@@ -8,12 +8,13 @@ import SearchBar from "../SearchBar";
 
 type UserListProps = {
   users: User[];
+  refresh: () => void;
 };
 
-const UserList: React.FC<UserListProps> = ({ users }) => {
+const UserList: React.FC<UserListProps> = ({ users, refresh }) => {
   const renderedUsers = users.map((user) => (
     <div key={user.id} className={styles.user}>
-      <UserShow user={user} />
+      <UserShow user={user} refresh={refresh} />
     </div>
   ));
 
@@ -24,18 +25,21 @@ const UserList: React.FC<UserListProps> = ({ users }) => {
 
   return (
     <>
-      <SearchBar
-        onSearch={(query) => console.log(query)}
-        placeholder="Search Users"
-      />
+      <div className={styles.buttonSearchbarContainer}>
+        <SearchBar
+          onSearch={(query) => console.log(query)}
+          placeholder="Search Users"
+          className={styles.searchBar}
+        />
+        <ActionButton
+          className={styles.buttonAdd}
+          id="add-user-button"
+          type="add"
+          label="Add User"
+          onClick={handleClick}
+        />
+      </div>
       {renderedUsers}
-      <ActionButton
-        className={styles.centeredButton}
-        id="add-user-button"
-        type="add"
-        label="Add User"
-        onClick={handleClick}
-      />
     </>
   );
 };
