@@ -1,5 +1,62 @@
 ### Options
-OPTIONS http://localhost:1337
+OPTIONS http://localhost:3123
 
 ### Healthcheck
-GET http://localhost:1337/main/healthcheck
+GET http://localhost:3123/main/healthcheck
+
+###
+GET http://localhost:3123/users/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDU5NDA1MDgsImV4cCI6MTc0NTk0NDEwOH0.rINcvA84BJmNs6W3IFcvGGOqWq8hvDp8N1xUGQ6e1A8
+### Create Admin User
+POST http://localhost:3123/auth/register
+Content-Type: application/json
+
+{
+  "userName": "george",
+  "name": "George",
+  "email": "george@example.com",
+  "password": "securepassword",
+  "role": "user",
+  "contact": "1234567890",
+  "address": "123 Admin Street"
+}
+
+### Login as Admin User
+POST http://localhost:3123/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "newpassword"
+}
+
+### Admin get all users
+GET http://localhost:3123/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
+
+### Admin get all users paginated
+GET http://localhost:3123/admin/users?page=1&limit=2&
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
+
+### Admin get all users paginated with search
+GET http://localhost:3123/admin/users?page=1&limit=2&search=george
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
+
+
+### Admin get user by id 
+GET http://localhost:3123/admin/users/6810e006930e5d394a96275b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
+
+### Admin update user
+PATCH  http://localhost:3123/admin/users/6810e006930e5d394a96275b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
+Content-Type: application/json
+
+{
+  "name": "Admin",
+  "password": "newpassword"
+}
+
+### Admin delete user
+DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
