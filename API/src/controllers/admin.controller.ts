@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { getUsersService, getUserByIdService, updateUserService, deleteUserService } from '../services/adminService'
+import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminService'
 
 //Get all users
 export const getUsers = async (req: Request, res: Response) => {
@@ -26,6 +26,21 @@ export const getUserById = async (req: Request, res: Response) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+// Create user   (CREATE)
+export const createUser = async (req: Request, res: Response) => {
+    try {
+        const newUser = await createUserService(req.body);
+        if (!newUser) return res.status(400).json({ message: 'User not created' });
+        res.status(201).json(newUser);
+    }
+    catch (err: any) {
+        if (err.name === "ZodError") {
+            return res.status(400).json({ error: err.errors });
+        }
+        res.status(500).json({ error: err.message });
+    }
+}
 
 // Update user   (UPDATE)
 export const updateUser = async (req: Request, res: Response) => {
