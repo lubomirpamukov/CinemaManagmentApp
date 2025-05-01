@@ -1,15 +1,5 @@
 import { z } from 'zod';
 
-// Default user value
-export const DEFAULT_USER_VALUES: User = {
-    id: '',
-    userName: '',
-    name: '',
-    email: '',
-    password: '',
-    contact: ''
-};
-
 //Constants
 export const UserValidation = {
     name: 'Name must be between 4 and 100 characters long.',
@@ -19,8 +9,8 @@ export const UserValidation = {
 };
 
 //User validation schema
-export const userSchema = z.object({
-    id: z.string(),
+export const userImportDTOSchema = z.object({
+    id: z.string().optional(),
     userName: z.string().min(4, UserValidation.name).max(100, UserValidation.name),
     name: z.string().min(4, UserValidation.name).max(100, UserValidation.name).optional(),
     email: z.string().email(UserValidation.email).max(100, UserValidation.email),
@@ -28,7 +18,7 @@ export const userSchema = z.object({
     contact: z.string().max(15, UserValidation.contact).optional()
 });
 
-export type User = z.infer<typeof userSchema>;
+export type UserDTO = z.infer<typeof userImportDTOSchema>;
 
 //User DTO validation schema
 export const userExportDTOSchema = z.object({
@@ -51,7 +41,6 @@ export const userPaginatedSchema = z.object({
             contact: z.string().max(15, UserValidation.contact).optional()
         })
     ),
-    totalUsers: z.number(),
     totalPages: z.number(),
     currentPage: z.number()
 });
