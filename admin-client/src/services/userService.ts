@@ -1,10 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
 import { User, userSchema } from "../utils";
-const BASE_URL = "http://localhost:3000/users";
+const BASE_URL = "http://localhost:3123/admin/users";
 
 export const getUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(BASE_URL,{
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch users");
     }
@@ -18,7 +19,9 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getUserById = async (id: string): Promise<User> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`);
+    const response = await fetch(`${BASE_URL}/${id}`,{
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch user");
     }
@@ -32,19 +35,15 @@ export const getUserById = async (id: string): Promise<User> => {
 
 export type UserInput = Omit<User, "id">;
 export const createUser = async (user: UserInput): Promise<User> => {
-
-  const userWithId = {
-    ...user,
-    id: uuidv4(),
-  };
-
+  user.role = "user"
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(userWithId),
+      body: JSON.stringify(user),
     });
     if (!response.ok) {
       throw new Error("Failed to create user");
@@ -57,43 +56,41 @@ export const createUser = async (user: UserInput): Promise<User> => {
   }
 };
 
-
-export const updateUser = async (
-    id: string,
-    user: User
-) : Promise<User> => {
-    try{
-        const response = await fetch(`${BASE_URL}/${id}` ,{
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        });
-        if(!response.ok){
-            throw new Error("Failed to update user");
-        }
-        const data = await response.json();
-        return userSchema.parse(data);
-    }catch(error){
-        console.error("Error updating user:", error);
-        throw error; // to do logger
+export const updateUser = async (id: string, user: User): Promise<User> => {
+  try {
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to update user");
     }
-}
+    const data = await response.json();
+    return userSchema.parse(data);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error; // to do logger
+  }
+};
 
 export const deleteUser = async (id: string): Promise<boolean> => {
-    try{
-        const response = await fetch(`${BASE_URL}/${id}` , {
-            method: "DELETE"
-        })
+  try {
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      credentials: "include",
+      method: "DELETE",
+    });
 
-        if(!response.ok){
-            throw new Error("Failed to delete user");
-        }   
-        console.log("User deleted successfully");
-        return true;
-    }catch(error){
-        console.error("Error deleting user:", error);
-        throw error; // to do logger
+    if (!response.ok) {
+      throw new Error("Failed to delete user");
     }
-}
+    console.log("User deleted successfully");
+    return true;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error; // to do logger
+  }
+};

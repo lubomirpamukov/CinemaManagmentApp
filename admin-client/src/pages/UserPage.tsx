@@ -7,6 +7,8 @@ import Spinner from "../components/Spinner";
 import styles from "./UserPage.module.css";
 import UserList from "../components/user/UserList";
 
+const userSchemnaWithoutPassword = userSchema.omit({password: true});
+
 const UserPage: React.FC = () => {
   const {
     data: users,
@@ -16,12 +18,10 @@ const UserPage: React.FC = () => {
     loading,
     error,
     refresh
-  } = usePaginated("/users", 4, z.array(userSchema));
-
+  } = usePaginated("/admin/users", 3, z.array(userSchemnaWithoutPassword));
   if (loading) {
     return <Spinner />;
   }
-
   if (error) {
     return <div className={styles.error}>{error}</div>;
   }
@@ -29,7 +29,6 @@ const UserPage: React.FC = () => {
   if (!users || users.length <= 0) {
     return <div className={styles.error}>No users found</div>;
   }
-
   return (
     <>
       <header>

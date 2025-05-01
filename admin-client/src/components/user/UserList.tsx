@@ -6,8 +6,10 @@ import UserShow from "./UserShow";
 import ActionButton from "../buttons/ActionButton";
 import SearchBar from "../SearchBar";
 
+type UserWithoutRole = Omit<User, "role">;
+
 type UserListProps = {
-  users: User[];
+  users: UserWithoutRole[];
   refresh: () => void;
 };
 

@@ -17,18 +17,23 @@ export const usePaginated = <T>(
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000${endpoint}?_page=${currentPage}&_per_page=${pageSize}&q=${searchQuery}`
+        `http://localhost:3123${endpoint}?page=${currentPage}&limit=${pageSize}&search=${searchQuery}`,
+        {
+          credentials: "include",
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
       const result = await response.json();
-      const parsedData = schema.parse(result.data);
+      const parsedData = schema.parse(result.users);
       setData(parsedData);
-      setTotalPages(result.pages);
+      setTotalPages(result.totalPages);
+      setCurrentPage(result.currentPage);
       setError(null);
     } catch (err) {
       setError("Error fetching data");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -53,6 +58,3 @@ export const usePaginated = <T>(
     refresh,
   };
 };
-
-
-
