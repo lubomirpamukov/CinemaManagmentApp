@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
-import { userPaginatedSchema, userExportDTOSchema } from '../utils/UserValidation';
+import { userPaginatedSchema, userExportDTOSchema, userImportDTOSchema } from '../utils/UserValidation';
 import { paginate } from '../utils/PaginationUtils';
 import User, { IUser } from '../models/user.model';
 
@@ -30,7 +30,6 @@ export const getUsersService = async (query: any) => {
     // Validate the response data using Zod
     const validatedResult = userPaginatedSchema.parse({
         users: result.data,
-        totalUsers: result.totalItems,
         totalPages: result.totalPages,
         currentPage: result.currentPage
     });
@@ -58,7 +57,29 @@ export const getUserByIdService = async (id: string) => {
     return validatedUser;
 };
 
+export const createUserService = async (userData: typeof userExportDTOSchema) => {
+    // Validate the incoming data
+    const validatedUserData = userImportDTOSchema.parse(userData);
 
+    // Hash the password before saving
+    if (validatedUserData.password) {
+        validatedUserData.password = await bcrypt.hash(validatedUserData.password, 10);
+    }
+
+    // Create a new user
+    const newUser = await User.create(validatedUserData);
+
+    // Transform the user object to DTO
+    const userExportDto = {
+        id: newUser._id.toString(),
+        userName: newUser.userName,
+        name: newUser.name,
+        email: newUser.email,
+        contact: newUser.contact,
+    };
+
+    return userExportDto;
+}
 
 export const updateUserService = async (id: string, updates: any) => {
     if (!id) {
