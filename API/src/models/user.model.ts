@@ -23,7 +23,7 @@ export interface IUser extends Document {
 
 const UserSchema: Schema = new Schema(
     {
-        role: { type: String, enum: ['admin', 'user'], required: true },
+        role: { type: String, enum: ['admin', 'user'], required: true, default: 'user' },
         hash: { type: String },
         name: { type: String },
         userName: {type: String, required: true},
