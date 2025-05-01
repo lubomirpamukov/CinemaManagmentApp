@@ -7,9 +7,13 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
 
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <div className={styles.pagination}>
       {/* Previous Arrow */}
@@ -25,7 +29,9 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
       {pages.map((page) => (
         <button
           key={page}
-          className={`${styles.pageNumber} ${page === currentPage ? styles.active : ""}`}
+          className={`${styles.pageNumber} ${
+            page === currentPage ? styles.active : ""
+          }`}
           onClick={() => onPageChange(page)}
         >
           {page}
