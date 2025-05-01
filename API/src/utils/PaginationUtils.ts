@@ -2,7 +2,6 @@ import { Model, Document } from "mongoose";
 
 interface PaginationResult<T> {
     data: T[];
-    totalItems: number;
     totalPages: number;
     currentPage: number;
 }
@@ -31,7 +30,6 @@ export const paginate = async <T extends Document>(
 
     return {
         data,
-        totalItems,
         totalPages,
         currentPage: page,
     };
