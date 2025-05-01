@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
+import LoginPage from "./pages/LoginPage";
 import MoviePage from "./pages/MoviePage";
 import CreateMoviePage from "./pages/CreateMoviePage";
 import Navigation from "./components/Navigation/Navigation";
@@ -26,6 +27,7 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/users" element={<UserPage />} />
           <Route path="/users/create" element={<EditCreateUserPage />} />
           <Route path="/users/:userId/edit" element={<EditCreateUserPage />} />

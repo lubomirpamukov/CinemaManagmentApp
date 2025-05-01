@@ -61,6 +61,19 @@ const Navigation: React.FC = () => {
             Create Cinema
           </NavLink>
         </li>
+
+        <li className={styles.navItem}>
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive 
+            ? `${styles.navLink} ${styles.active}` 
+            : ` ${styles.navLink}` 
+            }
+          >
+            Login
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
