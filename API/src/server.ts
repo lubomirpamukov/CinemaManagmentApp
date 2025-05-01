@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import './config/logging';
 import { corsHandler } from './middleware/corsHandler';
 import { loggingHandler } from './middleware/loggingHandler';
@@ -44,6 +45,7 @@ export const Main = async () => {
     logging.log('Logging & Configuration');
     application.use(loggingHandler);
     application.use(corsHandler);
+    application.use(cookieParser());
 
     logging.log('Define Controller Routing');
 
