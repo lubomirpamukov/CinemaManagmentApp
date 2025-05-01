@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+
 import User, { IUser } from '../models/user.model';
-import { generateToken } from '../middleware/auth.middleware';
+import { generateToken, JwtRequest } from '../middleware/auth.middleware';
 
 //User registration
 export const registerUser = async (req: Request, res: Response) => {
@@ -31,8 +31,38 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         const token = generateToken(user._id, user.role);
-        return res.status(200).json({ token });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24, // 1 day
+        });
+
+        return res.status(200).json({ message: "Login successful" });
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+//User logout
+export const logoutUser = async (req: Request, res: Response) => {
+    res.clearCookie("token",{
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+    });
+    return res.status(200).json({ message: "Logout successful" });
+}
+
+//Check authentication
+export const checkAuth = async (req: JwtRequest, res: Response) => {
+    const user = req.user;
+
+    if(!user){
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    return res.status(200).json({ role: user.role, email: user.email });
+}

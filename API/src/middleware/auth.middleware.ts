@@ -15,13 +15,11 @@ export interface JwtRequest extends Request {
 
 //Checks for authorization headers
 export const authentication = (req: JwtRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
+    const token = req.cookies.token
+    if (!token) {
         return res.status(401).json('No authorization header found');
     }
 
-    //Extracts jwt token and verifies it
-    const token = authHeader.split(' ')[1]; // Token structure is 'Bearer <token>'
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded as IUser;
