@@ -4,15 +4,14 @@ import { ZodSchema } from "zod";
 export const usePaginated = <T>(
   endpoint: string,
   pageSize: number,
-  schema: ZodSchema<T[]>
+  schema: ZodSchema<T[]>,
+  searchQuery?: string
 ) => {
   const [data, setData] = useState<T[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -54,7 +53,6 @@ export const usePaginated = <T>(
     loading,
     error,
     setCurrentPage,
-    setSearchQuery,
     refresh,
   };
 };

@@ -4,21 +4,26 @@ import styles from "./UserList.module.css";
 import { User } from "../../utils";
 import UserShow from "./UserShow";
 import ActionButton from "../buttons/ActionButton";
-import SearchBar from "../SearchBar";
+import Spinner from "../Spinner";
 
 type UserWithoutRole = Omit<User, "role">;
 
 type UserListProps = {
   users: UserWithoutRole[];
+  loading: boolean;
   refresh: () => void;
 };
 
-const UserList: React.FC<UserListProps> = ({ users, refresh }) => {
+const UserList: React.FC<UserListProps> = ({ users,loading, refresh }) => {
   const renderedUsers = users.map((user) => (
     <div key={user.id} className={styles.user}>
       <UserShow user={user} refresh={refresh} />
     </div>
   ));
+
+  if (loading) {
+    return <Spinner />
+  }
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -28,11 +33,7 @@ const UserList: React.FC<UserListProps> = ({ users, refresh }) => {
   return (
     <>
       <div className={styles.buttonSearchbarContainer}>
-        <SearchBar
-          onSearch={(query) => console.log(query)}
-          placeholder="Search Users"
-          className={styles.searchBar}
-        />
+        
         <ActionButton
           className={styles.buttonAdd}
           id="add-user-button"

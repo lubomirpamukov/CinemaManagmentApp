@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { logoutUser, checkAuthStatus } from "../services";
-import Spinner from "../components/Spinner";
 
 type AuthContextType = {
   isAuthenticated: boolean;
