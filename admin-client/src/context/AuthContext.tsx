@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { logoutUser, checkAuthStatus } from "../services";
+import Spinner from "../components/Spinner";
 
-const BASE_URL = "http://localhost:3123/auth/check-auth";
 type AuthContextType = {
   isAuthenticated: boolean;
   role: string | null;
+  loading: boolean;
   login: () => void;
   logout: () => void;
 };
@@ -15,39 +17,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const login = () => {
-    setIsAuthenticated(true);
+   // Define checkAuth within the context
+   const checkAuth = async() => {
+    setLoading(true);
+    try{
+      const data = await checkAuthStatus();
+      setIsAuthenticated(true);
+      setRole(data.role);
+    } catch (error) {
+      setIsAuthenticated(false);
+      setRole(null);
+      console.error("Auth check failed:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch(BASE_URL, {
-          method: "GET",
-          credentials: "include",
-        });
+    const authCheckPerformed = localStorage.getItem("authCheckPerformed");
+    if (!authCheckPerformed) {
+      checkAuth();
+      localStorage.setItem("authCheckPerformed", "true");
+    } else {
+      setLoading(false);
+    }
 
-        if (response.ok) {
-          const data = await response.json();
-          setIsAuthenticated(true);
-          setRole(data.role);
-        }
-      } catch {
-        setIsAuthenticated(false);
-        setRole(null);
-      }
+    return () => {
+      localStorage.removeItem("authCheckPerformed");
     };
-    checkAuth();
-  }, [login]);
+  }, []);
 
+  const login = () => {
+    checkAuth();
+  };
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:3123/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      await logoutUser(); // Use service
       setIsAuthenticated(false);
       setRole(null);
     } catch (error) {
@@ -55,8 +63,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, role, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, role, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
