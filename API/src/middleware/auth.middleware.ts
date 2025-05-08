@@ -12,13 +12,14 @@ export interface JwtRequest extends Request {
     };
 }
 
+
+//Checks for authorization headers
 export const authentication = (req: JwtRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
+    const token = req.cookies.token
+    if (!token) {
         return res.status(401).json('No authorization header found');
     }
 
-    const token = authHeader.split(' ')[1]; // Token structure is 'Bearer <token>'
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded as IUser;
@@ -28,6 +29,7 @@ export const authentication = (req: JwtRequest, res: Response, next: NextFunctio
     }
 };
 
+//checks if user has the needed role to acess from the given roles
 export function authorizeRoles(allowedRoles: UserRole[]) {
     return (req: JwtRequest, res: Response, next: NextFunction) => {
         const user = req.user;
@@ -41,5 +43,5 @@ export function authorizeRoles(allowedRoles: UserRole[]) {
 }
 
 export const generateToken = (_id: mongoose.Types.ObjectId, role: string) => {
-    return jwt.sign({ _id, role }, JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ _id, role }, JWT_SECRET, { expiresIn: '99h' });
 };

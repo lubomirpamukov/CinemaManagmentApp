@@ -8,21 +8,8 @@ import Spinner from "../Spinner";
 import styles from "./HallForm.module.css";
 import { createHall } from "../../services";
 import { v4 as uuidv4 } from "uuid";
-import { getMovies } from "../../services";
-import { Movie } from "../../utils";
 import { useCinemaById } from "../../hooks";
 import { updateCinema } from "../../services";
-
-
-//Preload movie titles
-const getMoviesData = await getMovies();
-const movieTitles = getMoviesData.map((movie: Movie) => ({
-  title: movie.title,
-  id: movie.id
-}));
-
-
-
 
 
 const HallForm: React.FC = () => {

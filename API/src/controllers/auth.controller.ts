@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import User from '../models/user.model';
-import { generateToken } from '../middleware/auth.middleware';
+
+import User, { IUser } from '../models/user.model';
+import { generateToken, JwtRequest } from '../middleware/auth.middleware';
 
 //User registration
 export const registerUser = async (req: Request, res: Response) => {
     console.log('Register route hit');
     try {
-        const { name, email, password, role, contact, address, geolocation } = req.body;
+        const { userName ,name, email, password, role, contact, address, geolocation } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ name, email, password: hashedPassword, role, contact, address, geolocation });
+        const user = new User({ userName, name, email, password: hashedPassword, role, contact, address, geolocation });
         await user.save();
         return res.status(201).json({ message: 'User created' });
     } catch (error: any) {
@@ -21,7 +22,7 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }) as IUser;
         if (!user) {
             return res.status(404).json({ error: 'User does not exist' });
         }
@@ -30,8 +31,38 @@ export const loginUser = async (req: Request, res: Response) => {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         const token = generateToken(user._id, user.role);
-        return res.status(200).json({ token });
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24, // 1 day
+        });
+
+        return res.status(200).json({ message: "Login successful" });
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+//User logout
+export const logoutUser = async (req: Request, res: Response) => {
+    res.clearCookie("token",{
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+    });
+    return res.status(200).json({ message: "Logout successful" });
+}
+
+//Check authentication
+export const checkAuth = async (req: JwtRequest, res: Response) => {
+    const user = req.user;
+
+    if(!user){
+        return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    return res.status(200).json({ role: user.role, email: user.email });
+}

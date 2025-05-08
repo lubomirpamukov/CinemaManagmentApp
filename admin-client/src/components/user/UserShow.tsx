@@ -5,8 +5,9 @@ import ActionButton from "../buttons/ActionButton";
 import { User } from "../../utils";
 import { deleteUser } from "../../services";
 
+type UserWithoutRole = Omit<User, "role">;
 type UserProps = {
-  user: User;
+  user: UserWithoutRole;
   refresh: () => void;
 };
 
@@ -37,14 +38,6 @@ const UserShow: React.FC<UserProps> = ({ user, refresh }) => {
         <p className={styles.userContact}>
           <span className={styles.userLabel}>Contact:</span> {user.contact}
         </p>
-      )}
-      {user.address && (
-        <div className={styles.userAddress}>
-          <span className={styles.userLabel}>Address:</span>
-          {user.address.line1}, {user.address.city}
-          {user.address.state && `, ${user.address.state}`}
-          {user.address.zipcode && `, ${user.address.zipcode}`}
-        </div>
       )}
       
       <div className={styles.buttons}>

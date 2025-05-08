@@ -3,6 +3,7 @@ import { protectedRoute, deleteUser, getUserById, updateUser } from '../controll
 import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 const userRouter: Router = express.Router();
 
+
 /**
  * @route   GET /users/protected
  * @desc    A protected route

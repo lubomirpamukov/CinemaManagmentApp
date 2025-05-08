@@ -20,7 +20,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user }) => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
     reset,
-  } = useForm<User>({
+  } = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: user,
   });
@@ -59,6 +59,7 @@ const UserForm: React.FC<UserFormProps> = ({ isEditMode, user }) => {
           id={key}
           {...register(key as keyof User)}
           placeholder={key}
+          type={key=== "password" ? "password" : "text"}
           className={errors[key as keyof User] ? styles.inputError : ""}
         />
         {errors[key as keyof User] && (

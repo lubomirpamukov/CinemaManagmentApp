@@ -1,13 +1,21 @@
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
-import { usePaginated } from "../hooks";
+import { useDebounce, usePaginated } from "../hooks";
 import Pagination from "../components/buttons/Pagination";
 import { userSchema } from "../utils";
 import Spinner from "../components/Spinner";
 import styles from "./UserPage.module.css";
 import UserList from "../components/user/UserList";
+import SearchBar from "../components/SearchBar";
+
+const userSchemnaWithoutPassword = userSchema.omit({ password: true });
 
 const UserPage: React.FC = () => {
+
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchTerm,600);
+
   const {
     data: users,
     currentPage,
@@ -15,19 +23,20 @@ const UserPage: React.FC = () => {
     setCurrentPage,
     loading,
     error,
-    refresh
-  } = usePaginated("/users", 4, z.array(userSchema));
+    refresh,
+  } = usePaginated("/admin/users", 3, z.array(userSchemnaWithoutPassword), debouncedSearchTerm);
 
-  if (loading) {
-    return <Spinner />;
-  }
+  useEffect(() => {
+    setCurrentPage(1);
+  },[debouncedSearchTerm, setCurrentPage]);
+
+  const handleSearchChange = (currentQuery: string) => {
+    setSearchTerm(currentQuery);
+  };
+
 
   if (error) {
     return <div className={styles.error}>{error}</div>;
-  }
-
-  if (!users || users.length <= 0) {
-    return <div className={styles.error}>No users found</div>;
   }
 
   return (
@@ -36,7 +45,12 @@ const UserPage: React.FC = () => {
         <h1>Users</h1>
       </header>
       <main>
-        <UserList users={users} refresh={refresh} />
+        <SearchBar
+          onSearch={(e) => handleSearchChange(e)}
+          placeholder="Search by username, name or email"
+          className={styles.searchBar}
+        />
+        <UserList users={users} loading={loading} refresh={refresh} />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -48,4 +62,3 @@ const UserPage: React.FC = () => {
 };
 
 export default UserPage;
-
