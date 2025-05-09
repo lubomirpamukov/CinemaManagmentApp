@@ -72,5 +72,15 @@ Content-Type: application/json
 
 ### Admin delete user
 DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwMDI1NDEsImV4cCI6MTc0NjM1ODk0MX0.4U_AeaPkSYGh6YiRnMdm28675PujmdjIGy0h_DWf6ws
 
+
+
+
+
+
+
+### Get Movies
+GET http://localhost:3123/admin/movies
+
+### Delete Movie
+DELETE http://localhost:3123/admin/movies/6814c671c1d5ea76132b8621
