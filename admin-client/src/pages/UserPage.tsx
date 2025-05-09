@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 
+import { useSearch } from "../hooks";
 import { useDebounce, usePaginated } from "../hooks";
 import Pagination from "../components/buttons/Pagination";
 import { userSchema } from "../utils";
-import Spinner from "../components/Spinner";
 import styles from "./UserPage.module.css";
 import UserList from "../components/user/UserList";
 import SearchBar from "../components/SearchBar";
@@ -26,14 +26,13 @@ const UserPage: React.FC = () => {
     refresh,
   } = usePaginated("/admin/users", 3, z.array(userSchemnaWithoutPassword), debouncedSearchTerm);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  },[debouncedSearchTerm, setCurrentPage]);
+
+  //reset search to page 1
+  useSearch({debouncedValue: debouncedSearchTerm, setCurrentPage})
 
   const handleSearchChange = (currentQuery: string) => {
     setSearchTerm(currentQuery);
   };
-
 
   if (error) {
     return <div className={styles.error}>{error}</div>;

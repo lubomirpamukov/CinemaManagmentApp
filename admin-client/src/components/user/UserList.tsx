@@ -15,6 +15,7 @@ type UserListProps = {
 };
 
 const UserList: React.FC<UserListProps> = ({ users,loading, refresh }) => {
+
   const renderedUsers = users.map((user) => (
     <div key={user.id} className={styles.user}>
       <UserShow user={user} refresh={refresh} />
@@ -33,7 +34,6 @@ const UserList: React.FC<UserListProps> = ({ users,loading, refresh }) => {
   return (
     <>
       <div className={styles.buttonSearchbarContainer}>
-        
         <ActionButton
           className={styles.buttonAdd}
           id="add-user-button"
