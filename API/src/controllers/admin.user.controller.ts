@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminService'
+import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminUserService'
 
 //Get all users
 export const getUsers = async (req: Request, res: Response) => {
