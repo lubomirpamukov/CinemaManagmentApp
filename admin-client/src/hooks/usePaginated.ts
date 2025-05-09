@@ -25,7 +25,7 @@ export const usePaginated = <T>(
         throw new Error("Failed to fetch data");
       }
       const result = await response.json();
-      const parsedData = schema.parse(result.users);
+      const parsedData = schema.parse(result.data);
       setData(parsedData);
       setTotalPages(result.totalPages);
       setCurrentPage(result.currentPage);
