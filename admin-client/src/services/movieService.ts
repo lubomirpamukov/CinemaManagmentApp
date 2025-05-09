@@ -1,5 +1,5 @@
 import { Movie, movieSchema } from "../utils";
-const BASE_URL = "http://localhost:3000/movies";
+const BASE_URL = "http://localhost:3123/admin/movies";
 
 export const getMovies = async (): Promise<Movie[]> => {
   try {
@@ -53,10 +53,7 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
   }
 };
 
-export const updateMovie = async (
-  id: string,
-  movie: Movie
-): Promise<Movie> => {
+export const updateMovie = async (id: string, movie: Movie): Promise<Movie> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "PUT",
@@ -81,8 +78,8 @@ export const deleteMovie = async (id: string): Promise<boolean> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
-
     if (!response.ok) {
       throw new Error("Failed to delete movie");
     }
@@ -99,4 +96,3 @@ export const deleteMovie = async (id: string): Promise<boolean> => {
     throw error; // to do logger
   }
 };
-
