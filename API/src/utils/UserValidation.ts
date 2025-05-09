@@ -32,7 +32,7 @@ export const userExportDTOSchema = z.object({
 
 //Paginated response shema
 export const userPaginatedSchema = z.object({
-    users: z.array(
+    data: z.array(
         z.object({
             id: z.string(),
             userName: z.string().min(4, UserValidation.name).max(100, UserValidation.name),

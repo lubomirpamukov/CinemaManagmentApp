@@ -17,8 +17,6 @@ export interface IUser extends Document {
         state: string;
         zipcode: string;
     };
-    geolocation?: { lat: number; long: number };
-    /* reservations?:Reservation[] */
 }
 
 const UserSchema: Schema = new Schema(
@@ -36,10 +34,6 @@ const UserSchema: Schema = new Schema(
             state: String,
             zipcode: String
         },
-        geolocation: {
-            lat: Number,
-            long: Number
-        }
     },
     {
         timestamps: true
