@@ -6,7 +6,6 @@ import User, { IUser } from '../models/user.model';
 
 export const getUsersService = async (query: any) => {
     const { page, limit, search } = getPaginationQuerySchema.parse(query);
-    console.log(page,limit,search)
 
     // Build the search query
     const searchQuery = search
@@ -29,7 +28,7 @@ export const getUsersService = async (query: any) => {
 
     // Validate the response data using Zod
     const validatedResult = userPaginatedSchema.parse({
-        users: result.data,
+        data: result.data,
         totalPages: result.totalPages,
         currentPage: result.currentPage
     });
