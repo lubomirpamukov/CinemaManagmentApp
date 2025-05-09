@@ -3,20 +3,22 @@ import React from "react";
 import MovieCard from "./MovieCard";
 import styles from "./MovieList.module.css";
 import { Movie } from "../../utils";
-import SearchBar from "../SearchBar";
+import Spinner from "../Spinner";
 
 type MovieListProps = {
   movies: Movie[];
+  loading: boolean;
   refresh: () => void;
 };
 
-const MovieList: React.FC<MovieListProps> = ({ movies, refresh }) => {
+const MovieList: React.FC<MovieListProps> = ({ movies, refresh, loading }) => {
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <>
-      <SearchBar
-        onSearch={(query) => console.log(query)}
-        placeholder="Search Movies"
-      />
       <div className={styles.movieList}>
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} refresh={refresh} />
@@ -27,4 +29,3 @@ const MovieList: React.FC<MovieListProps> = ({ movies, refresh }) => {
 };
 
 export default MovieList;
-
