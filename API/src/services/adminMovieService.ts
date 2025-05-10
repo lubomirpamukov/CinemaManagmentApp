@@ -1,3 +1,4 @@
+import { MovieZod } from '../utils/MovieValidation';
 import { paginate } from '../utils';
 import Movie from '../models/movie.model';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
@@ -33,6 +34,36 @@ export const getMoviesService = async(query: any) => {
         });
     
         return validatedResult;
+}
+
+export const updateMovieService = async(id: string, updates:MovieZod) => {
+    if(!id) {
+        throw new Error('Movie ID is required.')
+    }
+
+    const updatedMovie = await Movie.findByIdAndUpdate(id, updates, {
+        new: true,
+        runValidators: true
+    })
+
+    if(!updatedMovie){
+        throw new Error('Movie not found')
+    }
+
+    const movieExportDto: MovieZod = {
+        id: updatedMovie._id.toString(),
+        title: updatedMovie.title,
+        duration: updatedMovie.duration,
+        genre: updatedMovie.genre,
+        pgRating: updatedMovie.pgRating,
+        year: updatedMovie.year,
+        director: updatedMovie.director,
+        cast: updatedMovie.cast,
+        description: updatedMovie.description,
+        imgURL: updatedMovie.imgURL,
+    }
+
+    return movieExportDto;
 }
 
 export const deleteMovieService = async(id:string) =>{
