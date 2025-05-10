@@ -82,5 +82,30 @@ DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
 ### Get Movies
 GET http://localhost:3123/admin/movies
 
+### Update Movie
+PATCH http://localhost:3123/admin/movies/6814c671c1d5ea76132b8624
+Content-Type: application/json
+
+{
+  "title": "Updated Movie Title",
+  "duration": 155,
+  "pgRating": "PG",
+  "genre": "Action",
+  "year": 2024,
+  "director": "New Director",
+  "cast": [
+    {
+      "name": "Actor 1",
+      "role": "Lead"
+    },
+    {
+      "name": "Actor 2",
+      "role": "Supporting"
+    }
+  ],
+  "description": "A thrilling updated description.",
+  "imgURL": "https://example.com/new-image.jpg"
+}
+
 ### Delete Movie
 DELETE http://localhost:3123/admin/movies/6814c671c1d5ea76132b8621
