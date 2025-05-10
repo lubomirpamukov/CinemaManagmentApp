@@ -59,7 +59,7 @@ export const createUser = async (user: UserInput): Promise<User> => {
 export const updateUser = async (id: string, user: User): Promise<User> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

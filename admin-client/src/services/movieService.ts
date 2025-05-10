@@ -56,7 +56,8 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
 export const updateMovie = async (id: string, movie: Movie): Promise<Movie> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "PUT",
+      method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
