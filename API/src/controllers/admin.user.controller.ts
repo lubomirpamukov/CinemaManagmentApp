@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 
 import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminUserService'
 
-//Get all users
 export const getUsers = async (req: Request, res: Response) => {
     try {
         const result = await getUsersService(req.query);
@@ -16,7 +15,6 @@ export const getUsers = async (req: Request, res: Response) => {
     }
 };
 
-// Get user by id (READ)
 export const getUserById = async (req: Request, res: Response) => {
     try {
         const user = await getUserByIdService(req.params.id);
@@ -27,7 +25,6 @@ export const getUserById = async (req: Request, res: Response) => {
     }
 };
 
-// Create user   (CREATE)
 export const createUser = async (req: Request, res: Response) => {
     try {
         const newUser = await createUserService(req.body);
@@ -42,7 +39,6 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
-// Update user   (UPDATE)
 export const updateUser = async (req: Request, res: Response) => {
     try {
        const updatedUser = await(updateUserService(req.params.id, req.body));
@@ -56,7 +52,6 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 };
 
-// Delete user   (DELETE)
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const user = await deleteUserService(req.params.id);

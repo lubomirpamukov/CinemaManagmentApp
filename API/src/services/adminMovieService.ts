@@ -1,4 +1,4 @@
-import { MovieZod } from '../utils/MovieValidation';
+import { MovieZod, movieSchema } from '../utils/MovieValidation';
 import { paginate } from '../utils';
 import Movie from '../models/movie.model';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
@@ -63,6 +63,25 @@ export const updateMovieService = async(id: string, updates:MovieZod) => {
         imgURL: updatedMovie.imgURL,
     }
 
+    return movieExportDto;
+}
+
+export const createMovieService = async(movieData: MovieZod) => {
+    const validatedMovieData = movieSchema.parse(movieData);
+
+    const newMovie = await Movie.create(validatedMovieData);
+    const movieExportDto: MovieZod = {
+        id: newMovie._id.toString(),
+        title: newMovie.title,
+        duration: newMovie.duration,
+        genre: newMovie.genre,
+        pgRating: newMovie.pgRating,
+        year: newMovie.year,
+        director: newMovie.director,
+        cast: newMovie.cast,
+        description: newMovie.description,
+        imgURL: newMovie.imgURL
+    }
     return movieExportDto;
 }
 

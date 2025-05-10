@@ -51,7 +51,6 @@ const MovieForm: React.FC<MovieFormProps> = ({
       } else {
         // if its not provided, that means the form is used to create a new movie
         await createMovie(data);
-        console.log("Movie created successfully");
         navigator(`/movies`);
       }
     } catch (error) {

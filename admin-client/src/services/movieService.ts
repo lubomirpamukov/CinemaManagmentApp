@@ -36,6 +36,7 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -86,7 +87,6 @@ export const deleteMovie = async (id: string): Promise<boolean> => {
     }
 
     if (response.status === 204) {
-      console.log(`Movie with id ${id} deleted successfully`); // to do logger
       return true;
     }
 
