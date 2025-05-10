@@ -49,7 +49,10 @@ export const updateUser = async (req: Request, res: Response) => {
         if (!updatedUser) return res.status(404).json({ message: 'User not found' });
         res.status(201).json(updatedUser);
     } catch (err: any) {
-        res.status(400).json({ error: err.message });
+        if (err.name === 'ZodError') {
+            return res.status(400).json({ error: err.errors });
+        }
+        res.status(500).json({ error: err.message });
     }
 };
 
