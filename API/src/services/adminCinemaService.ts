@@ -59,3 +59,35 @@ export const getCinemaByIdService = async (id: string): Promise<CinemaZod | null
         throw new Error(err.message);
     }
 };
+
+export const updateCinemaByIdService = async (id: string, updates: CinemaZod): Promise<CinemaZod | null> => {
+    if(!id){
+        throw new Error('Cinema ID is required.')
+    }
+
+    const updatedCinema = await Cinema.findByIdAndUpdate(id, updates, {
+        new: true,
+        runValidators: true,
+    });
+
+    if(!updatedCinema){
+        throw new Error('Cinema not found');
+    }
+
+    const cinemaExportDto: CinemaZod = {
+        id: updatedCinema._id?.toString(),
+        city: updatedCinema.city,
+        name: updatedCinema.name,
+        halls: updatedCinema.halls || [],
+        imgURL: updatedCinema.imgURL,
+        snacks: updatedCinema.snacks
+            ? updatedCinema.snacks.map((snack) => ({
+                  id: snack._id?.toString(),
+                  name: snack.name,
+                  description: snack.description,
+                  price: snack.price,
+              }))
+            : [],
+    };
+    return cinemaExportDto;
+}

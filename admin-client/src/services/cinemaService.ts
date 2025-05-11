@@ -66,6 +66,7 @@ export const updateCinema = async (id:string ,cinema: Cinema): Promise<Cinema> =
     try{
         const response = await fetch(`${BASE_URL}/${id}`, {
             method: "PUT",
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json",
             },
