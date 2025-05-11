@@ -1,12 +1,13 @@
 import { Cinema, cinemaSchema } from "../utils";
 
 
-const BASE_URL = "http://localhost:3000/cinemas";
-//TODO: give servicec type
+const BASE_URL = "http://localhost:3123/admin/cinemas";
 //Fetch all cinemas
 export const getCinemas = async (): Promise<Cinema[]> => {
     try{
-        const response = await fetch(BASE_URL);
+        const response = await fetch(BASE_URL,{
+            credentials: 'include'
+        });
         if(!response.ok){
             throw new Error("Failed to fetch cinemas")
         }
@@ -21,7 +22,9 @@ export const getCinemas = async (): Promise<Cinema[]> => {
 //Fetch cinema by ID
 export const getCinemaById = async (id: string): Promise<Cinema> => {
     try{
-        const response = await fetch(`${BASE_URL}/${id}`);
+        const response = await fetch(`${BASE_URL}/${id}`,{
+            credentials: 'include'
+        });
         if(!response.ok){
             throw new Error("Failed to fetch cinema")
         }
