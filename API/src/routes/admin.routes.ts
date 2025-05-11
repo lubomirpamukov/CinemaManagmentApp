@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { getUsers, getUserById, updateUser, deleteUser, createUser } from '../controllers/admin.user.controller';
 import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 import { getMovies, deleteMovie, updateMovie, createMovie } from '../controllers/admin.movie.controller';
-
+import { getCinemas, getCinemaById } from '../controllers/admin.cinema.controller';
 const adminRouter: Router = express.Router();
 
 adminRouter.get('/users', authentication, authorizeRoles(['admin']), getUsers);
@@ -15,5 +15,8 @@ adminRouter.get('/movies', authentication, authorizeRoles(['admin']), getMovies)
 adminRouter.post('/movies', authentication, authorizeRoles(['admin']), createMovie);
 adminRouter.patch('/movies/:id', authentication, authorizeRoles(['admin']), updateMovie);
 adminRouter.delete('/movies/:id', authentication, authorizeRoles(['admin']), deleteMovie);
+
+adminRouter.get('/cinemas', authentication, authorizeRoles(['admin']), getCinemas);
+adminRouter.get('/cinemas/:id', authentication, authorizeRoles(['admin']), getCinemaById)
 
 export default adminRouter;

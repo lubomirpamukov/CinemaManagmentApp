@@ -59,7 +59,7 @@ export const logoutUser = async (req: Request, res: Response) => {
 //Check authentication
 export const checkAuth = async (req: JwtRequest, res: Response) => {
     const user = req.user;
-
+    console.log(user);
     if(!user){
         return res.status(401).json({ message: "Not authenticated" });
     }

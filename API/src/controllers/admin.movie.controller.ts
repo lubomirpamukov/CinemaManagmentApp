@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import { getMoviesService, deleteMovieService } from '../services/adminMovieService';
-import { updateMovieService, createMovieService } from '../services/adminMovieService';
+import { getMoviesService, deleteMovieService, updateMovieService, createMovieService } from '../services/adminMovieService';
 
 export const getMovies = async (req: Request, res: Response) => {
     try {

@@ -109,3 +109,11 @@ Content-Type: application/json
 
 ### Delete Movie
 DELETE http://localhost:3123/admin/movies/6814c671c1d5ea76132b8621
+
+
+### get cinemas
+GET http://localhost:3123/admin/cinemas
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDY4NzE3MTIsImV4cCI6MTc0NzIyODExMn0._XVsUB3L0llrvuxa7_E8vsUetmJZWyU5ddinBmtuTUY
+
+### Get Cinema by ID
+GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6
