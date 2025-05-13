@@ -11,7 +11,10 @@ export const getCinemasService = async (): Promise<CinemaZod[]> => {
                 id: cinema._id?.toString(),
                 city: cinema.city,
                 name: cinema.name,
-                halls: cinema.halls || [],
+                halls: Array.isArray(cinema.halls) ? 
+                    cinema.halls.map(hall => 
+                        hall = hall.toString()
+                    ) : [],
                 imgURL: cinema.imgURL,
                 snacks: cinema.snacks
                     ? cinema.snacks.map((snack) => ({

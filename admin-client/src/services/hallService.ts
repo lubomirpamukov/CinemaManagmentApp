@@ -1,10 +1,27 @@
-import { z } from "zod";
 
-import { hallSchema } from "../utils";
+import { hallSchema, Hall } from "../utils";
 
-const BASE_URL = "http://localhost:3000/halls";
+const BASE_URL = "http://localhost:3123/admin";
 
-export type Hall = z.infer<typeof hallSchema>;
+
+export const getHallsByCinemaId = async (cinemaId: string): Promise<Hall[]> => {
+  try {
+      const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`, {
+          credentials: 'include'
+      });
+      
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error fetching halls for cinema with id ${cinemaId}`);
+      }
+      
+      const data = await response.json();
+      return data;
+  } catch (error: any) {
+      console.error("Error in getHallsByCinemaId:", error);
+      throw error;
+  }
+};
 
 export const getHalls = async (): Promise<Hall[]> => {
   try {
