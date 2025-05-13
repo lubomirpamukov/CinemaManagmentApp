@@ -84,10 +84,8 @@ const HallForm: React.FC = () => {
     }
     setIsSubmitting(true);
     setError(null);
-    console.log("subbmiting");
     try {
       await createHall(cinemaId, data);
-      console.log("Form submitted successfully:", data);
       navigate(`/cinemas/${data.cinemaId}/edit`);
     } catch (err) {
       console.error("Error submitting form:", err);

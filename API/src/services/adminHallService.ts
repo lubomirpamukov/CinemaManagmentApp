@@ -19,6 +19,7 @@ export const getCinemaHallsService = async (cinemaId: string): Promise<IHall[]> 
         id: hall._id?.toString(),
         name: hall.name,
         layout: hall.layout, 
+        movieProgram: hall.movieProgram || [],
         seats: hall.seats ? hall.seats.map(seat => ({ 
             row: seat.row,
             column: seat.column,
@@ -54,7 +55,7 @@ export const createHallService = async (cinemaId: string, hallData: HallValidati
         cinemaId: objectId.toString(),
         name: hall.name,
         layout: hall.layout,
-        movieProgram: hall.movieProgram,
+        movieProgram: hall.movieProgram || [],
         seats: hall.seats ? hall.seats.map(seat => ({
             row: seat.row,
             column: seat.column,
