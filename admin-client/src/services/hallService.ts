@@ -66,10 +66,11 @@ export const getHallsByIds = async (ids: string[]): Promise<Hall[]> => {
 };
 
 
-export const createHall = async(hall: Hall): Promise<Hall> => {
+export const createHall = async(cinemaId: string,hall: Hall): Promise<Hall> => {
   try{
-    const response = await fetch(BASE_URL,{
+    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`,{
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -106,15 +107,19 @@ export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
   }
 };
 
-export const deleteHall = async (id: string): Promise<void> => {
+export const deleteHall = async (cinemaId: string,id: string): Promise<void> => {
   try{
-    const response = await fetch(`${BASE_URL}/${id}`,{
+    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`,{
       method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hallId: id }),
     });
     if(!response.ok){
       throw new Error(`Error deleting hall with id ${id}`);
     }
-    console.log(`Hall with id ${id} deleted successfully`);
   }catch(error){
     console.error("Error deleting hall:", error);
     throw error; // to do log

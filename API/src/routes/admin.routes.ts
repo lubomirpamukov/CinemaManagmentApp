@@ -3,7 +3,7 @@ import { getUsers, getUserById, updateUser, deleteUser, createUser } from '../co
 import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 import { getMovies, deleteMovie, updateMovie, createMovie } from '../controllers/admin.movie.controller';
 import { getCinemas, getCinemaById, updateCinema } from '../controllers/admin.cinema.controller';
-import { getCinemaHalls } from '../controllers/admin.halls.controller';
+import { getCinemaHalls, createHall, deleteHall } from '../controllers/admin.halls.controller';
 const adminRouter: Router = express.Router();
 
 adminRouter.get('/users', authentication, authorizeRoles(['admin']), getUsers);
@@ -21,5 +21,7 @@ adminRouter.get('/cinemas', authentication, authorizeRoles(['admin']), getCinema
 adminRouter.get('/cinemas/:id', authentication, authorizeRoles(['admin']), getCinemaById)
 adminRouter.patch('/cinemas/:id', authentication, authorizeRoles(['admin']), updateCinema)
 adminRouter.get('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), getCinemaHalls);
+adminRouter.post('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), createHall);
+adminRouter.delete('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), deleteHall);
 
 export default adminRouter;

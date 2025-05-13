@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./HallList.module.css";
-import { updateCinema, deleteHall } from "../../services";
+import { deleteHall } from "../../services";
 import ActionButton from "../buttons/ActionButton";
 import { Cinema, Hall } from "../../utils";
 
@@ -27,17 +27,13 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
     );
     if (!windowConfirm) return;
 
-    // Update cinema's halls locally
-    const updatedHalls = cinema?.halls?.filter((hallId) => hallId !== id) || [];
-
     // Update hallDetails locally
     const updatedHallDetails = hallDetails.filter((hall) => hall.id !== id);
     setHallDetails(updatedHallDetails);
 
     // Update the server
     try {
-      await updateCinema(cinema.id!, { ...cinema, halls: updatedHalls });
-      await deleteHall(id);
+      await deleteHall(cinema.id!,id);
     } catch (error) {
       console.error("Failed to delete hall:", error);
       // Restore the original state if the API call fails
@@ -67,7 +63,7 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
               label="Delete"
               id={`delete-hall-${hall.id}`}
               type="delete"
-              onClick={() => handleDelete(hall.id)}
+              onClick={() => handleDelete(hall.id!)}
             />
           </div>
         ))}

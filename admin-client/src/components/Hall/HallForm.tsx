@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { hallSchema, Hall, seatsSchema} from "../../utils";
+import { hallSchema, Hall, seatsSchema } from "../../utils";
 import Spinner from "../Spinner";
 import styles from "./HallForm.module.css";
 import { createHall } from "../../services";
-import { useCinemaById } from "../../hooks";
-import { updateCinema } from "../../services";
-
+import { getMovies } from "../../services/movieService";
 
 const HallForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,9 +15,29 @@ const HallForm: React.FC = () => {
   const navigate = useNavigate();
   const { cinemaId } = useParams<{ cinemaId: string }>();
 
-  if(cinemaId === undefined) {
-    throw new Error("cinemaId is undefined");
-  }
+  const [movieTitles, setMovieTitles] = useState<
+    { id: string; title: string }[]
+  >([]);
+
+  // Add useEffect to fetch movies
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const movies = await getMovies(); // Import this from your services
+        setMovieTitles(
+          movies.map((movie) => ({
+            id: movie.id || "",
+            title: movie.title,
+          }))
+        );
+      } catch (error) {
+        console.error("Failed to fetch movies:", error);
+        setError("Failed to load movies");
+      }
+    };
+
+    fetchMovies();
+  }, []);
 
   const {
     register,
@@ -58,25 +76,18 @@ const HallForm: React.FC = () => {
 
   // Watch the layout values to ensure seats are within bounds
   const layout = watch("layout");
-
-    //Update Cinema Data
-    const {cinema} = useCinemaById(cinemaId);
-
-
+  
 
   const onSubmit: SubmitHandler<Hall> = async (data) => {
+    if (cinemaId === undefined) {
+      throw new Error("cinemaId is undefined");
+    }
     setIsSubmitting(true);
     setError(null);
-    
+    console.log("subbmiting");
     try {
-      const hall = await createHall(data);
+      await createHall(cinemaId, data);
       console.log("Form submitted successfully:", data);
-      cinema?.halls.push(hall.id); // Update the cinema data with the new hall ID
-      if (!cinema){
-        throw Error("Cinema not found");
-      }
-      await updateCinema(cinemaId, cinema)
-      // After successful creation, navigate back to halls list
       navigate(`/cinemas/${data.cinemaId}/edit`);
     } catch (err) {
       console.error("Error submitting form:", err);
@@ -109,7 +120,6 @@ const HallForm: React.FC = () => {
     seatFields.forEach((_, index) => {
       removeSeat(index);
     });
-
 
     newSeats.forEach((seat) => {
       appendSeat(seatsSchema.parse(seat));
@@ -209,7 +219,7 @@ const HallForm: React.FC = () => {
                 >
                   <option value="">Select a movie</option>
                   {movieTitles.map((title) => (
-                    <option key={title.title} value={title.id}>
+                    <option key={title.id} value={title.id}>
                       {title.title}
                     </option>
                   ))}
@@ -269,8 +279,8 @@ const HallForm: React.FC = () => {
             onClick={() =>
               appendMovie({
                 movieId: "",
-                startTime: '',
-                endTime: '',
+                startTime: "",
+                endTime: "",
               })
             }
             className={styles.addButton}
@@ -416,4 +426,3 @@ const HallForm: React.FC = () => {
 };
 
 export default HallForm;
-

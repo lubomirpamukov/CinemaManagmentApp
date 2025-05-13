@@ -21,7 +21,7 @@ export const movieProgramSchema = z.object({
 
 export const hallSchema = z
   .object({
-    id: z.string(),
+    id: z.string().optional(),
     cinemaId: z.string(),
     name: z.string().min(3, HallValidation.name).max(100, HallValidation.name),
     layout: z.object({

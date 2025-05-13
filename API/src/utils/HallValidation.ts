@@ -10,7 +10,7 @@ export const HallValidation = {
     movieOverlap: "Movie times cannot overlap",
 }
 
-export type HallFormValues = z.infer<typeof hallSchema>;
+
 
 export const seatsSchema = z.object({
   row: z.number(),
@@ -29,7 +29,7 @@ export const movieProgramSchema = z.object({
 
 export const hallSchema = z
   .object({
-    id: z.string(),
+    id: z.string().optional(),
     cinemaId: z.string(),
     name: z.string().min(3, HallValidation.name).max(100, HallValidation.name),
     layout: z.object({
@@ -49,6 +49,7 @@ export const hallSchema = z
       path: ["seats"], // This helps associate the error message with the seats field
     }
   )
-  
+
+  export type Hall = z.infer<typeof hallSchema>;
   
   
