@@ -11,10 +11,10 @@ import { Movie } from "../../utils";
 
 export type MovieCardProps = {
   movie: Movie
-  refresh: () => void;
+  onRefresh: () => void;
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onRefresh }) => {
 
   const {
     id,
@@ -79,7 +79,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
     try {
       confirm(`Are you sure you want to delete ${title}?`)
       await deleteMovie(id);
-      refresh();
+      onRefresh();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }

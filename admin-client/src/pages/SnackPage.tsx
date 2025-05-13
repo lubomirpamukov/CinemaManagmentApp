@@ -55,8 +55,7 @@ const SnackPage: React.FC = () => {
       const updatedData = await updateCinema(cinemaId, updatedCinema);
 
       // Update the local state with the updated snacks
-      setSnacks(updatedData.snacks);
-      console.log("Snacks updated successfully!");
+      setSnacks(updatedData.snacks!);
     } catch (err: any) {
       setError(err.message);
     }

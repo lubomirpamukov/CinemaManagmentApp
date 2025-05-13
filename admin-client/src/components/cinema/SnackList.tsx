@@ -27,7 +27,6 @@ const SnackList: React.FC<SnackListProps> = ({ snacks, cinemaId }) => {
     );
     if (!windowConfirm) return;
     navigation(`/cinemas/${cinemaId}/snacks/edit`);
-    console.log(`Edit snacks for cinema ${cinemaId}`);
   };
 
   return (
