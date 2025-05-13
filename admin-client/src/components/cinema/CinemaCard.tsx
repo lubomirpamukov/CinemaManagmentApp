@@ -10,22 +10,10 @@ import CinemaDetails from "./CinemaDetails";
 export const CinemaCard: React.FC<CinemaWithAction> = ({
   id,
   name,
-  city,
-  halls,
-  snacks,
   imgURL,
 }) => {
   const navigate = useNavigate();
 
-  // Cinema details props
-  const cinemaDetailsProps = {
-    id,
-    name,
-    city,
-    halls,
-    snacks,
-    imgURL
-  };
 
   const handlesDelete = async (id: string) => {
     try {
@@ -43,9 +31,9 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
       )}
       <div className={styles.cinemaCardContent}>
         <h2 className={styles.cinemaName}>{name}</h2>
-        <CinemaDetails {...cinemaDetailsProps} />
+        <CinemaDetails />
         <div className={styles.cinemaActions}>
-          <ActionButton label="Delete" id={`button-delete`} type="delete" onClick={() => handlesDelete(id)} />
+          <ActionButton label="Delete" id={`button-delete`} type="delete" onClick={() => handlesDelete(id!)} />
         </div>
       </div>
     </div>

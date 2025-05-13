@@ -5,7 +5,7 @@ import styles from "./SnackList.module.css";
 import ActionButton from "../buttons/ActionButton";
 
 export type Snack = {
-  id: string;
+  id?: string;
   name: string;
   price: number;
   description?: string;

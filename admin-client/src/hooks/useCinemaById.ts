@@ -33,7 +33,7 @@ export const useCinemaById = (cinemaId: string) => {
     };
 
     fetchCinema();
-  }, [cinemaId, cinema?.halls.length, cinema?.snacks.length]); // Re-fetch when cinemaId, halls, or snacks change
+  }, [cinemaId, cinema?.halls.length, cinema?.snacks?.length]); // Re-fetch when cinemaId, halls, or snacks change
 
   return { cinema, loading, error };
 };

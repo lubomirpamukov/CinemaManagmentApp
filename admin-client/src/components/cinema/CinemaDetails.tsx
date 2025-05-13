@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { cinemaSchema } from "../../utils";
 import SnackList from "./SnackList";
@@ -11,50 +11,71 @@ import HallList from "../Hall/HallsList";
 import ActionButton from "../buttons/ActionButton";
 import { DEFAULT_CINEMA_VALUES } from "../../utils/constants";
 import { updateCinema } from "../../services";
+import { useCinemaById } from "../../hooks/useCinemaById";
+import { useHallDetails } from "../../hooks/useHallDetails"; 
+import Spinner from "../Spinner";
 
-type CinemaDetailsProps = z.infer<typeof cinemaSchema>;
+type CinemaFormSchemaType = z.infer<typeof cinemaSchema>;
 
-const CinemaDetails: React.FC<CinemaDetailsProps> = ({
-  id,
-  city,
-  name,
-  halls,
-  snacks,
-  imgURL,
-}) => {
-  //Initialize react hook form
+const CinemaDetails: React.FC = () => {
+  const { cinemaId } = useParams<{ cinemaId: string }>();
+  const navigate = useNavigate();
+
+  // Fetch cinema data
+  const { cinema, loading: cinemaLoading, error: cinemaError } = useCinemaById(cinemaId!);
+  
+  // Fetch halls for this cinema
+  const { hallsDetails, loading: hallsLoading } = useHallDetails(cinema?.id);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CinemaDetailsProps>({
+  } = useForm<CinemaFormSchemaType>({
     resolver: zodResolver(cinemaSchema),
     defaultValues: DEFAULT_CINEMA_VALUES,
   });
-  const navigate = useNavigate();
 
   useEffect(() => {
-    reset({
-      id, // Include ID if required by schema
-      name: name || "",
-      city: city || "",
-      imgURL: imgURL || "",
-      halls: halls || [], 
-      snacks: snacks || [],
-    });
-  }, [id, name, city, imgURL, halls, snacks, reset]);
+    if (cinema) {
+      reset({
+        id: cinema.id,
+        name: cinema.name || "",
+        city: cinema.city || "",
+        imgURL: cinema.imgURL || "",
+        halls: cinema.halls || [], // These are hall IDs
+        snacks: cinema.snacks || [],
+      });
+    }
+  }, [cinema, reset]);
 
-  //handle form subimt
-  const onSubmit = async (cinemaData: CinemaDetailsProps) => {
+  const onSubmit = async (cinemaData: CinemaFormSchemaType) => {
+    if (!cinema?.id) {
+      console.error("Cannot update cinema without an ID.");
+      return;
+    }
     try {
-      await updateCinema(id, { ...cinemaData, halls, snacks });
+      // Use cinema.halls and cinema.snacks to ensure we're using the original data
+      await updateCinema(cinema.id, { 
+        ...cinemaData,
+        halls: cinema.halls, 
+        snacks: cinema.snacks 
+      });
       alert("Cinema updated successfully");
       navigate(`/cinemas`);
-    } catch {
-      console.log("Error updating cinema");
+    } catch (error) {
+      console.error("Error updating cinema:", error);
     }
   };
+
+  if (cinemaLoading || hallsLoading) {
+    return <Spinner />;
+  }
+
+  if (cinemaError || !cinema) {
+    return <p className={styles.error}>Error loading cinema: {cinemaError || "Cinema not found."}</p>;
+  }
 
   return (
     <div className={styles.cinemaDetails}>
@@ -102,11 +123,14 @@ const CinemaDetails: React.FC<CinemaDetailsProps> = ({
           buttonType="submit"
         />
       </form>
-      <HallList cinemaId={id} hallIds={halls} />
-      <SnackList cinemaId={id} snacks={snacks} />
+      
+      {/* Pass the fetched hallDetails instead of hall IDs */}
+      <HallList cinema={cinema} halls={hallsDetails} />
+      
+      {/* Pass the snacks from cinema object */}
+      <SnackList cinemaId={cinema.id || ""}  snacks={cinema.snacks || []} />
     </div>
   );
 };
 
 export default CinemaDetails;
-
