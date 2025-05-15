@@ -74,6 +74,17 @@ const Navigation: React.FC = () => {
 
             <li className={styles.navItem}>
               <NavLink
+                to="/session"
+                className={({ isActive }) =>
+                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                }
+              >
+                Create Session
+              </NavLink>
+            </li>
+
+            <li className={styles.navItem}>
+              <NavLink
                 to="/login"
                 className={styles.navLink}
                 onClick={(e) => {
