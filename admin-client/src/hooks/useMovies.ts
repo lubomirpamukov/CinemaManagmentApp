@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { getMovies } from '../services';
-import { MovieCardProps } from '../components/movie/MovieCard';
-
+import { Movie } from '../utils';
 
 export const useMovies = () => {
-  const [movies, setMovies] = useState<MovieCardProps[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -19,11 +18,7 @@ export const useMovies = () => {
       setLoading(true); 
       try {
         const data = await getMovies();
-        const moviesWithActions: MovieCardProps[] = data.map((movie) => ({
-          movie,
-          onRefresh: refresh, 
-        }));
-        setMovies(moviesWithActions);
+        setMovies(data);
         setError(null);
       } catch (err: any) {
         setError(err.message || 'Failed to fetch movies');

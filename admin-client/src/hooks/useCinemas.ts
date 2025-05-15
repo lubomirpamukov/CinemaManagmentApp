@@ -35,7 +35,7 @@ export const useCinemas = () => {
     };
 
     fetchCinemas();
-  }, [cinemas.length]); // Dependencies: refreshKey and refresh function
+  }, []); // Dependencies: refreshKey and refresh function
 
   // Return all necessary data and functions
   return { cinemas, loading, error};
