@@ -191,3 +191,8 @@ Content-Type: application/json
 {
   "hallId": "68235a15dd68e0836a1b4a74"
 }
+
+///cinemas:id/sessions'
+
+### Get filtered sessions
+GET http://localhost:3123/admin/sessions
