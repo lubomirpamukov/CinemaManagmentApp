@@ -6,5 +6,6 @@ export * from "./useUsers";
 export * from "./usePaginated";
 export * from "./useUserById";
 export * from "./useDebounce";
-export * from "./useSearch"
+export * from "./useSearch";
+export * from "./useFilteredSessions"
 

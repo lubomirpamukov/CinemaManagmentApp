@@ -14,6 +14,7 @@ export const usePaginated = <T>(
   const [error, setError] = useState<string | null>(null);
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch(
         `http://localhost:3123${endpoint}?page=${currentPage}&limit=${pageSize}&search=${searchQuery}`,
