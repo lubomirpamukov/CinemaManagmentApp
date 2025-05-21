@@ -4,7 +4,7 @@ import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 import { getMovies, deleteMovie, updateMovie, createMovie } from '../controllers/admin.movie.controller';
 import { getCinemas, getCinemaById, updateCinema } from '../controllers/admin.cinema.controller';
 import { getCinemaHalls, createHall, deleteHall } from '../controllers/admin.halls.controller';
-import { createSession } from '../controllers/admin.session.controller';
+import { createSession, getSessionsWithFilters } from '../controllers/admin.session.controller';
 const adminRouter: Router = express.Router();
 
 adminRouter.get('/users', authentication, authorizeRoles(['admin']), getUsers);
@@ -26,5 +26,5 @@ adminRouter.post('/cinemas/:id/halls', authentication, authorizeRoles(['admin'])
 adminRouter.delete('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), deleteHall);
 
 adminRouter.post('/cinemas/:id/halls/:hallId/sessions', authentication, authorizeRoles(['admin']), createSession);
-
+adminRouter.get('/sessions', authentication, authorizeRoles(['admin']),getSessionsWithFilters)
 export default adminRouter;

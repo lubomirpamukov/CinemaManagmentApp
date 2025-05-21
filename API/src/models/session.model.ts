@@ -12,16 +12,19 @@ export interface ISession extends Document {
 const SessionSchema: Schema<ISession> = new Schema({
   cinemaId: {
     type: Schema.Types.ObjectId,
+    ref: "Cinema",
     required: true,
     trim: true,
   },
   hallId: {
     type: Schema.Types.ObjectId,
+    ref: "Hall",
     required: true,
     trim: true,
   },
   movieId: {
     type: Schema.Types.ObjectId,
+    ref: "Movie",
     required: true,
     trim: true,
   },
