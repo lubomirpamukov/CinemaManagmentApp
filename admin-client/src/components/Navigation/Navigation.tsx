@@ -85,6 +85,17 @@ const Navigation: React.FC = () => {
 
             <li className={styles.navItem}>
               <NavLink
+                to="/schedule"
+                className={({ isActive }) =>
+                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                }
+              >
+                Schedule
+              </NavLink>
+            </li>
+
+            <li className={styles.navItem}>
+              <NavLink
                 to="/login"
                 className={styles.navLink}
                 onClick={(e) => {

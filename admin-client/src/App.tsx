@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
-import CreateSession from "./pages/CreateSession";
+import SchedulePage from "./pages/SchedulePage";
+import CreateSessionPage from "./pages/CreateSessionPage";
 import LoginPage from "./pages/LoginPage";
 import MoviePage from "./pages/MoviePage";
 import CreateMoviePage from "./pages/CreateMoviePage";
@@ -41,7 +42,8 @@ function App() {
             <Route path="/cinemas/:cinemaId/edit" element={<EditCinemaPage />} />
             <Route path="/cinemas" element={<CinemaPage />} />
             <Route path="/cinemas/create" element={<CreateCinemaPage />} />
-            <Route path="/session" element={<CreateSession />} />
+            <Route path="/session" element={<CreateSessionPage />} />
+            <Route path="/schedule" element={<SchedulePage />} />
             <Route path="/movies" element={<MoviePage />} />
             <Route path="/movies/create" element={<CreateMoviePage />} />
           </Route>
