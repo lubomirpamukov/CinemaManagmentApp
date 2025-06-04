@@ -34,7 +34,6 @@ const CreateCinema: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (cinema: CinemaFormValues) => {
-    console.log("Cinema created successfully", cinema);
     await createCinema(cinema);
     navigate(`/cinemas/${cinema.id}/edit`);
   };
@@ -43,7 +42,6 @@ const CreateCinema: React.FC = () => {
     <div className={styles.createCinemaContainer}>
       <h1>Create Cinema</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        {/* Name field */}
         <label htmlFor="cinema-name" className={styles.formGroup}>
           {" "}
           Cinema Name:
