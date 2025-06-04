@@ -196,3 +196,26 @@ Content-Type: application/json
 
 ### Get filtered sessions
 GET http://localhost:3123/admin/sessions
+
+### Create a new reservation
+POST http://localhost:3123/reservation
+Content-Type: application/json
+
+{
+  "userId": "6811e540c54307a90c238bee", 
+  "sessionId": "683ec9c839d387ddc64155ca", 
+  "seats": [
+    {
+      "originalSeatId": "683ec9b439d387ddc64155a1" 
+    }
+  ],
+  "status": "pending"
+}
+
+### get reserved seats
+GET http://localhost:3123/session/683d78bca4111a39bf13ed85/reserved-seats
+
+
+### get hall by Id
+GET http://localhost:3123/halls/683d7892a4111a39bf13ed46
+
