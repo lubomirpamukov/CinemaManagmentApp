@@ -16,7 +16,6 @@ export const createSession = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getSessionsWithFilters = async (req: Request, res: Response): Promise<void> => {
     try {
         const { cinemaId, hallId, movieId, date } = req.query;

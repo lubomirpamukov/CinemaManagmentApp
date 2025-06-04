@@ -122,4 +122,3 @@ const SnackForm: React.FC<SnackFormProps> = ({ snacks, onSubmit }) => {
 };
 
 export default SnackForm;
-

@@ -10,7 +10,7 @@ type FilterProps = {
   date?: string;
   page?: number;
   limit?: number;
-}
+};
 
 type UseFilteredSessionsResult = {
   sessions: SessionDisplay[];
@@ -22,15 +22,15 @@ type UseFilteredSessionsResult = {
     totalPages: number;
   };
   setPage: (page: number) => void;
-}
+};
 
-export const useFilteredSessions = ({ 
-  cinemaId, 
-  hallId, 
-  movieId, 
+export const useFilteredSessions = ({
+  cinemaId,
+  hallId,
+  movieId,
   date,
   page = 1,
-  limit = 2
+  limit = 2,
 }: FilterProps): UseFilteredSessionsResult => {
   const [sessions, setSessions] = useState<SessionDisplay[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,11 +39,9 @@ export const useFilteredSessions = ({
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const fetchSessions = async () => {
-    
-
     setLoading(true);
     setError(null);
-    
+
     try {
       const result = await getFilteredSessions({
         cinemaId,
@@ -51,15 +49,14 @@ export const useFilteredSessions = ({
         movieId,
         date,
         page: currentPage,
-        limit
+        limit,
       });
 
       setSessions(result.data);
       setTotalPages(result.totalPages);
-      
     } catch (err) {
       console.error("Error fetching sessions:", err);
-      setError(err instanceof Error ? err.message : 'Error fetching sessions');
+      setError(err instanceof Error ? err.message : "Error fetching sessions");
       setSessions([]);
     } finally {
       setLoading(false);
@@ -74,13 +71,12 @@ export const useFilteredSessions = ({
     setCurrentPage(newPage);
   };
 
-  return { 
-    sessions, 
-    loading, 
+  return {
+    sessions,
+    loading,
     error,
     refetch: fetchSessions,
-    pagination: {currentPage,totalPages},
-    setPage
+    pagination: { currentPage, totalPages },
+    setPage,
   };
 };
-

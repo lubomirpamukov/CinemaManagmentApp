@@ -12,7 +12,7 @@
   margin: 1rem auto;
 }
 
-.movieCard:hover{
+.movieCard:hover {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -44,5 +44,3 @@
   justify-content: center;
   margin-top: 1rem;
 }
-
-

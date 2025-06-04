@@ -9,28 +9,39 @@ export const useHallDetails = (cinemaId: string | undefined) => {
 
   useEffect(() => {
     if (!cinemaId) {
-      // Don't do anything if cinemaId is not available
       setHallDetails([]);
       setLoading(false);
       setError(null);
       return;
     }
 
+    let isActive = true;
+
     const fetchHallDetails = async () => {
       setLoading(true);
       setError(null);
       try {
-        const halls = await getHallsByCinemaId(cinemaId);
-        setHallDetails(halls);
+        if (isActive) {
+          const halls = await getHallsByCinemaId(cinemaId);
+          setHallDetails(halls);
+        }
       } catch (err: any) {
-        setError(err.message || "Failed to load hall details");
-        setHallDetails([]);
+        if (isActive) {
+          setError(err.message || "Failed to load hall details");
+          setHallDetails([]);
+        }
       } finally {
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
 
     fetchHallDetails();
+
+    return () => {
+      isActive = false;
+    };
   }, [cinemaId]);
   return { hallsDetails, loading, error };
 };

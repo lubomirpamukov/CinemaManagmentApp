@@ -1,42 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import { Cinema } from "../utils";
 import { getCinemas } from "../services";
 
-
 export const useCinemas = () => {
-  // Track cinema data with the refresh function attached
   const [cinemas, setCinemas] = useState<Cinema[]>([]);
-  
-  // Track loading state to show/hide loading indicators
+
   const [loading, setLoading] = useState(true);
-  
-  // Track error state for displaying error messages
+
   const [error, setError] = useState<string | null>(null);
-  
 
   useEffect(() => {
+    let isActive = true;
     const fetchCinemas = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
-        // Fetch cinema data from API
-        const data: Cinema[] = await getCinemas();
-  
-        
-        setCinemas(data);
-        setError(null); // Clear any previous errors
+        if (isActive) {
+          const data: Cinema[] = await getCinemas();
+
+          setCinemas(data);
+          setError(null);
+        }
       } catch (err: any) {
-        // Handle and store error message
-        setError(err.message || 'Failed to fetch cinemas');
-        setCinemas([]); // Reset cinemas on error
+        if (isActive) {
+          setError(err.message || "Failed to fetch cinemas");
+          setCinemas([]);
+        }
       } finally {
-        setLoading(false); // End loading state regardless of outcome
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
 
     fetchCinemas();
-  }, []); // Dependencies: refreshKey and refresh function
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
-  // Return all necessary data and functions
-  return { cinemas, loading, error};
+  return { cinemas, loading, error };
 };

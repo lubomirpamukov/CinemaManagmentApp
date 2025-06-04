@@ -1,37 +1,36 @@
 .snackList {
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
-  
-  .snackList h3 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .snackList ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .snackItem {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .snackItem:last-child {
-    border-bottom: none;
-  }
-  
-  .snackItem p {
-    margin: 0.2rem 0;
-  }
-  
-  .description {
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.snackList h3 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.snackList ul {
+  list-style: none;
+  padding: 0;
+}
+
+.snackItem {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.snackItem:last-child {
+  border-bottom: none;
+}
+
+.snackItem p {
+  margin: 0.2rem 0;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: #666;
+}

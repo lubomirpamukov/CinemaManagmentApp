@@ -36,10 +36,9 @@ export const getUsersService = async (query: any) => {
     return validatedResult;
 };
 
-
 // Get user by id (READ)
 export const getUserByIdService = async (id: string) => {
-    const user = await User.findById(id).select('-password') as IUser;
+    const user = (await User.findById(id).select('-password')) as IUser;
     if (!user) throw new Error('User not found');
 
     const userExportDto = {
@@ -47,7 +46,7 @@ export const getUserByIdService = async (id: string) => {
         userName: user.userName,
         name: user.name,
         email: user.email,
-        contact: user.contact,
+        contact: user.contact
     };
 
     // Validate the transformed object with Zod
@@ -74,11 +73,11 @@ export const createUserService = async (userData: typeof userExportDTOSchema) =>
         userName: newUser.userName,
         name: newUser.name,
         email: newUser.email,
-        contact: newUser.contact,
+        contact: newUser.contact
     };
 
     return userExportDto;
-}
+};
 
 export const updateUserService = async (id: string, updates: any) => {
     if (!id) {
@@ -90,8 +89,8 @@ export const updateUserService = async (id: string, updates: any) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(id, updates, {
-        new: true, 
-        runValidators: true,
+        new: true,
+        runValidators: true
     }).select('-password');
 
     if (!updatedUser) {
@@ -103,14 +102,13 @@ export const updateUserService = async (id: string, updates: any) => {
         userName: updatedUser.userName,
         name: updatedUser.name,
         email: updatedUser.email,
-        contact: updatedUser.contact,
+        contact: updatedUser.contact
     };
 
     return userExportDto;
 };
 
-
-export const deleteUserService = async(id:string) =>{
+export const deleteUserService = async (id: string) => {
     if (!id) {
         throw new Error('User ID is required');
     }
@@ -122,4 +120,4 @@ export const deleteUserService = async(id:string) =>{
     }
 
     return deletedUser;
-}
+};

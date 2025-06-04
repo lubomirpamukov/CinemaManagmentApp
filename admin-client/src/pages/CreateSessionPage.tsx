@@ -14,7 +14,7 @@ const CreateSessionPage: React.FC = () => {
     return <div>Error: {error}</div>;
   }
 
-  return <SessionForm cinemas={cinemas} movies={movies}/>;
+  return <SessionForm cinemas={cinemas} movies={movies} />;
 };
 
 export default CreateSessionPage;

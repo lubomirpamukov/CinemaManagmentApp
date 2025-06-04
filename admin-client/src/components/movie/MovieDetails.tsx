@@ -3,13 +3,13 @@ import React from "react";
 import styles from "./MovieDetails.module.css";
 
 export type MovieDetailsProps = {
-    genre: string;
-    year: number;
-    duration: number;
-    description: string;
-    pgRating: string;
-    director?: string;
-}
+  genre: string;
+  year: number;
+  duration: number;
+  description: string;
+  pgRating: string;
+  director?: string;
+};
 
 const MovieDetails: React.FC<MovieDetailsProps> = ({
   genre,
@@ -42,6 +42,5 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     </div>
   );
 };
-
 
 export default MovieDetails;

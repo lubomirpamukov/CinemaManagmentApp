@@ -9,8 +9,10 @@ const CreateMoviePage: React.FC = () => {
 
   return (
     <>
-      <h1 style={{textAlign:"center"}}>{movieToEdit ? "Edit Movie" : "Create Movie"}</h1>
-      <MovieForm initialValues={movieToEdit}  />
+      <h1 style={{ textAlign: "center" }}>
+        {movieToEdit ? "Edit Movie" : "Create Movie"}
+      </h1>
+      <MovieForm initialValues={movieToEdit} />
     </>
   );
 };

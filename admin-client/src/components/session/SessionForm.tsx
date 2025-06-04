@@ -27,7 +27,6 @@ const SessionForm: React.FC<SessionFormProps> = ({ cinemas, movies }) => {
   const selectedHall = watch("hallId");
   const startTime = watch("startTime");
 
-
   useEffect(() => {
     if (selectedCinema) {
       getHallsByCinemaId(selectedCinema).then(setHalls);
@@ -39,19 +38,19 @@ const SessionForm: React.FC<SessionFormProps> = ({ cinemas, movies }) => {
   }, [selectedCinema, setValue]);
 
   const onSubmit = async (data: Session) => {
-    setServerError(null); // Clear previous errors
+    setServerError(null);
     try {
       await createSession(selectedCinema, selectedHall, data);
       setValue("date", "");
       setValue("startTime", "");
       setValue("endTime", "");
     } catch (error: any) {
-      // Try to parse the error message from the backend
       let message = "Unknown error";
       if (error instanceof Error) {
         try {
-          // If error.message is a JSON string, parse it
-          const parsed = JSON.parse(error.message.replace("Failed to create session: ", ""));
+          const parsed = JSON.parse(
+            error.message.replace("Failed to create session: ", "")
+          );
           message = parsed.error || error.message;
         } catch {
           message = error.message;

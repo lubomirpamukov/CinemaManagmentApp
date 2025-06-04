@@ -6,7 +6,7 @@ import styles from "./LoginShow.module.css";
 
 type LoginShowProps = {
   onLogin: (email: string, password: string) => void;
-}
+};
 
 const LoginShow: React.FC<LoginShowProps> = ({ onLogin }) => {
   const [email, setEmail] = useState("");

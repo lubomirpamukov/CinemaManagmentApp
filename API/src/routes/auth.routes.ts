@@ -23,7 +23,7 @@ authRouter.post('/login', loginUser);
  * @desc    Logout a user
  * @access  (Public)
  */
-authRouter.post('/logout', logoutUser)
+authRouter.post('/logout', logoutUser);
 
 /**
  * @route   GET /api/auth/check-auth

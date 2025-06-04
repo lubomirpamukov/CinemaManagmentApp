@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,37 +7,18 @@ import { hallSchema, Hall, seatsSchema } from "../../utils";
 import Spinner from "../Spinner";
 import styles from "./HallForm.module.css";
 import { createHall } from "../../services";
-import { getMovies } from "../../services/movieService";
+import { useMovies } from "../../hooks";
 
 const HallForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { cinemaId } = useParams<{ cinemaId: string }>();
+  const { movies, loading } = useMovies();
 
-  const [movieTitles, setMovieTitles] = useState<
-    { id: string; title: string }[]
-  >([]);
-
-  // Add useEffect to fetch movies
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const movies = await getMovies(); // Import this from your services
-        setMovieTitles(
-          movies.map((movie) => ({
-            id: movie.id || "",
-            title: movie.title,
-          }))
-        );
-      } catch (error) {
-        console.error("Failed to fetch movies:", error);
-        setError("Failed to load movies");
-      }
-    };
-
-    fetchMovies();
-  }, []);
+  if (loading) {
+    <Spinner/>
+  }
 
   const {
     register,
@@ -76,7 +57,6 @@ const HallForm: React.FC = () => {
 
   // Watch the layout values to ensure seats are within bounds
   const layout = watch("layout");
-  
 
   const onSubmit: SubmitHandler<Hall> = async (data) => {
     if (cinemaId === undefined) {
@@ -216,9 +196,9 @@ const HallForm: React.FC = () => {
                   className={styles.select}
                 >
                   <option value="">Select a movie</option>
-                  {movieTitles.map((title) => (
-                    <option key={title.id} value={title.id}>
-                      {title.title}
+                  {movies.map((movie) => (
+                    <option key={movie.id} value={movie.id}>
+                      {movie.title}
                     </option>
                   ))}
                 </select>

@@ -21,7 +21,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/movies"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Movies
@@ -32,7 +34,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/movies/create"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Create Movie
@@ -43,7 +47,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/users"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Users
@@ -54,7 +60,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/cinemas"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Cinemas
@@ -65,7 +73,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/cinemas/create"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Create Cinema
@@ -76,7 +86,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/session"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Create Session
@@ -87,7 +99,9 @@ const Navigation: React.FC = () => {
               <NavLink
                 to="/schedule"
                 className={({ isActive }) =>
-                  isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+                  isActive
+                    ? `${styles.navLink} ${styles.active}`
+                    : styles.navLink
                 }
               >
                 Schedule

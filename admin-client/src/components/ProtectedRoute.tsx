@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 type ProtectedRouteProps = {
-  requiredRole?: string; 
+  requiredRole?: string;
   redirectTo?: string;
 };
 

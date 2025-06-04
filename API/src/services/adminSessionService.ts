@@ -3,22 +3,44 @@ import { SessionPaginatedResponse, SessionZod, sessionDisplayPaginatedSchema, se
 import Session from '../models/session.model';
 import { SessionDisplay } from '../utils';
 import { paginate } from '../utils';
-import { totalmem } from 'node:os';
 
+function combineDateAndTime(dateString: string, timeString: string): Date {
+    return new Date(`${dateString}T${timeString}:00`);
+}
 export const createSessionService = async (sessionData: SessionZod) => {
     const parsed = sessionSchema.parse(sessionData);
+
+    //convert date from string to date
+    const newSessionStartTime = combineDateAndTime(parsed.date, parsed.startTime);
+    const newSessionEndTime = combineDateAndTime(parsed.date, parsed.endTime);
 
     if (parsed.startTime >= parsed.endTime) {
         throw new Error('Start time must be before end time');
     }
+
+    const timeGap = 5 * 60 * 1000; // 5 minutes in milisecounds
+
+    // add 5 minute buffer between sessions
+    const effectiveStartTimeForCheck = new Date(newSessionStartTime.getTime() - timeGap);
+    const effectiveEndTimeForCheck = new Date(newSessionEndTime.getTime() + timeGap);
+
+    // convert the date from date to strings
+    const effectiveStartTimeString = `${effectiveStartTimeForCheck.getHours().toString().padStart(2, '0')}:${effectiveStartTimeForCheck
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+    const effectiveEndTimeString = `${effectiveEndTimeForCheck.getHours().toString().padStart(2, '0')}:${effectiveEndTimeForCheck
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`;
 
     const overlappingSession = await Session.findOne({
         hallId: new mongoose.Types.ObjectId(parsed.hallId),
         date: parsed.date,
         $or: [
             {
-                startTime: { $lt: parsed.endTime },
-                endTime: { $gt: parsed.startTime }
+                startTime: { $lt: effectiveEndTimeString },
+                endTime: { $gt: effectiveStartTimeString }
             }
         ]
     });
@@ -44,7 +66,6 @@ export const createSessionService = async (sessionData: SessionZod) => {
     };
 };
 
-
 type SessionFilters = {
     cinemaId?: string;
     hallId?: string;
@@ -54,7 +75,14 @@ type SessionFilters = {
     limit?: number;
 };
 
-export const getSessionsWithFiltersService = async ({ cinemaId, hallId, movieId, date, page = 1, limit = 10 }: SessionFilters): Promise<SessionPaginatedResponse> => {
+export const getSessionsWithFiltersService = async ({
+    cinemaId,
+    hallId,
+    movieId,
+    date,
+    page = 1,
+    limit = 10
+}: SessionFilters): Promise<SessionPaginatedResponse> => {
     const query: any = {};
 
     if (cinemaId) {
@@ -111,10 +139,10 @@ export const getSessionsWithFiltersService = async ({ cinemaId, hallId, movieId,
     });
 
     const validatedSessions = sessionDisplayPaginatedSchema.parse({
-        data:formattedSessions,
+        data: formattedSessions,
         totalPages: paginationResult.totalPages,
         currentPage: paginationResult.currentPage
-    })
+    });
 
-    return validatedSessions
+    return validatedSessions;
 };

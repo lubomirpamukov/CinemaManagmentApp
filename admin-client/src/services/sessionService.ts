@@ -31,7 +31,6 @@ export const createSession = async (
   return sessionSchema.parse(data);
 };
 
-
 type SessionFilters = {
   cinemaId?: string;
   hallId?: string;
@@ -67,6 +66,6 @@ export const getFilteredSessions = async (
   }
 
   const data = await response.json();
-  const validatedData = sessionDisplayPaginatedSchema.parse(data)
-  return validatedData
+  const validatedData = sessionDisplayPaginatedSchema.parse(data);
+  return validatedData;
 };

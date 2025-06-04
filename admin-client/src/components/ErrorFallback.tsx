@@ -4,7 +4,7 @@ import styles from "./ErrorFallback.module.css";
 
 const ErrorFallback: React.FC<FallbackProps> = ({
   error,
-  resetErrorBoundary
+  resetErrorBoundary,
 }) => {
   return (
     <div role="alert" className={styles.errorContainer}>

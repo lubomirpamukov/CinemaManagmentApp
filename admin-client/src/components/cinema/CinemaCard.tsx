@@ -14,7 +14,6 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
 }) => {
   const navigate = useNavigate();
 
-
   const handlesDelete = async (id: string) => {
     try {
       await deleteCinema(id);
@@ -33,7 +32,12 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
         <h2 className={styles.cinemaName}>{name}</h2>
         <CinemaDetails />
         <div className={styles.cinemaActions}>
-          <ActionButton label="Delete" id={`button-delete`} type="delete" onClick={() => handlesDelete(id!)} />
+          <ActionButton
+            label="Delete"
+            id={`button-delete`}
+            type="delete"
+            onClick={() => handlesDelete(id!)}
+          />
         </div>
       </div>
     </div>
@@ -41,4 +45,3 @@ export const CinemaCard: React.FC<CinemaWithAction> = ({
 };
 
 export default CinemaCard;
-

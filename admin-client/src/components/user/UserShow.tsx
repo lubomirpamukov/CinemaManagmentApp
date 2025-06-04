@@ -39,7 +39,7 @@ const UserShow: React.FC<UserProps> = ({ user, refresh }) => {
           <span className={styles.userLabel}>Contact:</span> {user.contact}
         </p>
       )}
-      
+
       <div className={styles.buttons}>
         <ActionButton
           id="edit-user-button"
@@ -59,4 +59,3 @@ const UserShow: React.FC<UserProps> = ({ user, refresh }) => {
 };
 
 export default UserShow;
-
