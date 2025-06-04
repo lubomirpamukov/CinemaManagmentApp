@@ -1,12 +1,12 @@
 
 import { hallSchema, Hall } from "../utils";
 
-const BASE_URL = "http://localhost:3123/admin";
+const BASE_URL = "http://localhost:3123";
 
 
 export const getHallsByCinemaId = async (cinemaId: string): Promise<Hall[]> => {
   try {
-      const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`, {
+      const response = await fetch(`${BASE_URL}/admin/cinemas/${cinemaId}/halls`, {
           credentials: 'include'
       });
       
@@ -25,7 +25,7 @@ export const getHallsByCinemaId = async (cinemaId: string): Promise<Hall[]> => {
 
 export const getHalls = async (): Promise<Hall[]> => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(`${BASE_URL}/admin`);
     if (!response.ok) {
       throw new Error("Error fetching halls");
     }
@@ -37,11 +37,13 @@ export const getHalls = async (): Promise<Hall[]> => {
   }
 };
 
-export const getHallById = async (id: string): Promise<Hall> =>{
+export const getHallById = async (hallId: string): Promise<Hall> =>{
   try{
-    const response = await fetch(`${BASE_URL}/${id}`);
+    const response = await fetch(`${BASE_URL}/halls/${hallId}`,{
+      credentials: 'include'
+    });
     if(!response.ok){
-      throw new Error(`Error fetching hall with id ${id}`);
+      throw new Error(`Error fetching hall with id ${hallId}`);
     }
     const data = await response.json();
     return hallSchema.parse(data);
@@ -68,7 +70,7 @@ export const getHallsByIds = async (ids: string[]): Promise<Hall[]> => {
 
 export const createHall = async(cinemaId: string,hall: Hall): Promise<Hall> => {
   try{
-    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`,{
+    const response = await fetch(`${BASE_URL}/admin/cinemas/${cinemaId}/halls`,{
       method: "POST",
       credentials: "include",
       headers: {
@@ -109,7 +111,7 @@ export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
 
 export const deleteHall = async (cinemaId: string,id: string): Promise<void> => {
   try{
-    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`,{
+    const response = await fetch(`${BASE_URL}/admin/cinemas/${cinemaId}/halls`,{
       method: "DELETE",
       credentials: "include",
       headers: {

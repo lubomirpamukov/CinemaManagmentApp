@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface ISession extends Document {
+  _id: mongoose.Types.ObjectId;
   cinemaId: mongoose.Types.ObjectId;
   hallId: mongoose.Types.ObjectId;
   movieId: mongoose.Types.ObjectId;
