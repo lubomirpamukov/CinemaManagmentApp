@@ -12,15 +12,11 @@ import { movieSchema } from "../../utils";
 
 export type MovieFormProps = {
   initialValues?: MovieFormValues;
-  onSubmitSuccess: () => void;
 };
 
 export type MovieFormValues = z.infer<typeof movieSchema>;
 
-const MovieForm: React.FC<MovieFormProps> = ({
-  initialValues,
-  onSubmitSuccess,
-}) => {
+const MovieForm: React.FC<MovieFormProps> = ({ initialValues }) => {
   //initialize react hook form
   const {
     register, //register input fields
@@ -49,15 +45,12 @@ const MovieForm: React.FC<MovieFormProps> = ({
       //if initialValues.id is provided , that means the form is used to update a movie
       if (initialValues?.id) {
         await updateMovie(initialValues.id, data);
-        console.log("Movie updated successfully");
         navigator(`/movies`);
       } else {
         // if its not provided, that means the form is used to create a new movie
         await createMovie(data);
-        console.log("Movie created successfully");
         navigator(`/movies`);
       }
-      onSubmitSuccess(); // Fixed typo in function call
     } catch (error) {
       console.error("Error submitting form", error); // todo log error
     }
@@ -187,4 +180,3 @@ const MovieForm: React.FC<MovieFormProps> = ({
 };
 
 export default MovieForm;
-

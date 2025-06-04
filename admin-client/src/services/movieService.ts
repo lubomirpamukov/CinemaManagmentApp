@@ -3,13 +3,15 @@ const BASE_URL = "http://localhost:3123/admin/movies";
 
 export const getMovies = async (): Promise<Movie[]> => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(BASE_URL, {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch movies");
     }
 
     const data = await response.json();
-    return movieSchema.array().parse(data);
+    return movieSchema.array().parse(data.data);
   } catch (error) {
     console.error("Error fetching movies:", error);
     throw error; // to do logger
@@ -18,7 +20,9 @@ export const getMovies = async (): Promise<Movie[]> => {
 
 export const getMovieById = async (id: string): Promise<Movie> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`);
+    const response = await fetch(`${BASE_URL}/${id}`, {
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch movie");
     }
@@ -36,6 +40,7 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -56,7 +61,8 @@ export const createMovie = async (movie: MovieInput): Promise<Movie> => {
 export const updateMovie = async (id: string, movie: Movie): Promise<Movie> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "PUT",
+      method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,7 +91,6 @@ export const deleteMovie = async (id: string): Promise<boolean> => {
     }
 
     if (response.status === 204) {
-      console.log(`Movie with id ${id} deleted successfully`); // to do logger
       return true;
     }
 

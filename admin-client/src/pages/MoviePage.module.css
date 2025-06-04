@@ -1,21 +1,20 @@
 .moviePage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-  }
-  
-  .moviePageHeader {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .moviePageHeader h1 {
-    font-size: 2rem;
-    color: #333;
-  }
-  
-  .moviePageContent {
-    width: 100%;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.moviePageHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.moviePageHeader h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.moviePageContent {
+  width: 100%;
+}

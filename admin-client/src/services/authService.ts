@@ -39,21 +39,20 @@ export const logoutUser = async (): Promise<void> => {
   }
 };
 
-export const checkAuthStatus = async(): Promise<{ role: string }> => { // Correct return type
-    const response = await fetch(`${BASE_URL}/check-auth`, {
-        method: "GET",
-        credentials: "include",
-    });
+export const checkAuthStatus = async (): Promise<{ role: string }> => {
+  const response = await fetch(`${BASE_URL}/check-auth`, {
+    method: "GET",
+    credentials: "include",
+  });
 
-    if(!response.ok){
-        let errorMsg = "Check auth failed";
-        try{
-            const errorData = await response.json();
-            errorMsg = errorData.error || errorMsg;
-        }catch(err: any){
-            // Ignore if response is not JSON
-        }
-        throw new Error(errorMsg);
+  if (!response.ok) {
+    let errorMsg = "Check auth failed";
+    try {
+      const errorData = await response.json();
+      errorMsg = errorData.error || errorMsg;
+    } catch (err: any) {
     }
-    return response.json();
-}
+    throw new Error(errorMsg);
+  }
+  return response.json();
+};

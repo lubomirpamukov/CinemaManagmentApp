@@ -10,12 +10,11 @@ import { MovieFormValues } from "./MovieForm";
 import { Movie } from "../../utils";
 
 export type MovieCardProps = {
-  movie: Movie
-  refresh: () => void;
+  movie: Movie;
+  onRefresh: () => void;
 };
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
-
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onRefresh }) => {
   const {
     id,
     title,
@@ -28,7 +27,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
     cast,
     imgURL,
   } = movie;
-  
+
   const movieDetailsProps: MovieDetailsProps = {
     genre,
     year,
@@ -52,7 +51,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
     imgURL,
   };
 
-  if(!movie.id){
+  if (!movie.id) {
     throw new Error("Movie ID is required");
   }
 
@@ -77,9 +76,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
 
   const handlesDelete = async (id: string) => {
     try {
-      confirm(`Are you sure you want to delete ${title}?`)
+      confirm(`Are you sure you want to delete ${title}?`);
       await deleteMovie(id);
-      refresh();
+      onRefresh();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }
@@ -104,4 +103,3 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, refresh }) => {
 };
 
 export default MovieCard;
-

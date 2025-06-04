@@ -1,0 +1,56 @@
+.select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bfc4ca;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin: 1.5rem 0 2rem 0;
+  background: #f8fafc;
+  color: #222;
+  min-width: 220px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: border 0.2s;
+}
+
+.filters {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.dateInput {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bfc4ca;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin: 1.5rem 0 2rem 0;
+  background: #f8fafc;
+  color: #222;
+  min-width: 220px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: border 0.2s;
+}
+
+.clearDateButton {
+  padding: 0.6rem 1rem;
+  border: 1px solid #bfc4ca;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin: 1.5rem 0 2rem 0;
+  background: #f8fafc;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: border 0.2s;
+}
+
+.select:focus {
+  border-color: #4b70e2;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .select {
+    width: 100%;
+    min-width: unset;
+    font-size: 0.98rem;
+  }
+}

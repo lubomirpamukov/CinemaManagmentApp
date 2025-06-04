@@ -17,28 +17,31 @@ export interface IMovie extends Document {
     director: string;
     cast: ICastMember[];
     description: string;
-    imgURL?: string; 
-    createdAt: Date; 
-    updatedAt: Date; 
+    imgURL?: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 // Schema for the Cast Member subdocument
-const CastMemberSchema: Schema = new Schema({
-    name: {
-        type: String,
-        required: [true, 'Actor name is required.'],
-        minlength: [2, 'Actor name must be at least 2 characters long.'],
-        maxlength: [100, 'Actor name cannot exceed 100 characters.'],
-        trim: true
+const CastMemberSchema: Schema = new Schema(
+    {
+        name: {
+            type: String,
+            required: [true, 'Actor name is required.'],
+            minlength: [2, 'Actor name must be at least 2 characters long.'],
+            maxlength: [100, 'Actor name cannot exceed 100 characters.'],
+            trim: true
+        },
+        role: {
+            type: String,
+            required: [true, 'Actor role is required.'],
+            minlength: [2, 'Actor role must be at least 2 characters long.'],
+            maxlength: [100, 'Actor role cannot exceed 100 characters.'],
+            trim: true
+        }
     },
-    role: {
-        type: String,
-        required: [true, 'Actor role is required.'],
-        minlength: [2, 'Actor role must be at least 2 characters long.'],
-        maxlength: [100, 'Actor role cannot exceed 100 characters.'],
-        trim: true
-    }
-}, { _id: false }); // Don't create separate _id for cast members
+    { _id: false }
+); // Don't create separate _id for cast members
 
 // Main Movie Schema
 const MovieSchema: Schema = new Schema(
@@ -83,7 +86,8 @@ const MovieSchema: Schema = new Schema(
         },
         cast: {
             type: [CastMemberSchema], // Array of cast member subdocuments
-            validate: [ // Ensure at least one cast member is provided
+            validate: [
+                // Ensure at least one cast member is provided
                 (val: ICastMember[]) => val.length >= 1,
                 'At least one cast member is required.'
             ]
@@ -101,7 +105,7 @@ const MovieSchema: Schema = new Schema(
             trim: true
             // Basic URL validation can be added if needed, though Zod handles it primarily
             // match: [/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i, 'Please fill a valid URL']
-        },
+        }
     },
     {
         timestamps: true

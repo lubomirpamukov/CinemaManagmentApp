@@ -19,9 +19,7 @@ const EditCinemaPage: React.FC = () => {
     return <p>No cinema found.</p>;
   }
 
-  return (
-    <CinemaCard {...cinema} />
-  );
-}
+  return <CinemaCard {...cinema} />;
+};
 
 export default EditCinemaPage;

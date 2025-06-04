@@ -5,7 +5,7 @@ import styles from "./SnackList.module.css";
 import ActionButton from "../buttons/ActionButton";
 
 export type Snack = {
-  id: string;
+  id?: string;
   name: string;
   price: number;
   description?: string;
@@ -17,17 +17,14 @@ type SnackListProps = {
 };
 
 const SnackList: React.FC<SnackListProps> = ({ snacks, cinemaId }) => {
-  // Action button props
   const navigation = useNavigate();
 
   const handleEditSnacks = () => {
-    // Navigate to the snack edit form for the given cinema
     const windowConfirm = window.confirm(
       "Are you sure you want to edit the snacks for this cinema?"
     );
     if (!windowConfirm) return;
     navigation(`/cinemas/${cinemaId}/snacks/edit`);
-    console.log(`Edit snacks for cinema ${cinemaId}`);
   };
 
   return (
@@ -55,4 +52,3 @@ const SnackList: React.FC<SnackListProps> = ({ snacks, cinemaId }) => {
 };
 
 export default SnackList;
-

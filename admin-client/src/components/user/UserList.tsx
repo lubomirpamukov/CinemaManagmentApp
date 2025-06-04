@@ -14,8 +14,7 @@ type UserListProps = {
   refresh: () => void;
 };
 
-const UserList: React.FC<UserListProps> = ({ users,loading, refresh }) => {
-
+const UserList: React.FC<UserListProps> = ({ users, loading, refresh }) => {
   const renderedUsers = users.map((user) => (
     <div key={user.id} className={styles.user}>
       <UserShow user={user} refresh={refresh} />
@@ -23,7 +22,7 @@ const UserList: React.FC<UserListProps> = ({ users,loading, refresh }) => {
   ));
 
   if (loading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   const navigate = useNavigate();

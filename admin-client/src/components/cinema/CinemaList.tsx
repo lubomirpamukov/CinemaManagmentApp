@@ -4,30 +4,24 @@ import { Link } from "react-router-dom";
 import { Cinema } from "../../utils";
 import { useCinemas } from "../../hooks";
 import styles from "./CinemaList.module.css";
+import Spinner from "../Spinner";
 
 export type CinemaWithAction = Cinema;
 
 const CinemaList: React.FC = () => {
-  
-  const { cinemas, loading, error} = useCinemas();
+  const { cinemas, loading } = useCinemas();
 
   if (loading) {
-    return <div>Loading...</div>; // to do loading spinner
+    <Spinner />;
   }
-
-  if (error) {
-    return <p>Error: {error}</p>; // to do error message
-  }
-
- 
 
   return (
     <div className={styles.cinemaList}>
       {cinemas.map((cinema) => (
         <Link
-          to={`/cinemas/${cinema.id}/edit`} // Navigate to the edit page for the cinema
+          to={`/cinemas/${cinema.id}/edit`}
           key={cinema.id}
-          className={styles.cinemaCardLink} // Add a class for styling the link
+          className={styles.cinemaCardLink}
         >
           <div className={styles.cinemaCard}>
             {cinema.imgURL && (
@@ -46,7 +40,7 @@ const CinemaList: React.FC = () => {
                 <strong>Rooms count:</strong> {cinema.halls.length}
               </p>
               <p className={styles.cinemaRooms}>
-                <strong>Snack's count:</strong> {cinema.snacks.length}
+                <strong>Snack's count:</strong> {cinema.snacks?.length}
               </p>
             </div>
           </div>
@@ -57,4 +51,3 @@ const CinemaList: React.FC = () => {
 };
 
 export default CinemaList;
-

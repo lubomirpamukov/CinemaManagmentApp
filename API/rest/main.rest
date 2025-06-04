@@ -82,5 +82,117 @@ DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
 ### Get Movies
 GET http://localhost:3123/admin/movies
 
+### Update Movie
+PATCH http://localhost:3123/admin/movies/6814c671c1d5ea76132b8624
+Content-Type: application/json
+
+{
+  "title": "Updated Movie Title",
+  "duration": 155,
+  "pgRating": "PG",
+  "genre": "Action",
+  "year": 2024,
+  "director": "New Director",
+  "cast": [
+    {
+      "name": "Actor 1",
+      "role": "Lead"
+    },
+    {
+      "name": "Actor 2",
+      "role": "Supporting"
+    }
+  ],
+  "description": "A thrilling updated description.",
+  "imgURL": "https://example.com/new-image.jpg"
+}
+
 ### Delete Movie
 DELETE http://localhost:3123/admin/movies/6814c671c1d5ea76132b8621
+
+
+### get cinemas
+GET http://localhost:3123/admin/cinemas
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDY4NzE3MTIsImV4cCI6MTc0NzIyODExMn0._XVsUB3L0llrvuxa7_E8vsUetmJZWyU5ddinBmtuTUY
+
+### Get Cinema by ID
+GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6
+
+### Get Halls by Cinema Id
+GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls
+
+### Create Hall
+POST http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls
+Content-Type: application/json
+
+{
+  "name": "Test Hall A",
+  "cinemaId": "68207e09ddb4d49f740049b6",
+  "layout": {
+    "rows": 8,
+    "columns": 12
+  },
+  "movieProgram": [
+    {
+      "movieId": "6820801addb4d49f740049b8",
+      "startTime": "2025-05-15T18:00:00Z",
+      "endTime": "2025-05-15T20:30:00Z"
+    }
+  ],
+  "seats": [
+    {
+      "row": 1,
+      "column": 1,
+      "seatNumber": "A1",
+      "isAvailable": "available",
+      "type": "regular",
+      "price": 10
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "seatNumber": "A2",
+      "isAvailable": "available",
+      "type": "regular",
+      "price": 10
+    },
+    {
+      "row": 5,
+      "column": 6,
+      "seatNumber": "E6",
+      "isAvailable": "available",
+      "type": "vip",
+      "price": 15
+    },
+    {
+      "row": 8,
+      "column": 11,
+      "seatNumber": "H11",
+      "isAvailable": "available",
+      "type": "couple",
+      "price": 25
+    },
+    {
+      "row": 8,
+      "column": 12,
+      "seatNumber": "H12",
+      "isAvailable": "available",
+      "type": "couple",
+      "price": 25
+    }
+  ]
+}
+
+
+### Delete Hall
+DELETE http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls
+Content-Type: application/json
+
+{
+  "hallId": "68235a15dd68e0836a1b4a74"
+}
+
+///cinemas:id/sessions'
+
+### Get filtered sessions
+GET http://localhost:3123/admin/sessions

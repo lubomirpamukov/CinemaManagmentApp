@@ -1,31 +1,30 @@
-.cinemaDetails
-{
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem;
-    text-align: justify;
+.cinemaDetails {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  text-align: justify;
 }
 
-.form{
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    justify-content: center;
-    width: 60%;
-    align-self: center;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 60%;
+  align-self: center;
 }
 
-.formData{
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+.formData {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.formInputField{
-    margin-right: 1em;
-    border-radius: 4px;
+.formInputField {
+  margin-right: 1em;
+  border-radius: 4px;
 }

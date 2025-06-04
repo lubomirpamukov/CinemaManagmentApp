@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { useHallDetails } from "../../hooks";
 import styles from "./HallList.module.css";
-import { useCinemaById } from "../../hooks";
-import { updateCinema } from "../../services";
 import { deleteHall } from "../../services";
 import ActionButton from "../buttons/ActionButton";
-import Spinner from "../Spinner";
+import { Cinema, Hall } from "../../utils";
 
 type HallListProps = {
-  hallIds: string[];
-  cinemaId: string;
+  halls: Hall[];
+  cinema: Cinema;
 };
 
-const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
-  const { hallDetails: initialHallDetails, loading, error } = useHallDetails(hallIds);
-  const { cinema } = useCinemaById(cinemaId);
-  const [hallDetails, setHallDetails] = useState(initialHallDetails); // Local state for hall details
-  // Sync local state with fetched data
+const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
+  const [hallDetails, setHallDetails] = useState<Hall[]>(halls); // Local state for hall details
+
+  // Sync local state with props
   useEffect(() => {
-    setHallDetails(initialHallDetails);
-  }, [initialHallDetails]);
+    setHallDetails(halls);
+  }, [halls]);
 
   // Delete a hall
   async function handleDelete(id: string) {
@@ -30,30 +26,18 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
     );
     if (!windowConfirm) return;
 
-    if (!cinema) {
-      console.error("Cinema not found");
-      return;
-    }
-
-    // Update cinema's halls locally
-    const updatedHalls = cinema.halls.filter((hall) => hall !== id);
-    cinema.halls = updatedHalls;
-
     // Update hallDetails locally
     const updatedHallDetails = hallDetails.filter((hall) => hall.id !== id);
     setHallDetails(updatedHallDetails);
 
     // Update the server
-    await updateCinema(cinemaId, { ...cinema, halls: updatedHalls });
-    await deleteHall(id);
-  }
-
-  if (loading) {
-   return  <Spinner />
-  }
-
-  if (error) {
-    return <p className={styles.error}>Error: {error}</p>;
+    try {
+      await deleteHall(cinema.id!, id);
+    } catch (error) {
+      console.error("Failed to delete hall:", error);
+      // Restore the original state if the API call fails
+      setHallDetails(halls);
+    }
   }
 
   return (
@@ -62,29 +46,32 @@ const HallList: React.FC<HallListProps> = ({ cinemaId, hallIds }) => {
       <div className={styles.hallGrid}>
         {hallDetails.map((hall) => (
           <div key={hall.id} className={styles.hallCard}>
-            <h3>{hall.name}</h3>
+            <h3>{hall.name || "Unnamed Hall"}</h3>
             <div className={styles.hallDetails}>
               <p>
-                <strong>Layout:</strong> {hall.layout.rows} rows × {hall.layout.columns} columns
+                <strong>Layout:</strong> {hall.layout?.rows || 0} rows ×{" "}
+                {hall.layout?.columns || 0} columns
               </p>
               <p>
-                <strong>Seats:</strong> {hall.layout.columns * hall.layout.rows}
+                <strong>Seats:</strong>{" "}
+                {(hall.layout?.columns || 0) * (hall.layout?.rows || 0)}
               </p>
               <p>
-                <strong>Movies Scheduled:</strong> {hall.movieProgram.length}
+                <strong>Movies Scheduled:</strong>{" "}
+                {hall.movieProgram?.length || 0}
               </p>
             </div>
             <ActionButton
               label="Delete"
-              id="delete-button"
+              id={`delete-hall-${hall.id}`}
               type="delete"
-              onClick={() => handleDelete(hall.id)}
+              onClick={() => handleDelete(hall.id!)}
             />
           </div>
         ))}
       </div>
       <Link
-        to={`/cinemas/${cinemaId}/hall/create`}
+        to={`/cinemas/${cinema?.id}/hall/create`}
         className={styles.addHallLink}
       >
         Add hall

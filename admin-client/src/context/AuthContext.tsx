@@ -18,10 +18,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-   // Define checkAuth within the context
-   const checkAuth = async() => {
+  // Define checkAuth within the context
+  const checkAuth = async () => {
     setLoading(true);
-    try{
+    try {
       const data = await checkAuthStatus();
       setIsAuthenticated(true);
       setRole(data.role);
@@ -62,9 +62,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated, role, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, role, login, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

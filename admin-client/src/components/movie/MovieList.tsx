@@ -12,7 +12,6 @@ type MovieListProps = {
 };
 
 const MovieList: React.FC<MovieListProps> = ({ movies, refresh, loading }) => {
-
   if (loading) {
     return <Spinner />;
   }
@@ -21,7 +20,7 @@ const MovieList: React.FC<MovieListProps> = ({ movies, refresh, loading }) => {
     <>
       <div className={styles.movieList}>
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} refresh={refresh} />
+          <MovieCard key={movie.id} movie={movie} onRefresh={refresh} />
         ))}
       </div>
     </>

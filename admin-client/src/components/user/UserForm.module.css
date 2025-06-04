@@ -68,12 +68,12 @@
 }
 
 .inputStyle {
-  background-color: red !important; /* Light blue background for normal input */
+  background-color: red !important; 
 }
 
 .inputError {
-  background-color: #ffe6e6; /* Light red background for error */
-  border: 1px solid #ff4d4d; /* Red border for error */
+  background-color: #ffe6e6; 
+  border: 1px solid #ff4d4d; 
 }
 
 .errorMessage {
@@ -143,5 +143,3 @@
 .cancelButton:hover {
   background-color: #e2e8f0;
 }
-
-

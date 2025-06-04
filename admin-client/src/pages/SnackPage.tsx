@@ -30,7 +30,6 @@ const SnackPage: React.FC = () => {
     fetchCinema();
   }, [cinemaId]);
 
-
   // Handle form submission
   const handleSnackSubmit = async (updatedSnacks: Snack[]) => {
     try {
@@ -55,8 +54,7 @@ const SnackPage: React.FC = () => {
       const updatedData = await updateCinema(cinemaId, updatedCinema);
 
       // Update the local state with the updated snacks
-      setSnacks(updatedData.snacks);
-      console.log("Snacks updated successfully!");
+      setSnacks(updatedData.snacks!);
     } catch (err: any) {
       setError(err.message);
     }
@@ -74,4 +72,3 @@ const SnackPage: React.FC = () => {
 };
 
 export default SnackPage;
-

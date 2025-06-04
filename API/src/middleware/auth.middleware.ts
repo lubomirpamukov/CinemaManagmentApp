@@ -12,10 +12,9 @@ export interface JwtRequest extends Request {
     };
 }
 
-
 //Checks for authorization headers
 export const authentication = (req: JwtRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies.token
+    const token = req.cookies.token;
     if (!token) {
         return res.status(401).json('No authorization header found');
     }

@@ -3,7 +3,7 @@ const BASE_URL = "http://localhost:3123/admin/users";
 
 export const getUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetch(BASE_URL,{
+    const response = await fetch(BASE_URL, {
       credentials: "include",
     });
     if (!response.ok) {
@@ -19,7 +19,7 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getUserById = async (id: string): Promise<User> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`,{
+    const response = await fetch(`${BASE_URL}/${id}`, {
       credentials: "include",
     });
     if (!response.ok) {
@@ -35,7 +35,7 @@ export const getUserById = async (id: string): Promise<User> => {
 
 export type UserInput = Omit<User, "id">;
 export const createUser = async (user: UserInput): Promise<User> => {
-  user.role = "user"
+  user.role = "user";
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
@@ -59,7 +59,7 @@ export const createUser = async (user: UserInput): Promise<User> => {
 export const updateUser = async (id: string, user: User): Promise<User> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
