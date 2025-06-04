@@ -20,7 +20,7 @@ export const getMovies = async (): Promise<Movie[]> => {
 
 export const getMovieById = async (id: string): Promise<Movie> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`,{
+    const response = await fetch(`${BASE_URL}/${id}`, {
       credentials: "include",
     });
     if (!response.ok) {

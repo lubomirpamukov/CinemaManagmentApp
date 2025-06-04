@@ -10,8 +10,8 @@ import styles from "./MoviePage.module.css";
 import SearchBar from "../components/SearchBar";
 
 const MoviePage: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState<string>("");
-    const debouncedSearchTerm = useDebounce(searchTerm,600);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 600);
 
   const {
     data: movies,
@@ -21,16 +21,18 @@ const MoviePage: React.FC = () => {
     loading,
     error,
     refresh,
-  } = usePaginated("/admin/movies", 1, z.array(movieSchema), debouncedSearchTerm);
+  } = usePaginated(
+    "/admin/movies",
+    1,
+    z.array(movieSchema),
+    debouncedSearchTerm
+  );
 
-  //reset search to page 1
-  useSearch({debouncedValue: debouncedSearchTerm, setCurrentPage})
+  useSearch({ debouncedValue: debouncedSearchTerm, setCurrentPage });
 
   const handleSearchChange = (currentQuery: string) => {
     setSearchTerm(currentQuery);
   };
-
- 
 
   if (error) {
     return <div>{error}</div>;
@@ -42,7 +44,7 @@ const MoviePage: React.FC = () => {
         <h1>Movies</h1>
       </header>
       <main className={styles.moviePageContent}>
-      <SearchBar
+        <SearchBar
           onSearch={(e) => handleSearchChange(e)}
           placeholder="Title, director, genre"
           className={styles.searchBar}

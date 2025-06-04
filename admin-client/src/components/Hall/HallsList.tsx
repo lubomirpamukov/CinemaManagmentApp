@@ -12,9 +12,8 @@ type HallListProps = {
 };
 
 const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
-  
   const [hallDetails, setHallDetails] = useState<Hall[]>(halls); // Local state for hall details
-  
+
   // Sync local state with props
   useEffect(() => {
     setHallDetails(halls);
@@ -33,7 +32,7 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
 
     // Update the server
     try {
-      await deleteHall(cinema.id!,id);
+      await deleteHall(cinema.id!, id);
     } catch (error) {
       console.error("Failed to delete hall:", error);
       // Restore the original state if the API call fails
@@ -47,16 +46,19 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
       <div className={styles.hallGrid}>
         {hallDetails.map((hall) => (
           <div key={hall.id} className={styles.hallCard}>
-            <h3>{hall.name || 'Unnamed Hall'}</h3>
+            <h3>{hall.name || "Unnamed Hall"}</h3>
             <div className={styles.hallDetails}>
               <p>
-                <strong>Layout:</strong> {hall.layout?.rows || 0} rows × {hall.layout?.columns || 0} columns
+                <strong>Layout:</strong> {hall.layout?.rows || 0} rows ×{" "}
+                {hall.layout?.columns || 0} columns
               </p>
               <p>
-                <strong>Seats:</strong> {(hall.layout?.columns || 0) * (hall.layout?.rows || 0)}
+                <strong>Seats:</strong>{" "}
+                {(hall.layout?.columns || 0) * (hall.layout?.rows || 0)}
               </p>
               <p>
-                <strong>Movies Scheduled:</strong> {hall.movieProgram?.length || 0}
+                <strong>Movies Scheduled:</strong>{" "}
+                {hall.movieProgram?.length || 0}
               </p>
             </div>
             <ActionButton

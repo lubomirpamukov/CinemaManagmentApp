@@ -12,9 +12,8 @@ import SearchBar from "../components/SearchBar";
 const userSchemnaWithoutPassword = userSchema.omit({ password: true });
 
 const UserPage: React.FC = () => {
-
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const debouncedSearchTerm = useDebounce(searchTerm,600);
+  const debouncedSearchTerm = useDebounce(searchTerm, 600);
 
   const {
     data: users,
@@ -24,11 +23,15 @@ const UserPage: React.FC = () => {
     loading,
     error,
     refresh,
-  } = usePaginated("/admin/users", 3, z.array(userSchemnaWithoutPassword), debouncedSearchTerm);
-
+  } = usePaginated(
+    "/admin/users",
+    3,
+    z.array(userSchemnaWithoutPassword),
+    debouncedSearchTerm
+  );
 
   //reset search to page 1
-  useSearch({debouncedValue: debouncedSearchTerm, setCurrentPage})
+  useSearch({ debouncedValue: debouncedSearchTerm, setCurrentPage });
 
   const handleSearchChange = (currentQuery: string) => {
     setSearchTerm(currentQuery);

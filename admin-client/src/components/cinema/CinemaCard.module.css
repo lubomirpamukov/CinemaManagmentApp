@@ -1,48 +1,46 @@
 .cinemaCard {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 0.0625rem solid #ccc;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    max-width: 35rem;
-    margin: 1rem auto;
-  }
-  
-  .cinemaCardImg {
-    width: 70%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 0.5rem;
-    justify-self: center;
-    display: block;  
-    margin-left: auto;  
-    margin-right: auto; 
-  }
-  
-  .cinemaCardContent {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    padding: 1rem;
-  }
-  
-  .cinemaName {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  .cinemaActions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-top: 1rem;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  max-width: 35rem;
+  margin: 1rem auto;
+}
 
-  
+.cinemaCardImg {
+  width: 70%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  justify-self: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cinemaCardContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.cinemaName {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.cinemaActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}

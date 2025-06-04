@@ -1,12 +1,12 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const SessionConstants = {
-    cinemaId: "Cinema is required.",
-    hallId: "Hall is required.",
-    movieId: "Movie is required.",
-    date: "Date is required.",
-    time: "Time is required.",
-}
+    cinemaId: 'Cinema is required.',
+    hallId: 'Hall is required.',
+    movieId: 'Movie is required.',
+    date: 'Date is required.',
+    time: 'Time is required.'
+};
 
 export const sessionSchema = z.object({
     _id: z.string().optional(),
@@ -15,8 +15,8 @@ export const sessionSchema = z.object({
     movieId: z.string().min(1, SessionConstants.movieId),
     date: z.string().min(1, SessionConstants.date),
     startTime: z.string().min(1, SessionConstants.time),
-    endTime: z.string().min(1, SessionConstants.time),
-})
+    endTime: z.string().min(1, SessionConstants.time)
+});
 
 // Create specific schema for session display objects
 export const sessionDisplaySchema = z.object({

@@ -12,11 +12,9 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
-
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <div className={styles.pagination}>
-      {/* Previous Arrow */}
       <button
         className={styles.arrow}
         onClick={() => onPageChange(currentPage - 1)}
@@ -25,7 +23,6 @@ const Pagination: React.FC<PaginationProps> = ({
         &lt;
       </button>
 
-      {/* Page Numbers */}
       {pages.map((page) => (
         <button
           key={page}
@@ -38,7 +35,6 @@ const Pagination: React.FC<PaginationProps> = ({
         </button>
       ))}
 
-      {/* Next Arrow */}
       <button
         className={styles.arrow}
         onClick={() => onPageChange(currentPage + 1)}

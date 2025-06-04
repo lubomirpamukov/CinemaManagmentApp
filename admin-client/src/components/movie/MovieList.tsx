@@ -12,7 +12,6 @@ type MovieListProps = {
 };
 
 const MovieList: React.FC<MovieListProps> = ({ movies, refresh, loading }) => {
-
   if (loading) {
     return <Spinner />;
   }

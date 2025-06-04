@@ -1,77 +1,76 @@
 .hallList {
-    margin: 1rem 0;
-  }
-  
-  .hallList h2 {
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .hallGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-  
-  .hallCard {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 1em;
-  }
-  
-  .hallCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .hallCard h3 {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    color: #333;
-    font-size: 1.25rem;
-  }
-  
-  .hallDetails {
-    margin-bottom: 1rem;
-  }
-  
-  .hallDetails p {
-    margin: 0.5rem 0;
-    color: #555;
-  }
-  
-  .error {
-    color: #e53935;
-    padding: 1rem;
-    background-color: #ffebee;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-  }
+  margin: 1rem 0;
+}
 
-  .addHallLink {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .addHallLink:hover {
-    background-color: #45a049; 
-    transform: translateY(-2px); 
-  }
-  
-  .addHallLink:active {
-    background-color: #45a049; 
-    transform: translateY(0); 
-  }
-  
+.hallList h2 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.hallGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.hallCard {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1em;
+}
+
+.hallCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.hallCard h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #333;
+  font-size: 1.25rem;
+}
+
+.hallDetails {
+  margin-bottom: 1rem;
+}
+
+.hallDetails p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.error {
+  color: #e53935;
+  padding: 1rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.addHallLink {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.addHallLink:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.addHallLink:active {
+  background-color: #45a049;
+  transform: translateY(0);
+}

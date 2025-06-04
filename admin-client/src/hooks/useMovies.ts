@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
-import { getMovies } from '../services';
-import { Movie } from '../utils';
+import { getMovies } from "../services";
+import { Movie } from "../utils";
 
 export const useMovies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -10,27 +10,38 @@ export const useMovies = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const refresh = useCallback(() => {
-    setRefreshKey(prevKey => prevKey + 1);
+    setRefreshKey((prevKey) => prevKey + 1);
   }, []);
 
   useEffect(() => {
+    let isActive = true;
+
     const fetchMovies = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
         const data = await getMovies();
-        setMovies(data);
-        setError(null);
+        if (isActive) {
+          setMovies(data);
+          setError(null);
+        }
       } catch (err: any) {
-        setError(err.message || 'Failed to fetch movies');
-        setMovies([]);
+        if (isActive) {
+          setError(err.message || "Failed to fetch movies");
+          setMovies([]);
+        }
       } finally {
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
 
     fetchMovies();
+
+    return () => {
+      isActive = false;
+    };
   }, [refreshKey, refresh]);
 
-  // Return all necessary data and functions
   return { movies, loading, error, refresh };
 };

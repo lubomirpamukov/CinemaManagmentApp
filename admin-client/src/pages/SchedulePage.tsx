@@ -17,11 +17,9 @@ const SchedulePage: React.FC = () => {
   } = useCinemas();
   const [selectedCinemaId, setSelectedCinemaId] = useState<string>("");
 
-  // Movies
   const { movies, loading: loadingMovies, error: moviesError } = useMovies();
   const [selectedMovieId, setSelectedMovieId] = useState<string>("");
 
-  // Halls
   const {
     hallsDetails,
     loading: loadingHalls,
@@ -29,19 +27,18 @@ const SchedulePage: React.FC = () => {
   } = useHallDetails(selectedCinemaId);
   const [selectedHallId, setSelectedHallId] = useState<string>("");
 
-  // Date
   const [selectedDate, setSelectedDate] = useState<string>("");
 
-  //Selected Session
-  const [selectedSessionForDetail, setSelectedSessionForDetail] = useState<SessionDisplay | null>(null)
-  
+  const [selectedSessionForDetail, setSelectedSessionForDetail] =
+    useState<SessionDisplay | null>(null);
+
   const handleSessionSelect = (session: SessionDisplay) => {
     setSelectedSessionForDetail(session);
-  }
+  };
 
   const handleCloseDetailView = () => {
     setSelectedSessionForDetail(null);
-  }
+  };
 
   useEffect(() => {
     setSelectedHallId("");
@@ -62,7 +59,6 @@ const SchedulePage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.filters}>
-        {/* Cinema Select */}
         <select
           value={selectedCinemaId}
           onChange={(e) => {
@@ -97,7 +93,6 @@ const SchedulePage: React.FC = () => {
           hallsDetails &&
           hallsDetails.length === 0 && <p>No halls found for this cinema.</p>}
 
-        {/* Movie Select */}
         <select
           value={selectedMovieId}
           onChange={(e) => setSelectedMovieId(e.target.value)}
@@ -111,27 +106,25 @@ const SchedulePage: React.FC = () => {
           ))}
         </select>
 
-        {/*Date Select*/}
         <label htmlFor="session-date" className={styles.filterLabel} />
         <input
           id="session-date"
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className={styles.dateInput} 
+          className={styles.dateInput}
         />
-        {selectedDate && ( 
+        {selectedDate && (
           <ActionButton
-          id="clear-date-button"
-          label="Clear"
-          type="edit"
-          onClick={() => setSelectedDate("")}
-          className={styles.clearDateButton}
+            id="clear-date-button"
+            label="Clear"
+            type="edit"
+            onClick={() => setSelectedDate("")}
+            className={styles.clearDateButton}
           />
         )}
       </div>
 
-      {/* Schedule Component */}
       <div className={styles.scheduleSection}>
         <Schedule
           cinemaId={selectedCinemaId}
@@ -142,11 +135,10 @@ const SchedulePage: React.FC = () => {
         />
       </div>
 
-      {/* Render Session details if selected */}
       {selectedSessionForDetail && (
         <SessionDetail
-        session={selectedSessionForDetail}
-        onClose={handleCloseDetailView}
+          session={selectedSessionForDetail}
+          onClose={handleCloseDetailView}
         />
       )}
     </div>

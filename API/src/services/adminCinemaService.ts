@@ -1,7 +1,6 @@
 import { CinemaZod, cinemaSchema } from '../utils/CinemaValidation';
 import Cinema, { ICinema } from '../models/cinema.model';
 
-
 export const getCinemasService = async (): Promise<CinemaZod[]> => {
     const cinemasFromDB: ICinema[] = await Cinema.find().lean();
 
@@ -11,23 +10,20 @@ export const getCinemasService = async (): Promise<CinemaZod[]> => {
                 id: cinema._id?.toString(),
                 city: cinema.city,
                 name: cinema.name,
-                halls: Array.isArray(cinema.halls) ? 
-                    cinema.halls.map(hall => 
-                        hall = hall.toString()
-                    ) : [],
+                halls: Array.isArray(cinema.halls) ? cinema.halls.map((hall) => (hall = hall.toString())) : [],
                 imgURL: cinema.imgURL,
                 snacks: cinema.snacks
                     ? cinema.snacks.map((snack) => ({
                           id: snack._id?.toString(),
                           name: snack.name,
                           description: snack.description,
-                          price: snack.price,
+                          price: snack.price
                       }))
-                    : [],
+                    : []
             };
             return cinemaDTO as CinemaZod;
         });
-        
+
         const validatedCinemas: CinemaZod[] = cinemaSchema.array().parse(transformedCinemasDTO);
         return validatedCinemas;
     } catch (err: any) {
@@ -51,9 +47,9 @@ export const getCinemaByIdService = async (id: string): Promise<CinemaZod | null
                       id: snack._id?.toString(),
                       name: snack.name,
                       description: snack.description,
-                      price: snack.price,
+                      price: snack.price
                   }))
-                : [],
+                : []
         };
         const validatedCinema: CinemaZod = cinemaSchema.parse(transformedCinemaDTO);
         return validatedCinema;
@@ -63,16 +59,16 @@ export const getCinemaByIdService = async (id: string): Promise<CinemaZod | null
 };
 
 export const updateCinemaByIdService = async (id: string, updates: CinemaZod): Promise<CinemaZod | null> => {
-    if(!id){
-        throw new Error('Cinema ID is required.')
+    if (!id) {
+        throw new Error('Cinema ID is required.');
     }
 
     const updatedCinema = await Cinema.findByIdAndUpdate(id, updates, {
         new: true,
-        runValidators: true,
+        runValidators: true
     });
 
-    if(!updatedCinema){
+    if (!updatedCinema) {
         throw new Error('Cinema not found');
     }
 
@@ -87,9 +83,9 @@ export const updateCinemaByIdService = async (id: string, updates: CinemaZod): P
                   id: snack._id?.toString(),
                   name: snack.name,
                   description: snack.description,
-                  price: snack.price,
+                  price: snack.price
               }))
-            : [],
+            : []
     };
     return cinemaExportDto;
-}
+};

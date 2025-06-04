@@ -1,7 +1,7 @@
 .sessionCard {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   padding: 1.2rem 1.5rem;
   margin: 0.7rem 0;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -9,7 +9,7 @@
 
 .sessionCard:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.09);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
 }
 
 .row {
@@ -41,8 +41,9 @@
   .sessionCard {
     padding: 1rem;
   }
-  
-  .label, .value {
+
+  .label,
+  .value {
     font-size: 0.9rem;
   }
 }

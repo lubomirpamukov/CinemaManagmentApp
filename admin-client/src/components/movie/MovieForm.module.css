@@ -1,114 +1,105 @@
-/* Form container */
 .movieForm {
-    max-width: 37.5rem; /* 600px -> 37.5rem */
-    margin: 0 auto;
-    padding: 1.25rem; /* 20px -> 1.25rem */
-    border: 0.0625rem solid #ddd; /* 1px -> 0.0625rem */
-    border-radius: 0.5rem; /* 8px -> 0.5rem */
-    background-color: #f9f9f9;
-    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1); /* 4px 6px -> 0.25rem 0.375rem */
+  max-width: 37.5rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.5rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
 }
 
-/* Form field container */
 .formField {
-    margin-bottom: 1rem; /* 16px -> 1rem */
+  margin-bottom: 1rem;
 }
 
-/* Label */
 .formField label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem; /* 8px -> 0.5rem */
-    color: #333;
-    font-size: 1rem; /* 16px (default) */
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1rem;
 }
 
-/* Input fields */
 .formField input,
 .formField textarea {
-    width: 100%;
-    padding: 0.625rem; /* 10px -> 0.625rem */
-    border: 0.0625rem solid #ccc;
-    border-radius: 0.25rem; /* 4px -> 0.25rem */
-    font-size: 0.875rem; /* 14px -> 0.875rem */
-    box-sizing: border-box;
-    margin-bottom: 1rem;
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
 }
 
 .formField textarea {
-    resize: vertical;
-    min-height: 5rem; /* 80px -> 5rem */
+  resize: vertical;
+  min-height: 5rem;
 }
 
-/* Error messages */
 .error {
-    color: #d9534f;
-    font-size: 0.75rem; /* 12px -> 0.75rem */
-    margin-top: 0.25rem; /* 4px -> 0.25rem */
+  color: #d9534f;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
 
-/* Buttons */
 .button {
-    display: inline-block;
-    padding: 0.625rem 1.25rem; /* 10px 20px -> 0.625rem 1.25rem */
-    font-size: 0.875rem; /* 14px -> 0.875rem */
-    font-weight: bold;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    text-align: center;
-    margin-right: 0.625rem; /* 10px -> 0.625rem */
+  display: inline-block;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-align: center;
+  margin-right: 0.625rem;
 }
 
 .button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .button.danger {
-    background-color: #d9534f;
+  background-color: #d9534f;
 }
 
 .button.danger:hover {
-    background-color: #c9302c;
+  background-color: #c9302c;
 }
 
-/* Add/Remove Cast Buttons */
 .castButton {
-    margin-top: 0.5rem; /* 8px -> 0.5rem */
-    padding: 0.375rem 0.75rem; /* 6px 12px -> 0.375rem 0.75rem */
-    font-size: 0.75rem; /* 12px -> 0.75rem */
-    color: #fff;
-    background-color: #28a745;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
+  margin-top: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }
 
 .castButton:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 .castButton.remove {
-    background-color: #d9534f;
-    align-items: center;
-    margin-bottom: 1rem;
+  background-color: #d9534f;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .castButton.remove:hover {
-    background-color: #c9302c;
+  background-color: #c9302c;
 }
 
-/* Cast Member Container */
 .castMember {
-    display: flex;
-    gap: 0.625rem; /* 10px -> 0.625rem */
-    align-items: center;
-    margin-bottom: 0.5rem; /* 8px -> 0.5rem */
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .castMember input {
-    flex: 1;
+  flex: 1;
 }
-

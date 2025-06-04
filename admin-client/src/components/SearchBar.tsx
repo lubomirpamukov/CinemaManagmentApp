@@ -4,10 +4,13 @@ import styles from "./SearchBar.module.css";
 type SearchBarProps = {
   onSearch: (query: string) => void;
   placeholder?: string;
-  className?: string
+  className?: string;
 };
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, placeholder = "Search..." }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  onSearch,
+  placeholder = "Search...",
+}) => {
   const [query, setQuery] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

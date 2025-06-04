@@ -36,10 +36,22 @@ function App() {
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/users" element={<UserPage />} />
             <Route path="/users/create" element={<EditCreateUserPage />} />
-            <Route path="/users/:userId/edit" element={<EditCreateUserPage />} />
-            <Route path="/cinemas/:cinemaId/snacks/edit" element={<SnackPage />} />
-            <Route path="/cinemas/:cinemaId/hall/create" element={<CreateHallPage />} />
-            <Route path="/cinemas/:cinemaId/edit" element={<EditCinemaPage />} />
+            <Route
+              path="/users/:userId/edit"
+              element={<EditCreateUserPage />}
+            />
+            <Route
+              path="/cinemas/:cinemaId/snacks/edit"
+              element={<SnackPage />}
+            />
+            <Route
+              path="/cinemas/:cinemaId/hall/create"
+              element={<CreateHallPage />}
+            />
+            <Route
+              path="/cinemas/:cinemaId/edit"
+              element={<EditCinemaPage />}
+            />
             <Route path="/cinemas" element={<CinemaPage />} />
             <Route path="/cinemas/create" element={<CreateCinemaPage />} />
             <Route path="/session" element={<CreateSessionPage />} />

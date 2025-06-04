@@ -7,7 +7,7 @@
   background: #f8fafc;
   color: #222;
   min-width: 220px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: border 0.2s;
 }
 
@@ -17,7 +17,7 @@
   align-items: center;
 }
 
-.dateInput{
+.dateInput {
   padding: 0.6rem 1rem;
   border: 1px solid #bfc4ca;
   border-radius: 6px;
@@ -26,12 +26,11 @@
   background: #f8fafc;
   color: #222;
   min-width: 220px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: border 0.2s;
-
 }
 
-.clearDateButton{
+.clearDateButton {
   padding: 0.6rem 1rem;
   border: 1px solid #bfc4ca;
   border-radius: 6px;
@@ -39,7 +38,7 @@
   margin: 1.5rem 0 2rem 0;
   background: #f8fafc;
   color: #222;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   transition: border 0.2s;
 }
 

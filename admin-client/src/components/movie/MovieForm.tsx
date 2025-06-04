@@ -16,9 +16,7 @@ export type MovieFormProps = {
 
 export type MovieFormValues = z.infer<typeof movieSchema>;
 
-const MovieForm: React.FC<MovieFormProps> = ({
-  initialValues,
-}) => {
+const MovieForm: React.FC<MovieFormProps> = ({ initialValues }) => {
   //initialize react hook form
   const {
     register, //register input fields
@@ -182,4 +180,3 @@ const MovieForm: React.FC<MovieFormProps> = ({
 };
 
 export default MovieForm;
-

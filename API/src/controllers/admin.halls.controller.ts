@@ -20,10 +20,11 @@ export const createHall = async (req: Request, res: Response) => {
         const { id } = req.params;
         const hallData = req.body;
         const hall = await hallSchema.parseAsync(hallData);
-
+        
         const createdHall = await createHallService(id, hall);
         res.status(200).json(hall);
     } catch (err: any) {
+        console.log(err)
         if (err.name === 'ZodError') {
             return res.status(400).json({ error: err.errors });
         }

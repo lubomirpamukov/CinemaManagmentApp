@@ -29,7 +29,6 @@ export const userExportDTOSchema = z.object({
     contact: z.string().max(15, UserValidation.contact).optional()
 });
 
-
 //Paginated response shema
 export const userPaginatedSchema = z.object({
     data: z.array(

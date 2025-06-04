@@ -9,20 +9,19 @@ import Spinner from "../Spinner";
 export type CinemaWithAction = Cinema;
 
 const CinemaList: React.FC = () => {
-  
   const { cinemas, loading } = useCinemas();
 
   if (loading) {
-    <Spinner />
+    <Spinner />;
   }
 
   return (
     <div className={styles.cinemaList}>
       {cinemas.map((cinema) => (
         <Link
-          to={`/cinemas/${cinema.id}/edit`} // Navigate to the edit page for the cinema
+          to={`/cinemas/${cinema.id}/edit`}
           key={cinema.id}
-          className={styles.cinemaCardLink} // Add a class for styling the link
+          className={styles.cinemaCardLink}
         >
           <div className={styles.cinemaCard}>
             {cinema.imgURL && (
@@ -52,4 +51,3 @@ const CinemaList: React.FC = () => {
 };
 
 export default CinemaList;
-

@@ -3,20 +3,19 @@ import { protectedRoute, deleteUser, getUserById, updateUser } from '../controll
 import { authentication, authorizeRoles } from '../middleware/auth.middleware';
 const userRouter: Router = express.Router();
 
-
 /**
  * @route   GET /users/protected
  * @desc    A protected route
  * @access  Admin/Distributor/Retailer
  */
-userRouter.get('/protected', authentication,authorizeRoles(['admin']), protectedRoute);
+userRouter.get('/protected', authentication, authorizeRoles(['admin']), protectedRoute);
 
 /**
  * @route   GET /users/:id
  * @desc    Get a user by email
  * @access  Admin
  */
-userRouter.get('/:id', authentication,authorizeRoles(['admin']), getUserById);
+userRouter.get('/:id', authentication, authorizeRoles(['admin']), getUserById);
 
 /**
  * @route   DELETE /users/:id
@@ -30,6 +29,6 @@ userRouter.delete('/:id', authentication, authorizeRoles(['admin']), deleteUser)
  * @desc    Update user details
  * @access  Admin
  */
-userRouter.put('/:id', authentication, authorizeRoles(['admin']) ,updateUser);
+userRouter.put('/:id', authentication, authorizeRoles(['admin']), updateUser);
 
 export default userRouter;

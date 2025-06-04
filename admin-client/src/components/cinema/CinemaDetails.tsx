@@ -12,7 +12,7 @@ import ActionButton from "../buttons/ActionButton";
 import { DEFAULT_CINEMA_VALUES } from "../../utils/constants";
 import { updateCinema } from "../../services";
 import { useCinemaById } from "../../hooks/useCinemaById";
-import { useHallDetails } from "../../hooks/useHallDetails"; 
+import { useHallDetails } from "../../hooks/useHallDetails";
 import Spinner from "../Spinner";
 
 type CinemaFormSchemaType = z.infer<typeof cinemaSchema>;
@@ -22,8 +22,12 @@ const CinemaDetails: React.FC = () => {
   const navigate = useNavigate();
 
   // Fetch cinema data
-  const { cinema, loading: cinemaLoading, error: cinemaError } = useCinemaById(cinemaId!);
-  
+  const {
+    cinema,
+    loading: cinemaLoading,
+    error: cinemaError,
+  } = useCinemaById(cinemaId!);
+
   // Fetch halls for this cinema
   const { hallsDetails, loading: hallsLoading } = useHallDetails(cinema?.id);
 
@@ -57,10 +61,10 @@ const CinemaDetails: React.FC = () => {
     }
     try {
       // Use cinema.halls and cinema.snacks to ensure we're using the original data
-      await updateCinema(cinema.id, { 
+      await updateCinema(cinema.id, {
         ...cinemaData,
-        halls: cinema.halls, 
-        snacks: cinema.snacks 
+        halls: cinema.halls,
+        snacks: cinema.snacks,
       });
       alert("Cinema updated successfully");
       navigate(`/cinemas`);
@@ -74,7 +78,11 @@ const CinemaDetails: React.FC = () => {
   }
 
   if (cinemaError || !cinema) {
-    return <p className={styles.error}>Error loading cinema: {cinemaError || "Cinema not found."}</p>;
+    return (
+      <p className={styles.error}>
+        Error loading cinema: {cinemaError || "Cinema not found."}
+      </p>
+    );
   }
 
   return (
@@ -123,12 +131,10 @@ const CinemaDetails: React.FC = () => {
           buttonType="submit"
         />
       </form>
-      
-      {/* Pass the fetched hallDetails instead of hall IDs */}
+
       <HallList cinema={cinema} halls={hallsDetails} />
-      
-      {/* Pass the snacks from cinema object */}
-      <SnackList cinemaId={cinema.id || ""}  snacks={cinema.snacks || []} />
+
+      <SnackList cinemaId={cinema.id || ""} snacks={cinema.snacks || []} />
     </div>
   );
 };

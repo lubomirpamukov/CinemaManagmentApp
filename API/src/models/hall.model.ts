@@ -2,8 +2,6 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 import { SeatType } from './reservation.model';
 import { boolean } from 'zod';
 
-
-
 export interface ISeat {
     _id: Types.ObjectId;
     row: number;
@@ -31,36 +29,39 @@ export interface IHall extends Document {
     seats: ISeat[];
 }
 
-const SeatSchema = new Schema<ISeat>({
-    row: {
-        type: Number,
-        required: true
+const SeatSchema = new Schema<ISeat>(
+    {
+        row: {
+            type: Number,
+            required: true
+        },
+        column: {
+            type: Number,
+            required: true
+        },
+        seatNumber: {
+            type: String,
+            required: true,
+            minlength: 1,
+            maxlength: 10
+        },
+        isAvailable: {
+            type: Boolean,
+            required: true
+        },
+        type: {
+            type: String,
+            enum: Object.values(SeatType),
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true,
+            min: 0
+        }
     },
-    column: {
-        type: Number,
-        required: true
-    },
-    seatNumber: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 10
-    },
-    isAvailable: {
-        type: Boolean,
-        required: true,
-    },
-    type: {
-        type: String,
-        enum: Object.values(SeatType),
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true,
-        min: 0
-    }
-}, {_id: true});
+    { _id: true }
+);
 
 const MovieProgramSchema = new Schema<IMovieProgram>({
     movieId: {
