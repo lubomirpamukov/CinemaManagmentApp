@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getHallsByCinemaId } from "../services/hallService";
+import { getHallsByCinemaId } from "../services";
 import { Hall } from "../utils";
 
 export const useHallDetails = (cinemaId: string | undefined) => {

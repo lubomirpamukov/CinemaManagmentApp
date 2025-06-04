@@ -9,6 +9,7 @@ export const SessionConstants = {
 }
 
 export const sessionSchema = z.object({
+    _id: z.string().optional(),
     cinemaId: z.string().min(1, SessionConstants.cinemaId),
     hallId: z.string().min(1, SessionConstants.hallId),
     movieId: z.string().min(1, SessionConstants.movieId),

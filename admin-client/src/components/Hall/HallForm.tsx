@@ -107,7 +107,7 @@ const HallForm: React.FC = () => {
           row: r,
           column: c,
           seatNumber: `${rowLabel}${c}`,
-          isAvailable: "available",
+          isAvailable: true,
           type: "regular",
           price: 10, // Default price
         });
@@ -391,7 +391,7 @@ const HallForm: React.FC = () => {
                 row: 1,
                 column: 1,
                 seatNumber: "A1",
-                isAvailable: "available",
+                isAvailable: true,
                 type: "regular",
                 price: 10,
               })

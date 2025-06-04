@@ -40,7 +40,6 @@ export const getCinemaByIdService = async (id: string): Promise<CinemaZod | null
     if (!cinemaFromDB) return null;
 
     try {
-        console.log('cinemaFromDB', cinemaFromDB);
         const transformedCinemaDTO: CinemaZod = {
             id: cinemaFromDB._id?.toString(),
             city: cinemaFromDB.city,

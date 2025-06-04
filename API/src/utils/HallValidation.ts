@@ -13,10 +13,11 @@ export const HallValidation = {
 
 
 export const seatsSchema = z.object({
+  originalSeatId: z.string().optional(),
   row: z.number(),
   column: z.number(),
   seatNumber: z.string().min(1, HallValidation.seatName).max(10, HallValidation.seatName),
-  isAvailable: z.enum(["reserved", "available", "sold"]),
+  isAvailable: z.boolean().optional(),
   type: z.enum(["regular", "vip", "couple"]),
   price: z.number().min(0, HallValidation.price),
 });
