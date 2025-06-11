@@ -219,3 +219,14 @@ GET http://localhost:3123/session/683d78bca4111a39bf13ed85/reserved-seats
 ### get hall by Id
 GET http://localhost:3123/halls/683d7892a4111a39bf13ed46
 
+###
+GET http://localhost:3123/movies
+
+### Login as Admin User
+POST http://localhost:3123/auth/login
+Content-Type: application/json
+
+{
+    "email": "example@gmail.com",
+    "password": "securepassword"
+}
