@@ -5,10 +5,6 @@ import { UserValidation } from "./constants/userConstants";
 export const userSchema = z.object({
   role: z.enum(["admin", "user"]).default("user"),
   id: z.string(),
-  userName: z
-    .string()
-    .min(4, UserValidation.name)
-    .max(100, UserValidation.name),
   name: z
     .string()
     .min(4, UserValidation.name)

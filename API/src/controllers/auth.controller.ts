@@ -30,7 +30,7 @@ export const loginUser = async (req: Request, res: Response) => {
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
-        const token = generateToken(user._id, user.role);
+        const token = generateToken(user._id, user.role, user.email);
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -61,6 +61,5 @@ export const checkAuth = async (req: JwtRequest, res: Response) => {
     if (!user) {
         return res.status(401).json({ message: 'Not authenticated' });
     }
-
     return res.status(200).json({ role: user.role, email: user.email });
 };

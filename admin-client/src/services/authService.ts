@@ -50,8 +50,7 @@ export const checkAuthStatus = async (): Promise<{ role: string }> => {
     try {
       const errorData = await response.json();
       errorMsg = errorData.error || errorMsg;
-    } catch (err: any) {
-    }
+    } catch (err: any) {}
     throw new Error(errorMsg);
   }
   return response.json();

@@ -11,7 +11,6 @@ export const UserValidation = {
 //User validation schema
 export const userImportDTOSchema = z.object({
     id: z.string().optional(),
-    userName: z.string().min(4, UserValidation.name).max(100, UserValidation.name),
     name: z.string().min(4, UserValidation.name).max(100, UserValidation.name).optional(),
     email: z.string().email(UserValidation.email).max(100, UserValidation.email),
     password: z.string().min(8, UserValidation.password).max(100, UserValidation.password),
@@ -23,7 +22,6 @@ export type UserDTO = z.infer<typeof userImportDTOSchema>;
 //User DTO validation schema
 export const userExportDTOSchema = z.object({
     id: z.string(),
-    userName: z.string().min(4, UserValidation.name).max(100, UserValidation.name),
     name: z.string().min(4, UserValidation.name).max(100, UserValidation.name).optional(),
     email: z.string().email(UserValidation.email).max(100, UserValidation.email),
     contact: z.string().max(15, UserValidation.contact).optional()
@@ -34,7 +32,6 @@ export const userPaginatedSchema = z.object({
     data: z.array(
         z.object({
             id: z.string(),
-            userName: z.string().min(4, UserValidation.name).max(100, UserValidation.name),
             name: z.string().min(4, UserValidation.name).max(100, UserValidation.name).optional(),
             email: z.string().email(UserValidation.email).max(100, UserValidation.email),
             contact: z.string().max(15, UserValidation.contact).optional()

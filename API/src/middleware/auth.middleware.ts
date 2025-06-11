@@ -41,6 +41,6 @@ export function authorizeRoles(allowedRoles: UserRole[]) {
     };
 }
 
-export const generateToken = (_id: mongoose.Types.ObjectId, role: string) => {
-    return jwt.sign({ _id, role }, JWT_SECRET, { expiresIn: '99h' });
+export const generateToken = (_id: mongoose.Types.ObjectId, role: string, email: string) => {
+    return jwt.sign({ _id, role, email }, JWT_SECRET, { expiresIn: '99h' });
 };

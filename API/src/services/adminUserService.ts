@@ -43,7 +43,6 @@ export const getUserByIdService = async (id: string) => {
 
     const userExportDto = {
         id: user._id.toString(),
-        userName: user.userName,
         name: user.name,
         email: user.email,
         contact: user.contact
@@ -70,7 +69,6 @@ export const createUserService = async (userData: typeof userExportDTOSchema) =>
     // Transform the user object to DTO
     const userExportDto = {
         id: newUser._id.toString(),
-        userName: newUser.userName,
         name: newUser.name,
         email: newUser.email,
         contact: newUser.contact
@@ -99,7 +97,6 @@ export const updateUserService = async (id: string, updates: any) => {
 
     const userExportDto = {
         id: updatedUser._id.toString(),
-        userName: updatedUser.userName,
         name: updatedUser.name,
         email: updatedUser.email,
         contact: updatedUser.contact
