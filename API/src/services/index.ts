@@ -4,3 +4,4 @@ export * from './adminMovieService';
 export * from './adminUserService';
 export * from './reservationService';
 export * from './sessionService';
+export * from './cinemaService';

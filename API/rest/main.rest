@@ -222,7 +222,7 @@ GET http://localhost:3123/halls/683d7892a4111a39bf13ed46
 ###
 GET http://localhost:3123/movies
 
-### Login as Admin User
+### Login as  User
 POST http://localhost:3123/auth/login
 Content-Type: application/json
 
@@ -230,3 +230,6 @@ Content-Type: application/json
     "email": "example@gmail.com",
     "password": "securepassword"
 }
+
+### get cinema cities by movie
+GET http://localhost:3123/cinemas/movies/684070c13771f2dcaa327d59

@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import { SeatZod, SessionPaginatedResponse, SessionZod, sessionDisplayPaginatedSchema, sessionSchema } from '../utils';
 import Session, { ISession } from '../models/session.model';
-import Reservation from '../models/reservation.model'
+import Reservation from '../models/reservation.model';
 import { SessionDisplay } from '../utils';
 import { paginate } from '../utils';
-import Hall, {IHall, ISeat as IHallSeatDefinition} from '../models/hall.model'
+import Hall, { IHall, ISeat as IHallSeatDefinition } from '../models/hall.model';
 import { getBookedSeatIdsForSession } from '../utils/reservation.helpers';
 import { SeatType } from '../models';
 
@@ -94,30 +94,32 @@ export const getSessionsWithFiltersService = async ({
         { path: 'movieId', select: 'title' }
     ]);
 
-    const formattedSessions: SessionDisplay[] = populatedSessions.map((session) => {
-        const populatedSession = session as unknown as {
-            _id: mongoose.Types.ObjectId;
-            cinemaId: { _id: mongoose.Types.ObjectId; name: string };
-            hallId: { _id: mongoose.Types.ObjectId; name: string };
-            movieId: { _id: mongoose.Types.ObjectId; title: string };
-            date: string;
-            startTime: string;
-            endTime: string;
-        };
+    const formattedSessions: SessionDisplay[] = populatedSessions
+        .filter((session) => session.hallId && session.cinemaId && session.movieId)
+        .map((session) => {
+            const populatedSession = session as unknown as {
+                _id: mongoose.Types.ObjectId;
+                cinemaId: { _id: mongoose.Types.ObjectId; name: string };
+                hallId: { _id: mongoose.Types.ObjectId; name: string };
+                movieId: { _id: mongoose.Types.ObjectId; title: string };
+                date: string;
+                startTime: string;
+                endTime: string;
+            };
 
-        return {
-            _id: populatedSession._id.toString(),
-            cinemaId: populatedSession.cinemaId?._id?.toString(),
-            cinemaName: populatedSession.cinemaId.name,
-            hallId: populatedSession.hallId?._id?.toString(),
-            hallName: populatedSession.hallId?.name,
-            movieId: populatedSession.movieId?._id.toString(),
-            movieName: populatedSession.movieId?.title,
-            date: populatedSession?.date,
-            startTime: populatedSession?.startTime,
-            endTime: populatedSession?.endTime
-        };
-    });
+            return {
+                _id: populatedSession._id.toString(),
+                cinemaId: populatedSession.cinemaId?._id?.toString(),
+                cinemaName: populatedSession.cinemaId.name,
+                hallId: populatedSession.hallId?._id?.toString(),
+                hallName: populatedSession.hallId?.name,
+                movieId: populatedSession.movieId?._id.toString(),
+                movieName: populatedSession.movieId?.title,
+                date: populatedSession?.date,
+                startTime: populatedSession?.startTime,
+                endTime: populatedSession?.endTime
+            };
+        });
 
     const validatedSessions = sessionDisplayPaginatedSchema.parse({
         data: formattedSessions,
@@ -140,7 +142,7 @@ export type IHallSeatLayoutResponse = {
     hallLayout: {
         rows: number;
         columns: number;
-    }
+    };
     seats: ISeatWithAvailability[];
 };
 
@@ -148,13 +150,13 @@ export const getSessionSeatLayoutService = async (sessionIdString: string): Prom
     // get session
     const sessionObjectId = new mongoose.Types.ObjectId(sessionIdString);
     const session = await Session.findById(sessionObjectId);
-    if(!session){
+    if (!session) {
         throw new Error(`Can't find session with Id ${sessionIdString}`);
     }
 
     // get hall associated with the session
     const hall = await Hall.findById(session.hallId).lean();
-    if(!hall){
+    if (!hall) {
         throw new Error(`Hall with Id ${session.hallId.toString()} no found!`);
     }
 
@@ -169,7 +171,7 @@ export const getSessionSeatLayoutService = async (sessionIdString: string): Prom
             _id: hallSeat._id.toString(),
             type: hallSeat.type as SeatType,
             isAvailable: isAvailable
-        }
+        };
     });
 
     return {
@@ -177,10 +179,9 @@ export const getSessionSeatLayoutService = async (sessionIdString: string): Prom
         hallId: hall._id.toString(),
         hallName: hall.name,
         hallLayout: hall.layout,
-        seats: seatsWithAvailability,
+        seats: seatsWithAvailability
     };
-
-}
+};
 
 export const getReservedSessionSeatsService = async (sessionId: string) => {
     if (!mongoose.Types.ObjectId.isValid(sessionId)) {

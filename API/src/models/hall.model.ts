@@ -12,12 +12,6 @@ export interface ISeat {
     price: number;
 }
 
-export interface IMovieProgram {
-    movieId: string;
-    startTime: string;
-    endTime: string;
-}
-
 export interface IHall extends Document {
     cinemaId: Types.ObjectId | string;
     name: string;
@@ -25,7 +19,6 @@ export interface IHall extends Document {
         rows: number;
         columns: number;
     };
-    movieProgram: IMovieProgram[];
     seats: ISeat[];
 }
 
@@ -63,20 +56,6 @@ const SeatSchema = new Schema<ISeat>(
     { _id: true }
 );
 
-const MovieProgramSchema = new Schema<IMovieProgram>({
-    movieId: {
-        type: String,
-        required: true
-    },
-    startTime: {
-        type: String,
-        required: true
-    },
-    endTime: {
-        type: String,
-        required: true
-    }
-});
 
 const HallSchema = new Schema<IHall>({
     cinemaId: {
@@ -104,10 +83,9 @@ const HallSchema = new Schema<IHall>({
             max: 50
         }
     },
-    movieProgram: { type: [MovieProgramSchema], default: [] },
     seats: { type: [SeatSchema], default: [] }
 });
 
 const Hall = mongoose.model<IHall>('Hall', HallSchema);
 export default Hall;
-export { HallSchema, SeatSchema, MovieProgramSchema };
+export { HallSchema, SeatSchema };

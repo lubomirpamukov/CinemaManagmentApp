@@ -14,6 +14,7 @@ import reservationRouter from './routes/reservation.routes';
 import sessionRouter from './routes/session.routes';
 import hallsRouter from './routes/halls.routes';
 import movieRouter from './routes/movie.routes'
+import cinemaRouter from './routes/cinema.routes'
 import dotenv from 'dotenv';
 dotenv.config();
 export const application = express();
@@ -60,7 +61,8 @@ export const Main = async () => {
     application.use('/reservation', reservationRouter);
     application.use('/session', sessionRouter);
     application.use('/halls', hallsRouter);
-    application.use('/movies', movieRouter)
+    application.use('/movies', movieRouter);
+    application.use('/cinemas', cinemaRouter)
 
     logging.log('Define Routing Error');
     application.use(routeNotFound);
