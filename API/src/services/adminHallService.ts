@@ -19,7 +19,6 @@ export const getCinemaHallsService = async (cinemaId: string): Promise<IHall[]> 
         id: hall._id?.toString(),
         name: hall.name,
         layout: hall.layout,
-        movieProgram: hall.movieProgram || [],
         seats: hall.seats
             ? hall.seats.map((seat) => ({
                   originalSeatId: seat._id.toString(),
@@ -53,7 +52,6 @@ export const createHallService = async (cinemaId: string, hallData: HallValidati
         cinemaId: objectId.toString(),
         name: hall.name,
         layout: hall.layout,
-        movieProgram: hall.movieProgram || [],
         seats: hall.seats
             ? hall.seats.map((seat) => ({
                   originalSeatId: seat._id.toString(),
@@ -105,13 +103,6 @@ export const getHallByIdService = async (id: string): Promise<HallValidation> =>
         cinemaId: hall.cinemaId.toString(), 
         name: hall.name,
         layout: hall.layout, 
-        movieProgram: hall.movieProgram
-            ? hall.movieProgram.map((program: any) => ({ 
-                  movieId: program.movieId.toString(), 
-                  startTime: program.startTime.toISOString(), 
-                  endTime: program.endTime.toISOString(), 
-              }))
-            : [],
         seats: hall.seats
             ? hall.seats.map((seat: any) => ({ 
                   originalSeatId: seat._id.toString(), 

@@ -20,12 +20,6 @@ export const seatsSchema = z.object({
   price: z.number().min(0, HallValidation.price),
 });
 
-export const movieProgramSchema = z.object({
-    movieId: z.string(),
-    startTime: z.string(),
-    endTime: z.string()
-});
-
 export const hallSchema = z
     .object({
         id: z.string().optional(),
@@ -35,7 +29,6 @@ export const hallSchema = z
             rows: z.number().min(1, HallValidation.layoutRows).max(50, HallValidation.layoutRows),
             columns: z.number().min(1, HallValidation.layoutColumns).max(50, HallValidation.layoutColumns)
         }),
-        movieProgram: z.array(movieProgramSchema),
         seats: z.array(seatsSchema)
     })
     .refine(

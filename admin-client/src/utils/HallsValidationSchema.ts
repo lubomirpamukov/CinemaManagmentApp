@@ -19,12 +19,6 @@ export const seatsSchema = z.object({
 
 export type SeatZod = z.infer<typeof seatsSchema>;
 
-export const movieProgramSchema = z.object({
-  movieId: z.string(),
-  startTime: z.string(),
-  endTime: z.string(),
-});
-
 export const hallSchema = z
   .object({
     id: z.string().optional(),
@@ -40,7 +34,6 @@ export const hallSchema = z
         .min(1, HallValidation.layoutColumns)
         .max(50, HallValidation.layoutColumns),
     }),
-    movieProgram: z.array(movieProgramSchema),
     seats: z.array(seatsSchema),
   })
   .refine(
