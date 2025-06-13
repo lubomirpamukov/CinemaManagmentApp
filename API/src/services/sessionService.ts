@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { SeatZod, SessionPaginatedResponse, SessionZod, sessionDisplayPaginatedSchema, sessionSchema } from '../utils';
+import { SeatZod, SessionPaginatedResponse, SessionZod, sessionDisplayPaginatedSchema, sessionDisplaySchema, sessionSchema } from '../utils';
 import Session, { ISession } from '../models/session.model';
 import Reservation from '../models/reservation.model';
 import { SessionDisplay } from '../utils';
@@ -217,3 +217,4 @@ export const getReservedSessionSeatsService = async (sessionId: string) => {
         throw new Error(`Failed to retrieve reservations for session ${sessionId}.`);
     }
 };
+

@@ -233,3 +233,6 @@ Content-Type: application/json
 
 ### get cinema cities by movie
 GET http://localhost:3123/cinemas/movies/684070c13771f2dcaa327d59
+
+### Get cinemas by movie and city
+GET http://localhost:3123/cinemas/by-city-and-movie?movieId=684070c13771f2dcaa327d59&city=San+Francisco15
