@@ -10,7 +10,7 @@ export const registerUser = async (req: Request, res: Response) => {
     try {
         const { userName, name, email, password, role, contact, address, geolocation } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ userName, name, email, password: hashedPassword, role, contact, address, geolocation });
+        const user = new User({ name, email, password: hashedPassword, role, contact, address, });
         await user.save();
         return res.status(201).json({ message: 'User created' });
     } catch (error: any) {
@@ -61,5 +61,5 @@ export const checkAuth = async (req: JwtRequest, res: Response) => {
     if (!user) {
         return res.status(401).json({ message: 'Not authenticated' });
     }
-    return res.status(200).json({ role: user.role, email: user.email });
+    return res.status(200).json({ role: user.role, email: user.email, id: user.id?.toString() });
 };
