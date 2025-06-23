@@ -20,6 +20,7 @@ export const createReservation = async (req: Request, res: Response) => {
             })),
             totalPrice: newReservation.totalPrice,
             status: newReservation.status,
+            purchasedSnacks: newReservation.purchasedSnacks,
             reservationCode: newReservation.reservationCode,
             createdAt: newReservation.createdAt.toISOString(),
             updatedAt: newReservation.updatedAt.toISOString()

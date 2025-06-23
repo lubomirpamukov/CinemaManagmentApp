@@ -22,6 +22,13 @@ export interface IReservedSeat {
     price: number;
 }
 
+export interface IPurchasedSnack {
+    snackId: mongoose.Types.ObjectId;
+    name: string;
+    price: number;
+    quantity: number;
+}
+
 export interface IReservation extends Document {
     _id: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
@@ -32,6 +39,7 @@ export interface IReservation extends Document {
     reservationCode?: string;
     createdAt: Date;
     updatedAt: Date;
+    purchasedSnacks: IPurchasedSnack[];
     //to do: payment info for stripe intergration in the future.
 }
 
@@ -67,6 +75,25 @@ const reserveSeatSchema: Schema<IReservedSeat> = new Schema(
     { _id: false }
 );
 
+const purchasedSnackSchema: Schema<IPurchasedSnack> = new Schema({
+    snackId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
+}, { _id: false });
+
 const reservationSchema: Schema<IReservation> = new Schema(
     {
         userId: {
@@ -94,7 +121,8 @@ const reservationSchema: Schema<IReservation> = new Schema(
             type: String,
             unique: true,
             sparse: true
-        }
+        },
+        purchasedSnacks: [purchasedSnackSchema]
     },
     { timestamps: true }
 );
