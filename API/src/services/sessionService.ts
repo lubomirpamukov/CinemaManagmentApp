@@ -30,17 +30,30 @@ export const createSessionService = async (sessionData: SessionZod) => {
         throw new Error('Session overlaps with existing sessions');
     }
 
+    //get hall seat capacity.
+    const hall = await Hall.findById(new mongoose.Types.ObjectId(parsed.hallId)).lean();
+    if (!hall) {
+        throw new Error(`Hall with ID ${parsed.hallId} not found, Cannot determine seat capacity.`);
+    }
+
+    const totalSeatsInHall = hall.seats ? hall.seats.length : 0;
+    if (totalSeatsInHall) {
+        console.warn(`Hall with ID ${parsed.hallId} has 0 seats defined.`)
+    }
+
     const session = await Session.create({
         ...parsed,
         cinemaId: new mongoose.Types.ObjectId(parsed.cinemaId),
         hallId: new mongoose.Types.ObjectId(parsed.hallId),
-        movieId: new mongoose.Types.ObjectId(parsed.movieId)
+        movieId: new mongoose.Types.ObjectId(parsed.movieId),
+        availableSeats: totalSeatsInHall
     });
 
     const sessionObj = session.toObject();
 
     return {
         ...sessionObj,
+        _id: sessionObj._id.toString(),
         cinemaId: sessionObj.cinemaId.toString(),
         hallId: sessionObj.hallId.toString(),
         movieId: sessionObj.movieId.toString()
@@ -51,6 +64,7 @@ type SessionFilters = {
     cinemaId?: string;
     hallId?: string;
     movieId?: string;
+    minSeatsRequired?: number;
     date?: string;
     page?: number;
     limit?: number;
@@ -60,6 +74,7 @@ export const getSessionsWithFiltersService = async ({
     cinemaId,
     hallId,
     movieId,
+    minSeatsRequired,
     date,
     page = 1,
     limit = 10
@@ -80,6 +95,10 @@ export const getSessionsWithFiltersService = async ({
 
     if (date) {
         query.date = date;
+    }
+
+    if (typeof minSeatsRequired === 'number' && minSeatsRequired > 0) {
+        query.availableSeats = { $gte: minSeatsRequired };
     }
 
     const paginationResult = await paginate(Session, {
@@ -105,6 +124,7 @@ export const getSessionsWithFiltersService = async ({
                 date: string;
                 startTime: string;
                 endTime: string;
+                availableSeats: number;
             };
 
             return {
@@ -117,7 +137,8 @@ export const getSessionsWithFiltersService = async ({
                 movieName: populatedSession.movieId?.title,
                 date: populatedSession?.date,
                 startTime: populatedSession?.startTime,
-                endTime: populatedSession?.endTime
+                endTime: populatedSession?.endTime,
+                availableSeats: populatedSession?.availableSeats,
             };
         });
 
@@ -218,3 +239,23 @@ export const getReservedSessionSeatsService = async (sessionId: string) => {
     }
 };
 
+export const getAvailableDatesForMovieInCinemaService = async (movieId: string, cinemaId: string): Promise<string[]> => {
+    if (!mongoose.Types.ObjectId.isValid(movieId)) throw new Error('Invalid Movie ID format.');
+    if (!mongoose.Types.ObjectId.isValid(cinemaId)) throw new Error('Invalid Cinema ID format.');
+
+    try {
+        const sessions = await Session.find({
+            movieId: new mongoose.Types.ObjectId(movieId),
+            cinemaId: new mongoose.Types.ObjectId(cinemaId)
+        })
+            .select('date -_id')
+            .lean();
+
+        if (!sessions || sessions.length === 0) return [];
+
+        const uniqueDates = [...new Set(sessions.map((session) => session.date))];
+        return uniqueDates;
+    } catch (error: any) {
+        throw new Error('Failed to retrieve available dates.');
+    }
+};

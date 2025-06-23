@@ -5,6 +5,7 @@ export interface ISession extends Document {
     cinemaId: mongoose.Types.ObjectId;
     hallId: mongoose.Types.ObjectId;
     movieId: mongoose.Types.ObjectId;
+    availableSeats: number;
     date: string; // "YYYY-MM-DD"
     startTime: string; // "HH:MM"
     endTime: string; // "HH:MM"
@@ -29,6 +30,10 @@ const SessionSchema: Schema<ISession> = new Schema(
             ref: 'Movie',
             required: true,
             trim: true
+        },
+        availableSeats: {
+            type: Number,
+            required: true
         },
         date: {
             type: String,

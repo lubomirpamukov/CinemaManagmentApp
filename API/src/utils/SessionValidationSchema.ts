@@ -29,7 +29,8 @@ export const sessionDisplaySchema = z.object({
     movieName: z.string(),
     date: z.string(),
     startTime: z.string(),
-    endTime: z.string()
+    endTime: z.string(),
+    availableSeats: z.number()
 });
 
 export type SessionDisplay = z.infer<typeof sessionDisplaySchema>;
