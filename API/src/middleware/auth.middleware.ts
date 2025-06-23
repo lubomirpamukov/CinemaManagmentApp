@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 
 export interface JwtRequest extends Request {
     user?: {
+        id?: string;
         email: string;
         role: UserRole;
     };
@@ -20,9 +21,19 @@ export const authentication = (req: JwtRequest, res: Response, next: NextFunctio
     }
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded as IUser;
+        jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+
+        req.user = {
+            email: decoded.email,
+            role: decoded.role,
+            id: decoded._id,
+        };
+
         next();
+    });
     } catch (error) {
         return res.status(401).json('Invalid token');
     }
