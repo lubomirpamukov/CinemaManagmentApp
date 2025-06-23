@@ -5,3 +5,5 @@ export * from './adminUserService';
 export * from './reservationService';
 export * from './sessionService';
 export * from './cinemaService';
+export * from './hallService';
+export * from './movieService';

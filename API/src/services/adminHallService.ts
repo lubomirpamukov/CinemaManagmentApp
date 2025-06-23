@@ -2,7 +2,6 @@ import Hall, { IHall } from '../models/hall.model';
 import mongoose from 'mongoose';
 import Cinema from '../models/cinema.model';
 import { Hall as HallValidation } from '../utils';
-import { Types } from 'mongoose';
 
 export const getCinemaHallsService = async (cinemaId: string): Promise<IHall[]> => {
     if (!cinemaId) {

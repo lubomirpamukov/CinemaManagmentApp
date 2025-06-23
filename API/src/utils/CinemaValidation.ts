@@ -23,6 +23,8 @@ export const snackSchema = z.object({
     price: z.number().min(0.1, SnackValidation.snackPrice).max(1000, SnackValidation.snackPrice)
 });
 
+export type TSnack = z.infer<typeof snackSchema>;
+
 export const cinemaSchema = z.object({
     id: z.string().optional(),
     city: z.string().min(3, CinemaValidation.city).max(150, CinemaValidation.city),

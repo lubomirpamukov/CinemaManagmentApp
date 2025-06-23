@@ -63,8 +63,11 @@ export const getCinemasByCityAndMovieService = async (city?: string, movieId?: s
             city: { $regex: `^${city}$`, $options: 'i' },
             _id: { $in: cinemaIdsFromSessions.map(id => new mongoose.Types.ObjectId(id)) }
         }).lean();
-
-        return cinemas.map(c => ({ ...c, _id: c._id.toString() }));
+        
+        return cinemas.map(c => {
+            const { _id, ...restOfCinema } = c;
+            return { ...restOfCinema, id: _id.toString() };
+        });
 
     } catch (error) {
         console.error(`Error fetching cinemas for city ${city} and movie ${movieId}:`, error);

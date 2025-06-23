@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { SnackValidation, CinemaValidation } from '../utils/CinemaValidation';
 
+
 export interface ISnack extends Document {
     _id: mongoose.Types.ObjectId;
     name: string;

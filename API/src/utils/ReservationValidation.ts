@@ -81,7 +81,7 @@ export const createReservationValidationSchema = z.object({
         .default('pending'),
     reservationCode: z.string().trim().min(1).optional()
 });
-export type CreateReservationZod = z.infer<typeof createReservationValidationSchema>;
+export type TReservation = z.infer<typeof createReservationValidationSchema>;
 
 export const reservationResponseSchema = createReservationValidationSchema.extend({
     _id: z
@@ -99,4 +99,21 @@ export const reservationResponseSchema = createReservationValidationSchema.exten
         invalid_type_error: ReservationValidationMessages.statusInvalid
     })
 });
-export type ReservationResponseZod = z.infer<typeof reservationResponseSchema>;
+export type ReservationResponse = z.infer<typeof reservationResponseSchema>;
+
+const mongooseObjectIdRegex = /^[a-fA-F0-9]{24}$/;
+const PurchasedSnacksSchema = z.record(z.number());
+
+export const createReservationSchema = z.object({
+    userId: z.string().regex(mongooseObjectIdRegex, { message: 'Invalid userId format.' }),
+    sessionId: z.string().regex(mongooseObjectIdRegex, { message: 'Invalid sessionId format.' }),
+    seats: z.array(
+        z.object({
+            originalSeatId: z.string().regex(mongooseObjectIdRegex, { message: 'Invalid seatId format.' })
+        })
+    ),
+    status: z.enum(['pending', 'confirmed', 'failed', 'completed']),
+    purchasedSnacks: PurchasedSnacksSchema.optional()
+});
+
+export type CreateReservationRequest = z.infer<typeof createReservationSchema>;
