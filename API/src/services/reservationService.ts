@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { CreateReservationRequest } from '../utils';
+import { CreateReservationRequest, TReservationDisplay } from '../utils';
 import Reservation, { IPurchasedSnack } from '../models/reservation.model';
 import Session from '../models/session.model';
 import { IReservation, ReservationStatus } from '../models';
@@ -74,8 +74,7 @@ export const createReservationService = async (reservationData: CreateReservatio
                             name: snack.name,
                             price: snack.price,
                             quantity: quantity
-
-                        })
+                        });
                     } else {
                         console.warn(`Snack with ID ${snackId} not found in cinema ${cinema.name}`);
                     }
@@ -85,7 +84,7 @@ export const createReservationService = async (reservationData: CreateReservatio
     }
     // generate reservation code
     const reservationCode = uuidv4().substring(0, 8).toUpperCase();
-    console.log(purchasedSnacks)
+    console.log(purchasedSnacks);
     const newReservationDataForModel = {
         userId: userObjectId,
         sessionId: sessionObjectId,
@@ -105,4 +104,76 @@ export const createReservationService = async (reservationData: CreateReservatio
     }
 
     return newReservation;
+};
+
+export const getUserReservationService = async (userId: string): Promise<TReservationDisplay[]> => {
+    if (!userId) throw new Error('User ID required.');
+    if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error('User ID invalid format.');
+
+    const userReservations = await Reservation.find({ userId: userId })
+        .populate({
+            path: 'sessionId',
+            select: 'movieId hallId startTime date',
+            populate: [
+                { path: 'movieId', select: 'title' },
+                { path: 'hallId', select: 'name' }
+            ]
+        })
+        .lean();
+
+    const reservationDisplayData: TReservationDisplay[] = userReservations.map((reservation) => {
+        const session = reservation.sessionId as any; // cast to any to avoid typescript error
+        return {
+            _id: reservation._id.toString(),
+            reservationCode: reservation.reservationCode || 'N/A',
+            status: reservation.status,
+            totalPrice: reservation.totalPrice,
+            createdAt: reservation.createdAt.toISOString(),
+            updatedAt: reservation.updatedAt.toISOString(),
+            movieName: session.movieId ? (session.movieId as any).title : 'N/A',
+            hallName: session.hallId ? (session.hallId as any).name : 'N/A',
+            sessionStartTime: session.startTime,
+            sessionDate: session.date,
+            seats: reservation.seats.map((seat) => ({
+                seatNumber: seat.seatNumber,
+                row: seat.row,
+                column: seat.column,
+                type: seat.type,
+                price: seat.price
+            })),
+            purchasedSnacks: reservation.purchasedSnacks.map((snack) => ({
+                snackId: snack.snackId.toString(),
+                name: snack.name,
+                price: snack.price,
+                quantity: snack.quantity
+            }))
+        };
+    });
+
+    return reservationDisplayData;
+};
+
+export const deleteReservationService = async (reservationId: string, userId: string, userRole: string): Promise<void> => {
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation) throw new Error('Reservation not found.');
+
+    if (userId !== reservation.userId.toString() && userRole !== 'admin') throw new Error('Unauthorized');
+
+    const session = await Session.findById(reservation.sessionId);
+    if (!session) throw new Error('Could not find the session associated with this reservation.');
+
+    const sessionStartDateTime = new Date(`${session.date}T${session.startTime}`);
+    const now = new Date();
+
+    const hoursUntilSession = (sessionStartDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+    if (hoursUntilSession <= 24) throw new Error('Reservations can only be deleted more than 24 hours before the session.');
+
+    //if all checks are passed delete session
+    await Reservation.findByIdAndDelete(reservationId);
+
+    //Increment avaliable seats count in session document
+    await Session.findByIdAndUpdate(reservation.sessionId, {
+        $inc: { availableSeats: reservation.seats.length }
+    });
 };
