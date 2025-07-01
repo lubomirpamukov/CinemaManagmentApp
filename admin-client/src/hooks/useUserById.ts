@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { getUserById } from "../services";
-import { User } from "../utils";
+import { TUser } from "../utils";
 import { DEFAULT_USER_VALUES } from "../utils/constants";
 
 export const useUserById = (userId?: string) => {
-  const [user, setUser] = useState<User>(DEFAULT_USER_VALUES);
+  const [user, setUser] = useState<TUser>(DEFAULT_USER_VALUES);
   const [loading, setLoading] = useState<boolean>(!!userId);
   const [error, setError] = useState<string | null>(null);
 
@@ -45,7 +45,7 @@ export const useUserById = (userId?: string) => {
 
     return () => {
       isActive = false;
-    }
+    };
   }, [userId]);
 
   return { user, loading, error };

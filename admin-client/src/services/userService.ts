@@ -1,7 +1,7 @@
-import { User, userSchema } from "../utils";
+import { TUser, userSchema } from "../utils";
 const BASE_URL = "http://localhost:3123/admin/users";
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<TUser[]> => {
   try {
     const response = await fetch(BASE_URL, {
       credentials: "include",
@@ -17,7 +17,7 @@ export const getUsers = async (): Promise<User[]> => {
   }
 };
 
-export const getUserById = async (id: string): Promise<User> => {
+export const getUserById = async (id: string): Promise<TUser> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       credentials: "include",
@@ -33,8 +33,8 @@ export const getUserById = async (id: string): Promise<User> => {
   }
 };
 
-export type UserInput = Omit<User, "id">;
-export const createUser = async (user: UserInput): Promise<User> => {
+export type UserInput = Omit<TUser, "id">;
+export const createUser = async (user: UserInput): Promise<TUser> => {
   user.role = "user";
   try {
     const response = await fetch(BASE_URL, {
@@ -56,7 +56,7 @@ export const createUser = async (user: UserInput): Promise<User> => {
   }
 };
 
-export const updateUser = async (id: string, user: User): Promise<User> => {
+export const updateUser = async (id: string, user: TUser): Promise<TUser> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "PATCH",
