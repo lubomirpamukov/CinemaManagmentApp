@@ -1,6 +1,7 @@
 import { MovieZod, movieSchema } from '../utils/MovieValidation';
 import { paginate } from '../utils';
 import Movie from '../models/movie.model';
+import Session from '../models/session.model';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
 import { moviePaginatedSchema } from '../utils/MovieValidation';
 
@@ -89,6 +90,7 @@ export const deleteMovieService = async (id: string) => {
         throw new Error('Movie ID is required');
     }
 
+    await Session.deleteMany({ movieId: id });
     const deletedMovie = await Movie.findByIdAndDelete(id);
 
     if (!deletedMovie) {

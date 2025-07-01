@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
-import { userPaginatedSchema, userExportDTOSchema, userImportDTOSchema } from '../utils/UserValidation';
+import { userPaginatedSchema, userExportDTOSchema, userImportDTOSchema, TUserExportDTO } from '../utils/UserValidation';
 import { paginate } from '../utils/PaginationUtils';
 import User, { IUser } from '../models/user.model';
 
@@ -37,7 +37,7 @@ export const getUsersService = async (query: any) => {
 };
 
 // Get user by id (READ)
-export const getUserByIdService = async (id: string) => {
+export const getUserByIdService = async (id: string): Promise<TUserExportDTO> => {
     const user = (await User.findById(id).select('-password')) as IUser;
     if (!user) throw new Error('User not found');
 
@@ -45,17 +45,18 @@ export const getUserByIdService = async (id: string) => {
         id: user._id.toString(),
         name: user.name,
         email: user.email,
-        contact: user.contact
+        contact: user.contact,
+        address: user.address
     };
 
     // Validate the transformed object with Zod
     const validatedUser = userExportDTOSchema.parse(userExportDto);
-    console.log(validatedUser);
     return validatedUser;
 };
 
 export const createUserService = async (userData: typeof userExportDTOSchema) => {
     // Validate the incoming data
+    console.log(userData)
     const validatedUserData = userImportDTOSchema.parse(userData);
 
     // Hash the password before saving
@@ -71,7 +72,8 @@ export const createUserService = async (userData: typeof userExportDTOSchema) =>
         id: newUser._id.toString(),
         name: newUser.name,
         email: newUser.email,
-        contact: newUser.contact
+        contact: newUser.contact,
+        address: newUser.address
     };
 
     return userExportDto;
@@ -99,7 +101,8 @@ export const updateUserService = async (id: string, updates: any) => {
         id: updatedUser._id.toString(),
         name: updatedUser.name,
         email: updatedUser.email,
-        contact: updatedUser.contact
+        contact: updatedUser.contact,
+        address: updatedUser.address
     };
 
     return userExportDto;

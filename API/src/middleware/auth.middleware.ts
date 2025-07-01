@@ -22,18 +22,17 @@ export const authentication = (req: JwtRequest, res: Response, next: NextFunctio
 
     try {
         jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
-        if (err) {
-            return res.status(401).json({ message: 'Invalid token' });
-        }
+            if (err) {
+                return res.status(401).json({ message: 'Invalid token' });
+            }
+            req.user = {
+                email: decoded.email,
+                role: decoded.role,
+                id: decoded._id
+            };
 
-        req.user = {
-            email: decoded.email,
-            role: decoded.role,
-            id: decoded._id,
-        };
-
-        next();
-    });
+            next();
+        });
     } catch (error) {
         return res.status(401).json('Invalid token');
     }

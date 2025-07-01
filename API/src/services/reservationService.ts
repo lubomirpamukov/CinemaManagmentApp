@@ -106,11 +106,16 @@ export const createReservationService = async (reservationData: CreateReservatio
     return newReservation;
 };
 
-export const getUserReservationService = async (userId: string): Promise<TReservationDisplay[]> => {
-    if (!userId) throw new Error('User ID required.');
-    if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error('User ID invalid format.');
+export type ReservationFilter = {
+    userId: string;
+    status?: string;
+}
 
-    const userReservations = await Reservation.find({ userId: userId })
+export const getUserReservationService = async (filter: ReservationFilter): Promise<TReservationDisplay[]> => {
+    if (!filter.userId) throw new Error('User ID required.');
+    if (!mongoose.Types.ObjectId.isValid(filter.userId)) throw new Error('User ID invalid format.');
+
+    const userReservations = await Reservation.find(filter)
         .populate({
             path: 'sessionId',
             select: 'movieId hallId startTime date',
@@ -130,10 +135,10 @@ export const getUserReservationService = async (userId: string): Promise<TReserv
             totalPrice: reservation.totalPrice,
             createdAt: reservation.createdAt.toISOString(),
             updatedAt: reservation.updatedAt.toISOString(),
-            movieName: session.movieId ? (session.movieId as any).title : 'N/A',
-            hallName: session.hallId ? (session.hallId as any).name : 'N/A',
-            sessionStartTime: session.startTime,
-            sessionDate: session.date,
+            movieName: session.movieId ? (session.movieId as any).title : 'Movie deleted',
+            hallName: session.hallId ? (session.hallId as any).name : 'Hall deleted',
+            sessionStartTime: session?.startTime || 'N/A',
+            sessionDate: session?.date || 'N/A',
             seats: reservation.seats.map((seat) => ({
                 seatNumber: seat.seatNumber,
                 row: seat.row,

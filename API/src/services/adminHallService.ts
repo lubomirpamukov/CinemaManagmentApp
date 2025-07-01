@@ -1,6 +1,7 @@
 import Hall, { IHall } from '../models/hall.model';
 import mongoose from 'mongoose';
 import Cinema from '../models/cinema.model';
+import Session from '../models/session.model';
 import { Hall as HallValidation } from '../utils';
 
 export const getCinemaHallsService = async (cinemaId: string): Promise<IHall[]> => {
@@ -76,6 +77,9 @@ export const deleteHallService = async (cinemaId: string, hallId: string): Promi
     // Find the cinema and remove the hall from its halls array
     await Cinema.findByIdAndUpdate(objectId, { $pull: { halls: hallObjectId } });
 
+    //Delete all sessions for this Hall
+    await Session.deleteMany({ hallId})
+    
     // Delete the hall
     const deletedHall = await Hall.findByIdAndDelete(hallObjectId);
 
