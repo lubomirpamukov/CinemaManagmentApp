@@ -63,3 +63,20 @@ export const checkAuth = async (req: JwtRequest, res: Response) => {
     }
     return res.status(200).json({ role: user.role, email: user.email, id: user.id?.toString() });
 };
+
+export const getMe = async(req: JwtRequest, res: Response) => {
+    if (!req.user || !req.user.id) {
+        return res.status(401).json({ message: 'Not authenticated'});
+    }
+
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+        return res.status(404).json({ message: 'User not found'});
+    }
+
+    const userObj = user.toObject(); 
+    userObj.id = userObj._id.toString();
+    const { _id, ...userWithoutId} = userObj;
+
+    return res.json(userWithoutId);
+}
