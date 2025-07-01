@@ -34,7 +34,12 @@ POST http://localhost:3123/auth/logout
 
 ### Check authentication
 GET http://localhost:3123/auth/check-auth
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwOTIzNTAsImV4cCI6MTc0NjQ0ODc1MH0.XowyZ3AgR2E_sVgSDyMksq6me23NvVuKMfSjCkavnh4
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEzOGM4NDMyOTAxMTBlM2JiMDFhNmIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTEwMTAwMTAsImV4cCI6MTc1MTM2NjQxMH0.BS5_MGh7Rd4_ghaTPToH8dDWKRs9c6XmOWIdeQ2hElc
+
+### Get me
+GET http://localhost:3123/auth/me
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEzOGM4NDMyOTAxMTBlM2JiMDFhNmIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTEwMTAwMTAsImV4cCI6MTc1MTM2NjQxMH0.BS5_MGh7Rd4_ghaTPToH8dDWKRs9c6XmOWIdeQ2hElc
+
 
 ### Admin get all users
 GET http://localhost:3123/admin/users
@@ -44,7 +49,6 @@ POST http://localhost:3123/admin/users
 Content-Type: application/json
 
 {
-  "userName": "george",
   "name": "George",
   "email": "example@gmail.com",
   "password": "securepassword"
@@ -71,11 +75,6 @@ Content-Type: application/json
 
 ### Admin delete user
 DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
-
-
-
-
-
 
 
 ### Get Movies
