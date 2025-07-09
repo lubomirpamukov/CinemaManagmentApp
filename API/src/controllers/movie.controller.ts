@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { getMoviesService, getMovieByIdService } from '../services';
+import { getMoviesService, getMovieByIdService, getShowcaseMoviesService } from '../services';
+import { JwtRequest } from '../middleware/auth.middleware';
 
 export const getMovies = async (req: Request, res: Response) => {
     try {
@@ -30,3 +31,13 @@ export const getMovieById = async (req: Request, res: Response) => {
         res.status(500).json({error: err.message})
     }
 } 
+
+export const getShowcaseMovies = async (req: JwtRequest, res: Response) => {
+    try {
+        const userId = req.user?.id;
+        const showcaseData = await getShowcaseMoviesService(userId);
+        res.status(200).json(showcaseData);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Failed to get movie showcase', error: error.message })
+    }
+};

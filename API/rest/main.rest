@@ -254,6 +254,9 @@ GET http://localhost:3123/session/684dca1546d7accaad09d270/seat-layout
 ### Get movie by ID
 GET http://localhost:3123/movies/6814c671c1d5ea76132b8624
 
+### Get movie showcase by ID
+GET http://localhost:3123/movies/showcase/6814c671c1d5ea76132b8624
+
 ### Get user reservations
 GET http://localHost:3123/reservation/user/68138c843290110e3bb01a6b
 
