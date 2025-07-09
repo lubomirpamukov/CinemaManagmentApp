@@ -7,14 +7,19 @@ import { IReservation, ReservationStatus } from '../models';
 import { fetchAndValidatePrerequisites, getBookedSeatIdsForSession, verifyAndPrepareSeatDetails } from '../utils/reservation.helpers';
 import Cinema from '../models/cinema.model';
 import { ISnack } from '../models/cinema.model';
+import Movie from '../models/movie.model';
 
 type SelectedSnacks = {
     [snackId: string]: number;
 };
 
-export const createReservationService = async (reservationData: CreateReservationRequest): Promise<IReservation> => {
+export const createReservationService = async (reservationData: CreateReservationRequest): Promise<TReservationDisplay> => {
     // fetch and validate prerequisite entities
     const { hall, session, user } = await fetchAndValidatePrerequisites(reservationData.userId, reservationData.sessionId);
+
+    // Fetch movie details needed for the response DTO
+    const movie = await Movie.findById(session.movieId).select('title').lean();
+    if (!movie) throw new Error('Movie for this session not found');
 
     const sessionObjectId = session._id as mongoose.Types.ObjectId;
     const userObjectId = user._id as mongoose.Types.ObjectId;
@@ -84,7 +89,7 @@ export const createReservationService = async (reservationData: CreateReservatio
     }
     // generate reservation code
     const reservationCode = uuidv4().substring(0, 8).toUpperCase();
-    console.log(purchasedSnacks);
+    
     const newReservationDataForModel = {
         userId: userObjectId,
         sessionId: sessionObjectId,
@@ -103,7 +108,36 @@ export const createReservationService = async (reservationData: CreateReservatio
         });
     }
 
-    return newReservation;
+    // Manually construct the TReservationDisplay object to return
+    const reservationDisplayData: TReservationDisplay = {
+        _id: newReservation._id.toString(),
+        reservationCode: newReservation.reservationCode || 'N/A',
+        status: newReservation.status,
+        userId: newReservation.userId.toString(),
+        sessionId: newReservation.sessionId.toString(),
+        totalPrice: newReservation.totalPrice,
+        createdAt: newReservation.createdAt ? newReservation.createdAt.toISOString() : new Date().toISOString(),
+        updatedAt: newReservation.updatedAt ? newReservation.updatedAt.toISOString() : new Date().toISOString(),
+        movieName: movie.title,
+        hallName: hall.name,
+        sessionStartTime: session.startTime,
+        sessionDate: session.date,
+        seats: (newReservation.seats || []).map((seat) => ({
+            id: seat.originalSeatId.toString(),
+            seatNumber: seat.seatNumber,
+            row: seat.row,
+            column: seat.column,
+            type: seat.type,
+            price: seat.price
+        })),
+        purchasedSnacks: (newReservation.purchasedSnacks || []).map((snack) => ({
+            snackId: snack.snackId.toString(),
+            name: snack.name,
+            price: snack.price,
+            quantity: snack.quantity
+        }))
+    };
+    return reservationDisplayData;
 };
 
 export type ReservationFilter = {
@@ -132,6 +166,8 @@ export const getUserReservationService = async (filter: ReservationFilter): Prom
             _id: reservation._id.toString(),
             reservationCode: reservation.reservationCode || 'N/A',
             status: reservation.status,
+            userId: reservation.userId.toString(),
+            sessionId: session?._id.toString() || '',
             totalPrice: reservation.totalPrice,
             createdAt: reservation.createdAt.toISOString(),
             updatedAt: reservation.updatedAt.toISOString(),

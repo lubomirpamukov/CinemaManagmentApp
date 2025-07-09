@@ -118,29 +118,36 @@ export const createReservationSchema = z.object({
 
 export type CreateReservationRequest = z.infer<typeof createReservationSchema>;
 
-export type TReservationDisplay = {
-  _id: string;
-  reservationCode: string;
-  status: "pending" | "confirmed" | "failed" | "completed";
-  totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
-  // Populated fields for display:
-  movieName: string;
-  hallName: string;
-  sessionStartTime: string;
-  sessionDate: string;
-  seats: Array<{
-    seatNumber: string;
-    row: number;
-    column: number;
-    type: "regular" | "vip" | "couple";
-    price: number;
-  }>;
-  purchasedSnacks: Array<{
-    snackId: string;
-    name: string;
-    price: number;
-    quantity: number;
-  }>;
-};
+export const reservationDisplaySchema = z.object({
+  _id: z.string().regex(/^[a-fA-F0-9]{24}$/, { message: "Invalid reservation ID format." }),
+  reservationCode: z.string(),
+  userId: z.string().regex(/^[a-fA-F0-9]{24}$/, { message: "Invalid reservation ID format." }),
+  sessionId: z.string().regex(/^[a-fA-F0-9]{24}$/, { message: "Invalid reservation ID format." }),
+  status: z.enum(["pending", "confirmed", "failed", "completed"]),
+  totalPrice: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  movieName: z.string(),
+  hallName: z.string(),
+  sessionStartTime: z.string(),
+  sessionDate: z.string(),
+  seats: z.array(
+    z.object({
+      seatNumber: z.string(),
+      row: z.number(),
+      column: z.number(),
+      type: z.enum(["regular", "vip", "couple"]),
+      price: z.number(),
+    })
+  ),
+  purchasedSnacks: z.array(
+    z.object({
+      snackId: z.string().regex(/^[a-fA-F0-9]{24}$/, { message: "Invalid snackId format." }),
+      name: z.string(),
+      price: z.number(),
+      quantity: z.number(),
+    })
+  ),
+});
+
+export type TReservationDisplay = z.infer<typeof reservationDisplaySchema>;

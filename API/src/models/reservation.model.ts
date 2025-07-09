@@ -72,7 +72,7 @@ const reserveSeatSchema: Schema<IReservedSeat> = new Schema(
             required: true
         }
     },
-    { _id: false }
+    { _id: false },
 );
 
 const purchasedSnackSchema: Schema<IPurchasedSnack> = new Schema({
