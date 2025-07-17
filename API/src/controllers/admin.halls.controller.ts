@@ -119,7 +119,7 @@ export const getHallById = async (req: Request, res: Response) => {
 };
 
 /**
- * @route DELETE /api/halls/:hallId
+ * @route DELETE /api/admin/halls/:hallId
  * @desc Deletes a hall with the given ID, and removes it from cinema and deletes all sessions in a transaction
  * @access Private (Admin)
  */
