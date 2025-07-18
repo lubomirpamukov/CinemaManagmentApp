@@ -1,100 +1,115 @@
 import mongoose from 'mongoose';
-import { SeatZod, SessionPaginatedResponse, SessionZod, sessionDisplayPaginatedSchema, sessionDisplaySchema, sessionSchema } from '../utils';
-import Session, { ISession } from '../models/session.model';
+import {
+    IHallSeatLayoutResponse,
+    ISeatWithAvailability,
+    TSeat,
+    SessionFilters,
+    SessionPaginatedResponse,
+    TSession,
+    sessionDisplayPaginatedSchema
+} from '../utils';
+import Session from '../models/session.model';
 import Reservation from '../models/reservation.model';
-import { SessionDisplay } from '../utils';
+import { TSessionDisplay } from '../utils';
 import { paginate } from '../utils';
 import Hall, { IHall, ISeat as IHallSeatDefinition } from '../models/hall.model';
 import { getBookedSeatIdsForSession } from '../utils/reservation.helpers';
 import { SeatType } from '../models';
+import Movie from '../models/movie.model';
 
-export const createSessionService = async (sessionData: SessionZod) => {
-    const parsed = sessionSchema.parse(sessionData);
+/**
+ * Creates a new session after checking business logic constraints.
+ * Assumes the input data has already been validated for shape and type by the controller.
+ *
+ * @param {TSession} sessionData The validated session data DTO, containing startTime endTime.
+ * @throws {Error} `Hall not found`, `Movie not found`, `Hall is alredy booked for this time slot`.
+ * @returns {Promise<TSession>} A promise that resolves to the DTO of the newly created session.
+ */
+export const createSessionService = async (sessionData: TSession): Promise<TSessionDisplay> => {
+    const { hallId, movieId, startTime, endTime } = sessionData;
 
-    if (parsed.startTime >= parsed.endTime) {
-        throw new Error('Start time must be before end time');
+    const [hall, movie] = await Promise.all([Hall.findById(hallId), Movie.findById(movieId)]);
+
+    if (!hall) {
+        throw new Error('Hall not found');
     }
 
-    const overlappingSession = await Session.findOne({
-        hallId: new mongoose.Types.ObjectId(parsed.hallId),
-        date: parsed.date,
+    if (!movie) {
+        throw new Error('Movie not found');
+    }
+
+    // Checks for overlapping sessions using the provided startTime and endTime
+    const existingSession = await Session.findOne({
+        hallId,
         $or: [
-            {
-                startTime: { $lt: parsed.endTime },
-                endTime: { $gt: parsed.startTime }
-            }
+            // Case 1: An existing session starts during the new session
+            { startTime: { $lt: endTime, $gte: startTime } },
+
+            // Case 2: An existing session ends during the new session
+            { endTime: { $gt: startTime, $lte: endTime } },
+
+            // Case 3: An existing session completely contains the new session
+            { startTime: { $lte: startTime }, endTime: { $gte: endTime } }
         ]
     });
 
-    if (overlappingSession) {
-        throw new Error('Session overlaps with existing sessions');
+    if (existingSession) {
+        throw new Error('Hall is alredy booked for this time slot.');
     }
 
-    //get hall seat capacity.
-    const hall = await Hall.findById(new mongoose.Types.ObjectId(parsed.hallId)).lean();
-    if (!hall) {
-        throw new Error(`Hall with ID ${parsed.hallId} not found, Cannot determine seat capacity.`);
-    }
+    // Get seats count from hall
+    const availableSeats = hall.seats.length;
 
-    const totalSeatsInHall = hall.seats ? hall.seats.length : 0;
-    if (totalSeatsInHall) {
-        console.warn(`Hall with ID ${parsed.hallId} has 0 seats defined.`)
-    }
-
-    const session = await Session.create({
-        ...parsed,
-        cinemaId: new mongoose.Types.ObjectId(parsed.cinemaId),
-        hallId: new mongoose.Types.ObjectId(parsed.hallId),
-        movieId: new mongoose.Types.ObjectId(parsed.movieId),
-        availableSeats: totalSeatsInHall
+    const newSession = new Session({
+        ...sessionData,
+        availableSeats: availableSeats
     });
-
-    const sessionObj = session.toObject();
+    await newSession.save();
 
     return {
-        ...sessionObj,
-        _id: sessionObj._id.toString(),
-        cinemaId: sessionObj.cinemaId.toString(),
-        hallId: sessionObj.hallId.toString(),
-        movieId: sessionObj.movieId.toString()
+        _id: newSession._id.toString(),
+        cinemaId: newSession.cinemaId.toString(),
+        cinemaName: hall.name,
+        hallId: newSession.hallId.toString(),
+        hallName: hall.name,
+        movieId: newSession.movieId.toString(),
+        movieName: movie.title,
+        startTime: newSession.startTime.toISOString(),
+        endTime: newSession.endTime.toISOString(),
+        availableSeats: newSession.availableSeats
     };
 };
 
-type SessionFilters = {
-    cinemaId?: string;
-    hallId?: string;
-    movieId?: string;
-    minSeatsRequired?: number;
-    date?: string;
-    page?: number;
-    limit?: number;
-};
-
-export const getSessionsWithFiltersService = async ({
-    cinemaId,
-    hallId,
-    movieId,
-    minSeatsRequired,
-    date,
-    page = 1,
-    limit = 10
-}: SessionFilters): Promise<SessionPaginatedResponse> => {
+/**
+ * Retrieves a paginated list of sessions based on a set of filters.
+ *
+ * @param {SessionFilters} filters An object containing validated filter criteria.
+ * @returns {Promise<SessionPaginatedResponse>} A promise that resolves to a paginated list of session DTOs or empty arary.
+ */
+export const getSessionsWithFiltersService = async (filters: SessionFilters): Promise<SessionPaginatedResponse> => {
+    const { cinemaId, hallId, movieId, date, page, limit, minSeatsRequired } = filters;
     const query: any = {};
 
     if (cinemaId) {
         query.cinemaId = new mongoose.Types.ObjectId(cinemaId);
     }
-
     if (hallId) {
         query.hallId = new mongoose.Types.ObjectId(hallId);
     }
-
     if (movieId) {
         query.movieId = new mongoose.Types.ObjectId(movieId);
     }
 
+    // If a date is provided, create a range for that entire day.
     if (date) {
-        query.date = date;
+        const startOfDay = new Date(date);
+        startOfDay.setUTCHours(0, 0, 0, 0);
+
+        const endOfDay = new Date(date);
+        endOfDay.setUTCHours(23, 59, 59, 999);
+
+        // Query for sessions where the startTime is within the selected day.
+        query.startTime = { $gte: startOfDay, $lte: endOfDay };
     }
 
     if (typeof minSeatsRequired === 'number' && minSeatsRequired > 0) {
@@ -113,19 +128,10 @@ export const getSessionsWithFiltersService = async ({
         { path: 'movieId', select: 'title' }
     ]);
 
-    const formattedSessions: SessionDisplay[] = populatedSessions
+    const formattedSessions: TSessionDisplay[] = populatedSessions
         .filter((session) => session.hallId && session.cinemaId && session.movieId)
         .map((session) => {
-            const populatedSession = session as unknown as {
-                _id: mongoose.Types.ObjectId;
-                cinemaId: { _id: mongoose.Types.ObjectId; name: string };
-                hallId: { _id: mongoose.Types.ObjectId; name: string };
-                movieId: { _id: mongoose.Types.ObjectId; title: string };
-                date: string;
-                startTime: string;
-                endTime: string;
-                availableSeats: number;
-            };
+            const populatedSession = session as any; // Using 'any' for simplicity with populated fields
 
             return {
                 _id: populatedSession._id.toString(),
@@ -135,10 +141,10 @@ export const getSessionsWithFiltersService = async ({
                 hallName: populatedSession.hallId?.name,
                 movieId: populatedSession.movieId?._id.toString(),
                 movieName: populatedSession.movieId?.title,
-                date: populatedSession?.date,
-                startTime: populatedSession?.startTime,
-                endTime: populatedSession?.endTime,
-                availableSeats: populatedSession?.availableSeats,
+                // Convert Date objects to ISO strings for the DTO
+                startTime: populatedSession.startTime.toISOString(),
+                endTime: populatedSession.endTime.toISOString(),
+                availableSeats: populatedSession.availableSeats
             };
         });
 
@@ -151,47 +157,39 @@ export const getSessionsWithFiltersService = async ({
     return validatedSessions;
 };
 
-export interface ISeatWithAvailability extends Omit<IHallSeatDefinition, '_id'> {
-    _id: string;
-    isAvailable: boolean;
-}
+/**
+ * Retrieves the complete layout for a given session, including the availability status of each seat.
+ *
+ * @param {string} sessionId The ID of the session to retrieve the seat layout for.
+ * @throws {Error} Throws `Session not found` if the session ID is invalid or does not exist.
+ * @throws {Error} Throws `Hall for this session not found` if the referenced hall has been deleted.
+ * @returns {Promise<IHallSeatLayoutResponse>} A promise that resolves to the complete hall seat layout.
+ */
+export const getSessionSeatLayoutService = async (sessionId: string): Promise<IHallSeatLayoutResponse | null> => {
+    // Fetch session
+    const session = await Session.findById(sessionId).populate<{ hallId: IHall }>('hallId').lean();
 
-export type IHallSeatLayoutResponse = {
-    sessionId: string;
-    hallId: string;
-    hallName: string;
-    hallLayout: {
-        rows: number;
-        columns: number;
-    };
-    seats: ISeatWithAvailability[];
-};
-
-export const getSessionSeatLayoutService = async (sessionIdString: string): Promise<IHallSeatLayoutResponse | null> => {
-    // get session
-    const sessionObjectId = new mongoose.Types.ObjectId(sessionIdString);
-    const session = await Session.findById(sessionObjectId);
     if (!session) {
-        throw new Error(`Can't find session with Id ${sessionIdString}`);
+        throw new Error(`Session with ID ${sessionId} not found.`);
     }
 
-    // get hall associated with the session
-    const hall = await Hall.findById(session.hallId).lean();
-    if (!hall) {
-        throw new Error(`Hall with Id ${session.hallId.toString()} no found!`);
+    if (!session.hallId) {
+        throw new Error(`Hall for session ${session} not found`);
     }
 
-    //get all booked seats
-    const bookedSeats = await getBookedSeatIdsForSession(sessionObjectId);
+    const hall = session.hallId;
 
-    //get all seats from hall and assign theri availability status
+    // Get booked seats for this specific session
+    const bookedSeats = await getBookedSeatIdsForSession(session._id);
+
+    // Map over halls seats to determine availability
     const seatsWithAvailability: ISeatWithAvailability[] = hall.seats.map((hallSeat: IHallSeatDefinition) => {
-        const isAvailable = !bookedSeats.has(hallSeat._id.toString());
+        const isAvaliable = !bookedSeats.has(hallSeat._id.toString());
         return {
             ...hallSeat,
             _id: hallSeat._id.toString(),
             type: hallSeat.type as SeatType,
-            isAvailable: isAvailable
+            isAvailable: isAvaliable
         };
     });
 
@@ -204,7 +202,16 @@ export const getSessionSeatLayoutService = async (sessionIdString: string): Prom
     };
 };
 
-export const getReservedSessionSeatsService = async (sessionId: string) => {
+/**
+ * Retrieves a list of all seats that are currently reserved for a specific session.
+ * This is done by finding all reservations for the session and flattening their seat arrays.
+ *
+ * @param {string} sessionId The ID of the session to check for reserved seats.
+ * @throws {Error} Throws `Invalid session ID format` if the ID is not a valid MongoDB ObjectId.
+ * @throws {Error} Throws `Failed to retrieve reservation for session...` on database errors.
+ * @returns {Promise<TSeat[]>} A promise that resolves to an array of reserved seat DTOs.
+ */
+export const getReservedSessionSeatsService = async (sessionId: string): Promise<TSeat[]> => {
     if (!mongoose.Types.ObjectId.isValid(sessionId)) {
         throw new Error('Invalid session ID format');
     }
@@ -215,22 +222,16 @@ export const getReservedSessionSeatsService = async (sessionId: string) => {
             .select('seats')
             .lean();
 
-        const reservedSeats: SeatZod[] = reservations.flatMap((reservation) => {
-            let reservedSeatsArray: SeatZod[] = new Array();
-
-            reservation.seats.map((seat) => {
-                const newSeat: SeatZod = {
-                    originalSeatId: seat.originalSeatId.toString(),
-                    row: seat.row,
-                    column: seat.column,
-                    seatNumber: seat.seatNumber,
-                    type: seat.type,
-                    price: seat.price
-                };
-                reservedSeatsArray.push(newSeat);
-            });
-            return reservedSeatsArray;
-        });
+        const reservedSeats: TSeat[] = reservations.flatMap((reservation) =>
+            reservation.seats.map((seat) => ({
+                originalSeatId: seat.originalSeatId.toString(),
+                row: seat.row,
+                column: seat.column,
+                seatNumber: seat.seatNumber,
+                type: seat.type,
+                price: seat.price
+            }))
+        );
 
         return reservedSeats;
     } catch (error) {
@@ -239,23 +240,49 @@ export const getReservedSessionSeatsService = async (sessionId: string) => {
     }
 };
 
+/**
+ * Retrieves a sorted list of unique future date on wich a specific movie is showing at a specific cinema.
+ * This is used to populate a date picker on the frontend, allowing users to see wich days have available sessions.
+ * @param {string} movieId The ID of the movie to find available dates for 
+ * @param {string} cinemaId The ID of the cinema to search within
+ * @throws {Error} Throws if the movieId or cinemaId are not valid MongoDB ObjectId formats.
+ * @throws {Error} Throws a generic error if the database query fails 
+ * @returns {Promise<string[]>} A promise that resolves to a sorted array of unique date strings
+ */
 export const getAvailableDatesForMovieInCinemaService = async (movieId: string, cinemaId: string): Promise<string[]> => {
+    // Validate inputs
     if (!mongoose.Types.ObjectId.isValid(movieId)) throw new Error('Invalid Movie ID format.');
     if (!mongoose.Types.ObjectId.isValid(cinemaId)) throw new Error('Invalid Cinema ID format.');
 
     try {
-        const sessions = await Session.find({
+        // Defne the start of todat to filter out past sessions.
+        const startOfToday = new Date();
+        startOfToday.setUTCHours(0, 0, 0, 0);
+
+        // Build the query to find the future sessions for the specific movie and cinema.
+        const query = {
             movieId: new mongoose.Types.ObjectId(movieId),
-            cinemaId: new mongoose.Types.ObjectId(cinemaId)
-        })
-            .select('date -_id')
-            .lean();
+            cinemaId: new mongoose.Types.ObjectId(cinemaId),
+            startTime: { $gte: startOfToday } // only include sessions from today onwards
+        };
 
-        if (!sessions || sessions.length === 0) return [];
+        // Use distinct() to efficiently get unique startTime values from the database.
+        const distinctStartTimes: Date[] = await Session.distinct('startTime', query).lean();
 
-        const uniqueDates = [...new Set(sessions.map((session) => session.date))];
-        return uniqueDates;
+        if (!distinctStartTimes || distinctStartTimes.length === 0) {
+            return [];
+        }
+
+        // Convert date objects to unique YYYY-MM-DD date strings
+        const uniqueDateStrings = [
+            ...new Set(
+                distinctStartTimes.map((date) => date.toISOString().slice(0, 10)) // '2025-07-18T10:00:00.000Z' -> '2025-07-18'
+            )
+        ];
+
+        return uniqueDateStrings.sort();
     } catch (error: any) {
+        console.error('Error fetching available dates:', error);
         throw new Error('Failed to retrieve available dates.');
     }
 };
