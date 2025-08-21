@@ -83,7 +83,7 @@ export const getHallByIdService = async (id: string | mongoose.Types.ObjectId, s
         throw new Error('Invalid Hall id format');
     }
 
-    const hall = await Hall.findById(id, {session}).lean();
+    const hall = await Hall.findById(id, null, {session}).lean();
 
     if (!hall) {
         return null
