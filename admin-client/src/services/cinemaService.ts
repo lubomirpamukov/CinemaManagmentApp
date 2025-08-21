@@ -95,7 +95,6 @@ export const deleteCinema = async (id: string): Promise<boolean> => {
     if (!response.ok) {
       throw new Error("Failed to delete Cinema");
     }
-    console.log(`Cinema with id ${id} deleted successfully.`);
     return true;
   } catch (error) {
     console.log(error); //to do logger

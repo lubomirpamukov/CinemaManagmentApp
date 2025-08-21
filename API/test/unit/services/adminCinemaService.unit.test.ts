@@ -3,14 +3,21 @@ import {
     getCinemaByIdService,
     updateCinemaByIdService,
     addHallToCinemaService,
-    removeHallFromCinemaService
+    removeHallFromCinemaService,
+    createCinemaService,
+    deleteCinemaService
 } from '../../../src/services/adminCinemaService';
 import Cinema from '../../../src/models/cinema.model';
 import { ZodError } from 'zod';
-import { describe } from '@jest/globals';
+import { describe, expect } from '@jest/globals';
 import mongoose from 'mongoose';
+import { mapCinemaToTCinema } from '../../../src/utils/mapping-functions';
+import { cinemaSchema } from '../../../src/utils';
+import { deleteCinema } from '../../../src/controllers/admin.cinema.controller';
 jest.mock('../../../src/models/cinema.model');
 
+let mapCinemaToTCinemaSpy: jest.SpyInstance;
+let cinemaSchemaParseSpy: jest.SpyInstance;
 /**
  * Helper to create a mock cinema document.
  */
@@ -62,7 +69,6 @@ export const createExpectedCinema = (overrides = {}) => ({
  */
 
 describe('getCinemasService', () => {
-
     it('should fetch all cinemas', async () => {
         //arrange
         jest.clearAllMocks();
@@ -163,7 +169,7 @@ describe('getCinemasService', () => {
 
     it('should throw ZodError if the DTO validation fails', async () => {
         // arrange
-        jest.clearAllMocks()
+        jest.clearAllMocks();
         const invalidCinemas = [
             createMockCinema({
                 name: undefined // invalid missing field
@@ -203,7 +209,6 @@ describe('getCinemasService', () => {
  */
 
 describe('getCinemaByIdService', () => {
-
     it('should return validated cinema object from the database if it exist', async () => {
         // Arrange
         jest.clearAllMocks();
@@ -259,7 +264,6 @@ describe('getCinemaByIdService', () => {
  */
 
 describe('updateCinemaByIdService', () => {
-
     it('should update cinema information and return the updated object', async () => {
         // Arrange
         jest.clearAllMocks();
@@ -384,7 +388,6 @@ describe('updateCinemaByIdService', () => {
  */
 
 describe('addHallToCinemaService', () => {
-    
     it('should add hallId to cinema.halls array', async () => {
         //Arrange
         jest.clearAllMocks();
@@ -503,7 +506,6 @@ describe('addHallToCinemaService', () => {
  */
 
 describe('removeHallFromCinemaService', () => {
-  
     it('should remove hallId from cinema.halls array', async () => {
         // Arrange
         jest.clearAllMocks();
@@ -602,5 +604,113 @@ describe('removeHallFromCinemaService', () => {
         // Assert
         expect(actualResponse).toEqual(expectedResult);
         expect(Cinema.updateOne).toHaveBeenCalledWith({ _id: mockCinema._id }, { $addToSet: { halls: hallId } }, { session: mockSession });
+    });
+});
+
+/**
+ * Unit test for createCinemaService
+ *
+ * This suite verifies:
+ * - That cinema document is created from the Cinema object passd tothe service.
+ * - That the Service returns a valid TCinema DTO
+ * - That if creation is not successful it will throw an error
+ */
+describe('createCinemaService', () => {
+    it('should create a cinema document', async () => {
+        // Arrange
+        jest.clearAllMocks();
+        const mockedCinema = createMockCinema();
+        const expectedCinema = mapCinemaToTCinema(mockedCinema as any);
+        (Cinema.create as jest.Mock).mockResolvedValue(mockedCinema);
+        mapCinemaToTCinemaSpy = jest.spyOn(require('../../../src/utils/mapping-functions'), 'mapCinemaToTCinema');
+        cinemaSchemaParseSpy = jest.spyOn(cinemaSchema, 'parse');
+
+        // Act
+        const actualCinema = await createCinemaService(mockedCinema);
+
+        // Assert
+        expect(actualCinema).toEqual(expectedCinema);
+        expect(Cinema.create).toHaveBeenCalledTimes(1);
+        expect(Cinema.create).toHaveBeenCalledWith(mockedCinema);
+        expect(mapCinemaToTCinemaSpy).toHaveBeenCalledTimes(1);
+        expect(cinemaSchemaParseSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw an error if database creatin fails', async () => {
+        // Arrange
+        jest.clearAllMocks();
+        const cinemaInput = { name: 'New Cinema', city: 'New City' };
+        const dbError = new Error('Database connection Error');
+        mapCinemaToTCinemaSpy = jest.spyOn(require('../../../src/utils/mapping-functions'), 'mapCinemaToTCinema');
+
+        cinemaSchemaParseSpy = jest.spyOn(cinemaSchema, 'parse');
+        (Cinema.create as jest.Mock).mockRejectedValue(dbError);
+
+        // Act & Assert
+        await expect(createCinemaService(cinemaInput as any)).rejects.toThrow('Database connection Error');
+
+        expect(mapCinemaToTCinemaSpy).not.toHaveBeenCalled();
+        expect(cinemaSchemaParseSpy).not.toHaveBeenCalled();
+    });
+});
+
+/**
+ * Unit test for deleteCinemaService
+ *
+ * This suite verifies:
+ * - That cinema document is deleted from the database
+ * - That the service returns a valid transformedCinemaDTO
+ * - That if document with provided id dosnt exist it returns null
+ * - That if db error occures it propagates the error
+ */
+describe('deleteCinemaService', () => {
+    it('should delete cinema document if it exists in the database', async () => {
+        // Arrange
+        jest.clearAllMocks();
+        const mockCinema = createMockCinema();
+        const expectedCinema = mapCinemaToTCinema(mockCinema as any);
+        (Cinema.findByIdAndDelete as jest.Mock).mockResolvedValue(mockCinema);
+        cinemaSchemaParseSpy = jest.spyOn(cinemaSchema, 'parse');
+
+        // Act
+        const actualCinema = await deleteCinemaService(mockCinema._id);
+
+        // Assert
+        expect(actualCinema).toEqual(expectedCinema);
+        expect(Cinema.findByIdAndDelete).toHaveBeenCalledWith(mockCinema._id);
+        expect(Cinema.findByIdAndDelete).toHaveBeenCalledTimes(1);
+        expect(cinemaSchemaParseSpy).toHaveBeenCalledTimes(1);
+    });
+    it('should return null if cinema document dont exist in the database', async () => {
+        // Arrange
+        jest.clearAllMocks();
+        const randomId = new mongoose.Types.ObjectId();
+        (Cinema.findByIdAndDelete as jest.Mock).mockResolvedValue(null);
+        cinemaSchemaParseSpy = jest.spyOn(cinemaSchema, 'parse');
+
+        // Act
+        const actualResponse = await deleteCinemaService(randomId);
+
+        // Assert
+        expect(actualResponse).toBe(null);
+        expect(Cinema.findByIdAndDelete).toHaveBeenCalledTimes(1);
+        expect(Cinema.findByIdAndDelete).toHaveBeenLastCalledWith(randomId);
+        expect(cinemaSchemaParseSpy).not.toHaveBeenCalled();
+    });
+
+    it('should propagate error if database throws error', async () => {
+        // Arrange
+        jest.clearAllMocks();
+        const randomId = new mongoose.Types.ObjectId();
+        const dbError = new Error('Database Error');
+
+        (Cinema.findByIdAndDelete as jest.Mock).mockRejectedValue(dbError);
+        cinemaSchemaParseSpy = jest.spyOn(cinemaSchema, 'parse');
+
+        // Act
+        await expect(deleteCinemaService(randomId)).rejects.toThrow('Database Error');
+        expect(Cinema.findByIdAndDelete).toHaveBeenCalledTimes(1);
+        expect(Cinema.findByIdAndDelete).toHaveBeenCalledWith(randomId);
+        expect(cinemaSchemaParseSpy).not.toHaveBeenCalled();
     });
 });

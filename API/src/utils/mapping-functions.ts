@@ -95,6 +95,7 @@ export const mapCinemaToTCinema = (cinema: ICinema): TCinema => ({
     id: cinema._id.toString(),
     city: cinema.city,
     name: cinema.name,
+    imgURL: cinema.imgURL,
     halls: cinema.halls || [],
     snacks: cinema.snacks ? cinema.snacks.map(mapSnackToTSnack) : []
 });

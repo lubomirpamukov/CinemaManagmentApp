@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { getCinemasService, getCinemaByIdService, updateCinemaByIdService, createCinemaService } from '../services/adminCinemaService';
+import {
+    getCinemasService,
+    getCinemaByIdService,
+    updateCinemaByIdService,
+    createCinemaService,
+    deleteCinemaService
+} from '../services/adminCinemaService';
 import mongoose from 'mongoose';
 import { cinemaSchema } from '../utils';
 import { type } from 'node:os';
@@ -89,19 +95,36 @@ export const updateCinema = async (req: Request, res: Response) => {
  */
 export const createCinema = async (req: Request, res: Response) => {
     try {
-        const validCinema = cinemaSchema.parse(req.body)
+        const validCinema = cinemaSchema.parse(req.body);
 
         const createdCinema = await createCinemaService(validCinema);
 
         res.status(201).json(createdCinema);
     } catch (err: any) {
-
         console.error('Create cinema error:', err);
-        
+
         if (err instanceof ZodError) {
-            return res.status(400).json ({ error: 'Validation failed', details: err.errors})
+            return res.status(400).json({ error: 'Validation failed', details: err.errors });
         }
 
-        res.status(500).json({error: 'Failed to create cinema'});
+        res.status(500).json({ error: 'Failed to create cinema' });
     }
-}
+};
+
+/**
+ * DELETE /api/admin/cinemas/:id
+ * @description Deletec Cinema document.
+ * @access Private (Admin)
+ */
+export const deleteCinema = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: 'Invalid cinema id' });
+        const deletedCinema = await deleteCinemaService(id);
+        if (deletedCinema === null) return res.status(404).json({ error: 'Cinema not found' });
+        res.status(204).end();
+    } catch (error: any) {
+        console.error('Delete cinema error', error);
+        res.status(500).json({ error: 'Failed to delete cinema' });
+    }
+};

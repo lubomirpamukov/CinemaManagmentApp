@@ -3,7 +3,6 @@ import Session from '../../../src/models/session.model';
 import { getCinemaCityByMovieIdService, getCinemasByCityAndMovieService } from '../../../src/services';
 import { cinemaSchema, TCinema } from '../../../src/utils';
 import { describe } from 'node:test';
-import { getCinemaCityByMovieId } from '../../../src/controllers/cinema.controller';
 import { mapCinemaToTCinema } from '../../../src/utils/mapping-functions';
 
 jest.mock('../../../src/models/session.model');
@@ -165,7 +164,7 @@ describe('getCinemasByCityAndMovieService', () => {
         expect(actualResult).toEqual(expectedResult);
     });
 
-    it.only('should throw generic error if database error occures', async () => {
+    it('should throw generic error if database error occures', async () => {
         // Arrange
         const movieId = new mongoose.Types.ObjectId();
         const city = 'Metropolis';
@@ -173,8 +172,9 @@ describe('getCinemasByCityAndMovieService', () => {
         (Session.aggregate as jest.Mock).mockRejectedValue(dbError);
 
         // Act & Assert
-        await expect(getCinemasByCityAndMovieService(city, movieId))
-            .rejects.toThrow(`Failed to retrieve cinemas for city ${city} and movie ${movieId}.`);
+        await expect(getCinemasByCityAndMovieService(city, movieId)).rejects.toThrow(
+            `Failed to retrieve cinemas for city ${city} and movie ${movieId}.`
+        );
         expect(Session.aggregate).toHaveBeenCalledTimes(1);
-    })
+    });
 });

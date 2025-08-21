@@ -48,6 +48,18 @@ export const createCinemaService = async (cinema: TCinema): Promise<TCinema> => 
 }
 
 /**
+ * Deletes a cinema document if it exists
+ * Assumes the id is in valid format.
+ * @param {string | mongoose.Types.ObjectId} id - The id of the cinema document to delete
+ * @returns {Promise<TCinema | null>} - Resolves to the deleted cinema DTO if successful or null if not successful
+ */
+export const deleteCinemaService = async (id: string | mongoose.Types.ObjectId) : Promise<TCinema | null> => {
+    const deletedDoc = await Cinema.findByIdAndDelete(id);
+    if (!deletedDoc) return null;
+    return cinemaSchema.parse(mapCinemaToTCinema(deletedDoc));
+}
+
+/**
  * Updates a cinema's details by its ID.
  * Assumes the `updates` object has been validated by the controller.
  * @param {string} id The Id of the cinema to update.
