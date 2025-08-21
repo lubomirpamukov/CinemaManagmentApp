@@ -483,6 +483,17 @@ describe('deleteHallByIdService', () => {
     });
 });
 
+/**
+ * Unit test for getHallByIdService
+ * 
+ * Unit test suite verifies:
+ * - That the service should throw error with invalid hallId provided.
+ * - That should return null if hall dont exist.
+ * - That should pass session if provided.
+ * - That should return hall if successful.
+ * 
+ * Mock are used for Hall model to isolate service logic from database operations.
+ */
 describe('getHallByIdService', () => {
    
     it('should throw error if called with invalid hall id format', async () => {
