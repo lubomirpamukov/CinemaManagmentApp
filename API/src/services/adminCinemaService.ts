@@ -1,6 +1,7 @@
 import { TCinema, cinemaSchema } from '../utils/CinemaValidation';
 import Cinema, { ICinema } from '../models/cinema.model';
 import mongoose from 'mongoose';
+import { mapCinemaToTCinema } from '../utils/mapping-functions';
 
 /**
  * Fetches all cinemas from the database, transforms them into DTO,
@@ -11,26 +12,9 @@ import mongoose from 'mongoose';
 export const getCinemasService = async (): Promise<TCinema[]> => {
     const cinemasFromDB: ICinema[] = await Cinema.find().lean();
 
-    const transformedCinemasDTO: TCinema[] = cinemasFromDB.map((cinema) => {
-        const cinemaDTO = {
-            id: cinema._id?.toString(),
-            city: cinema.city,
-            name: cinema.name,
-            halls: Array.isArray(cinema.halls) ? cinema.halls.map((hall) => hall.toString()) : [],
-            imgURL: cinema.imgURL,
-            snacks: cinema.snacks
-                ? cinema.snacks.map((snack) => ({
-                      id: snack._id?.toString(),
-                      name: snack.name,
-                      description: snack.description,
-                      price: snack.price
-                  }))
-                : []
-        };
-        return cinemaDTO as TCinema;
-    });
+    const transformedCinemasDTO = cinemasFromDB.map(mapCinemaToTCinema);
 
-    const validatedCinemas: TCinema[] = cinemaSchema.array().parse(transformedCinemasDTO);
+    const validatedCinemas = cinemaSchema.array().parse(transformedCinemasDTO);
     return validatedCinemas;
 };
 
@@ -40,28 +24,14 @@ export const getCinemasService = async (): Promise<TCinema[]> => {
  * @param {string} id The ID of the cinema.
  * @throws {ZodError} If the data from the database fails validation.
  * @throws {Error} If cinema document dosnt exist throws `Cinema not found`
- * @returns {Promise<TCinema>} Resolves to a valid cinema object or null if not found.
+ * @returns {Promise<TCinema>} Resolves to a valid cinema object.
  */
 export const getCinemaByIdService = async (id: string): Promise<TCinema> => {
     const cinemaFromDB: ICinema | null = await Cinema.findById(id).lean();
-    if (!cinemaFromDB) throw new Error('Cinema not found')
+    if (!cinemaFromDB) throw new Error('Cinema not found');
 
-    const transformedCinemaDTO: TCinema = {
-        id: cinemaFromDB._id?.toString(),
-        city: cinemaFromDB.city,
-        name: cinemaFromDB.name,
-        halls: Array.isArray(cinemaFromDB.halls) ? cinemaFromDB.halls.map((hall) => hall.toString()) : [],
-        imgURL: cinemaFromDB.imgURL,
-        snacks: Array.isArray(cinemaFromDB.snacks)
-            ? cinemaFromDB.snacks.map((snack) => ({
-                  id: snack._id?.toString(),
-                  name: snack.name,
-                  description: snack.description,
-                  price: snack.price
-              }))
-            : []
-    };
-    const validatedCinema: TCinema = cinemaSchema.parse(transformedCinemaDTO);
+    const transformedCinemaDTO = mapCinemaToTCinema(cinemaFromDB);
+    const validatedCinema = cinemaSchema.parse(transformedCinemaDTO);
     return validatedCinema;
 };
 
@@ -70,52 +40,53 @@ export const getCinemaByIdService = async (id: string): Promise<TCinema> => {
  * Assumes the `updates` object has been validated by the controller.
  * @param {string} id The Id of the cinema to update.
  * @param {Partial<TCinema>} updates An object containing the validated cinema data to update.
- * @returns {Promise<Tcinema>} Resloves to the update cinema DTO.
- * @throws {Error} If the cinema with the given ID is not found.
+ * @throws {Error} If the database connection is lost throws Error.
+ * @returns {Promise<TCinema | null>} Resloves to the update cinema DTO, if cinema dont exist returns null.
  */
-export const updateCinemaByIdService = async (id: string, updates: Partial<TCinema>): Promise<TCinema> => {
+export const updateCinemaByIdService = async (id: string, updates: Partial<TCinema>): Promise<TCinema | null> => {
     const updatedCinema = await Cinema.findByIdAndUpdate(id, updates, {
         new: true,
         runValidators: true
     });
 
     if (!updatedCinema) {
-        throw new Error('Cinema not found');
+        return null;
     }
 
-    const cinemaExportDto: TCinema = {
-        id: updatedCinema._id?.toString(),
-        city: updatedCinema.city,
-        name: updatedCinema.name,
-        halls: Array.isArray(updatedCinema.halls) ? updatedCinema.halls.map((h) => h.toString()) : [],
-        imgURL: updatedCinema.imgURL,
-        snacks: Array.isArray(updatedCinema.snacks)
-            ? updatedCinema.snacks.map((snack) => ({
-                  id: snack._id?.toString(),
-                  name: snack.name,
-                  description: snack.description,
-                  price: snack.price
-              }))
-            : []
-    };
-    return cinemaExportDto;
+    const cinemaExportDto = mapCinemaToTCinema(updatedCinema);
+    return cinemaSchema.parse(cinemaExportDto);
 };
 
 /**
- * Adds a hall's ID to a cinemas list of halls.
- * @param {string} cinemaId The ID of the cinema to update.
- * @param {mongoose.Types.ObjectId} hallId The ID of the new hall to add.
- * @param {mongoose.ClientSession} [session] Optional Mongoose session for transactions.
+ * Adds a hall's ID to a cinema's list of halls.
+ * The service relies that cinemaId and hallId will be validated in the parent function
+ *
+ * @param {string | mongoose.Types.ObjectId} cinemaId The Id of the cinema to update.
+ * @param {string | mongoose.Types.ObjectId} hallId The ID of the new hall to add.
+ * @param {mongoose.ClientSession} [session] Optional Mongoose session for transaction.
+ * @returns {Promise<mongoose.UpdateWriteOpResult | null>} Resolves to the result of the update operation, including matched and modified counts.
  */
-export const addHallToCinemaService = async (cinemaId: string, hallId: mongoose.Types.ObjectId, session?: mongoose.ClientSession) => {
-    await Cinema.findByIdAndUpdate(cinemaId, { $push: { halls: hallId } }, { session });
+export const addHallToCinemaService = async (
+    cinemaId: string | mongoose.Types.ObjectId,
+    hallId: string | mongoose.Types.ObjectId,
+    session?: mongoose.ClientSession
+): Promise<mongoose.UpdateWriteOpResult | null> => {
+    return await Cinema.updateOne({ _id: cinemaId }, { $addToSet: { halls: hallId } }, { session });
 };
 
 /**
- * Removes a hall's ID from its parent cinema's array.
- * @param {string} hallId The ID of the hall to remove.
- * @param {mongoose.ClientSession} [session] The mongoose session for the transaction.
+ * Removes a hall's ID from a speficif cinema's halls array.
+ *
+ * @param {string | mongoose.Types.ObjectId} cinemaId The ID of the cinema.
+ * @param {string | mongoose.Types.ObjectId} hallId The ID of the hall to remove.
+ * @param {mongoose.cilenSession} [session] Optional mongoose session for transaction.
+ * @returns {Promise<mongoose.UpdateWriteOpResult | null>} Resolves to the result of the update operation, including matched and modified counts.
  */
-export const removeHallFromCinemaService = async (hallId: string, session?: mongoose.ClientSession): Promise<void> => {
-    await Cinema.updateOne({ halls: hallId }, { $pull: { halls: hallId } }, { session });
+
+export const removeHallFromCinemaService = async (
+    cinemaId: string | mongoose.Types.ObjectId,
+    hallId: string | mongoose.Types.ObjectId,
+    session?: mongoose.ClientSession
+): Promise<mongoose.UpdateWriteOpResult | null> => {
+    return await Cinema.updateOne({ _id: cinemaId, halls: hallId }, { $pull: { halls: hallId } }, { session });
 };

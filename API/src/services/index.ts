@@ -7,3 +7,4 @@ export * from './sessionService';
 export * from './cinemaService';
 export * from './hallService';
 export * from './movieService';
+export * from './adminSessionService';

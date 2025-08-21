@@ -73,7 +73,7 @@ export const updateMovie = async (id: string, movie: Movie): Promise<Movie> => {
       throw new Error("Failed to update movie");
     }
     const data = await response.json();
-    return movieSchema.parse(data);
+    return movieSchema.parse(data.movie);
   } catch (error) {
     console.error("Error updating movie:", error);
     throw error; // to do logger

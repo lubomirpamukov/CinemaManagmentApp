@@ -2,20 +2,54 @@ import { Request, Response } from 'express';
 import {
     createReservationService,
     getUserReservationService as getUserReservationsService,
-    deleteReservationService,
-    ReservationFilter
+    deleteReservationService
 } from '../services/reservationService';
 import { JwtRequest } from '../middleware/auth.middleware';
 import mongoose from 'mongoose';
+import { ReservationFilter } from '../utils';
+import { ZodError } from 'zod';
 
-export const createReservation = async (req: Request, res: Response) => {
+/**
+ * @route POST /api/reservations
+ * @description Creates a new reservation for the authenticated user.
+ * @access Private (requires authentication)
+ *
+ * @param {JwtRequest} req The Express request object, containing the authenticated user's payload.
+ *                         The request body should contain `sessionId`, `seats`,  and optional `purchasedSnacks`
+ * @param {Response} res The Express response object.
+ *
+ * @returns {Promise<Response>}
+ * - On success: Returns a 201 status with the new reservation's display data.
+ * - On validation error: Returns a 400 status with a detailed error object.
+ * - If user, session, or hall not found: Returns a 404 status with a specific error message.
+ * - If seats are alredy taken: Returns a 409 (Conflict) status with a specific error message.
+ * - On authentication failure: Returns 401 status.
+ * - On server error: Returns a 500 status with specific error message.
+ */
+export const createReservation = async (req: JwtRequest, res: Response) => {
     try {
-       const reservationDisplayData = await createReservationService(req.body);
-       res.status(201).json(reservationDisplayData)
+        // 1. Get the user ID from the authenticated token, NOT the request body.
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(201).json({ error: 'Authentication required. User not identified.' });
+        }
+
+        // 2. Call service with trusted userId
+        const reservationDisplayData = await createReservationService(userId, req.body);
+        res.status(201).json(reservationDisplayData);
     } catch (err: any) {
-        if (err.name === 'ZodError') {
+        if (err instanceof ZodError) {
             return res.status(400).json({ error: err.errors });
         }
+
+        if (err.message.includes('not found')) {
+            return res.status(404).json({error: err.message});
+        }
+
+        if (err.message.includes('alredy booked')) {
+            return res.status(409).json({error: err.message});
+        }
+        console.error('Create Reservation Error:', err);
         res.status(500).json({ error: err.message });
     }
 };

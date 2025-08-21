@@ -11,7 +11,7 @@ export const getCinemas = async (): Promise<Cinema[]> => {
       throw new Error("Failed to fetch cinemas");
     }
     const data = await response.json();
-    return cinemaSchema.array().parse(data);
+    return cinemaSchema.array().parse(data.cinemas);
   } catch (error) {
     console.log(error); //to do log error
     throw error;
@@ -28,9 +28,8 @@ export const getCinemaById = async (id: string): Promise<Cinema> => {
       throw new Error("Failed to fetch cinema");
     }
     const data = await response.json();
-    return cinemaSchema.parse(data);
+    return cinemaSchema.parse(data.cinema);
   } catch (error) {
-    console.log(error); //To do log error
     throw error;
   }
 };
@@ -79,7 +78,7 @@ export const updateCinema = async (
       throw new Error("Failed to update movie");
     }
     const data = await response.json();
-    return cinemaSchema.parse(data);
+    return cinemaSchema.parse(data.cinema);
   } catch (error) {
     console.log(error); // to do logger
     throw error;

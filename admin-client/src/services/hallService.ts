@@ -87,16 +87,18 @@ export const createHall = async (
       }
     );
     if (!response.ok) {
-      throw new Error("Error creating hall");
+      const errorData = await response.json();
+      console.error("Server error:", errorData);
+      throw new Error(errorData.error || "Error creating hall");
     }
-    const data = await response.json();
-    return hallSchema.parse(data);
+    const responseData = await response.json();
+
+    return hallSchema.parse(responseData.data);
   } catch (error) {
     console.error("Error creating hall:", error);
     throw error; // to do log
   }
 };
-
 export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
@@ -117,24 +119,17 @@ export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
   }
 };
 
-export const deleteHall = async (
-  cinemaId: string,
-  id: string
-): Promise<void> => {
+export const deleteHall = async (hallId: string): Promise<void> => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/admin/cinemas/${cinemaId}/halls`,
-      {
-        method: "DELETE",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ hallId: id }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}/admin/halls/${hallId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
     if (!response.ok) {
-      throw new Error(`Error deleting hall with id ${id}`);
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || `Error deleting hall with id ${hallId}`
+      );
     }
   } catch (error) {
     console.error("Error deleting hall:", error);

@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
 import { SeatType } from './reservation.model';
-import { boolean } from 'zod';
 
 export interface ISeat {
     _id: Types.ObjectId;
@@ -13,6 +12,7 @@ export interface ISeat {
 }
 
 export interface IHall extends Document {
+    _id: Types.ObjectId;
     cinemaId: Types.ObjectId | string;
     name: string;
     layout: {
@@ -56,35 +56,37 @@ const SeatSchema = new Schema<ISeat>(
     { _id: true }
 );
 
-
-const HallSchema = new Schema<IHall>({
-    cinemaId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Cinema',
-        required: true
-    },
-    name: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 100
-    },
-    layout: {
-        rows: {
-            type: Number,
-            required: true,
-            min: 1,
-            max: 50
+const HallSchema = new Schema<IHall>(
+    {
+        cinemaId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Cinema',
+            required: true
         },
-        columns: {
-            type: Number,
+        name: {
+            type: String,
             required: true,
-            min: 1,
-            max: 50
-        }
+            minlength: 3,
+            maxlength: 100
+        },
+        layout: {
+            rows: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 50
+            },
+            columns: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 50
+            }
+        },
+        seats: { type: [SeatSchema], default: [] }
     },
-    seats: { type: [SeatSchema], default: [] }
-});
+    { _id: true }
+);
 
 const Hall = mongoose.model<IHall>('Hall', HallSchema);
 export default Hall;

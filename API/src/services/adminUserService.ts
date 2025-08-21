@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import { getPaginationQuerySchema } from '../utils/PaginationQuerySchema';
-import { userPaginatedSchema, userExportDTOSchema, userSchema, TUserExportDTO, TUserPaginated, TUser } from '../utils/UserValidation';
+import { userPaginatedSchema,  userDTOSchema,TUserDTO, TUserPaginated, TUserCreation } from '../utils/UserValidation';
 import { paginate } from '../utils/PaginationUtils';
 import User, { IUser } from '../models/user.model';
+import { mapUserToTUserDTO } from '../utils/mapping-functions';
+import mongoose from 'mongoose';
 
 /**
  * Fetches a paginated list of users, with optional searching.
@@ -36,14 +38,7 @@ export const getUsersService = async (query: any): Promise<TUserPaginated> => {
     });
 
     //Map the raw mongoose documents to clean DTOs
-    const userDTOs: TUserExportDTO[] = paginatedResult.data.map((user) => ({
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        contact: user.contact,
-        address: user.address,
-        role: user.role // Assuming role should be in the DTO
-    }));
+    const userDTOs: TUserDTO[] = paginatedResult.data.map(mapUserToTUserDTO);
 
     // Validate the response data using Zod
     return userPaginatedSchema.parse({
@@ -56,24 +51,18 @@ export const getUsersService = async (query: any): Promise<TUserPaginated> => {
 /**
  * Fetches a user by their ID and transforms the document into a valid DTO.
  * Assumes the controller has validated the ID format.
- * @param {string} id The user ID.
+ * @param {string | mongoose.Types.OnjectId} id The user ID.
  * @throws {Error} Throws error if user is not found or database connection failed.
- * @returns {Promise<TUserExportDTO>} Resloves to user object with specified ID.
+ * @returns {Promise<TUserDTO>} Resloves to user object with specified ID.
  */
-export const getUserByIdService = async (id: string): Promise<TUserExportDTO> => {
+export const getUserByIdService = async (id: string | mongoose.Types.ObjectId): Promise<TUserDTO> => {
     const user = await User.findById(id).lean().select('-password');
     if (!user) throw new Error('User not found');
 
-    const userExportDto = {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        contact: user.contact,
-        address: user.address
-    };
+    const userExportDto = mapUserToTUserDTO(user)
 
     // Validate the transformed object with Zod
-    const validatedUser = userExportDTOSchema.parse(userExportDto);
+    const validatedUser = userDTOSchema.parse(userExportDto);
     return validatedUser;
 };
 
@@ -82,9 +71,9 @@ export const getUserByIdService = async (id: string): Promise<TUserExportDTO> =>
  *Assumes the user data has been validated by the controller.
  * @param {TUser} validatedUserData The validated data for the new user.
  * @throws {Error} Throws an error if the database operation fails
- * @returns {Promise<TUserExportDTO>} Resolves to a newly created User DTO
+ * @returns {Promise<TUserDTO>} Resolves to a newly created User DTO
  */
-export const createUserService = async (validatedUserData: TUser): Promise<TUserExportDTO> => {
+export const createUserService = async (validatedUserData: TUserCreation): Promise<TUserDTO> => {
     // Validate the incoming data
 
     // Hash the password before saving
@@ -96,28 +85,21 @@ export const createUserService = async (validatedUserData: TUser): Promise<TUser
     const newUser = await User.create(validatedUserData);
 
     // Transform the user object to DTO
-    const userExportDto = {
-        id: newUser._id.toString(),
-        name: newUser.name,
-        email: newUser.email,
-        contact: newUser.contact,
-        address: newUser.address,
-        role: newUser.role
-    };
+    const userExportDto = mapUserToTUserDTO(newUser)
 
-    return userExportDTOSchema.parse(userExportDto);
+    return userDTOSchema.parse(userExportDto);
 };
 
 /**
  * Updates a user's information in the database.
  * Assumes the controller has validated the ID and update data.
- * @param {string} id The unique identifier of the user to update.
+ * @param {string | mongoose.Types.ObjectId} id The unique identifier of the user to update.
  * @param {Partial<TUser>} updates The validated user data to apply.
  * @throws {Error} Throws "User not found" if the ID does not exist.
  * @throws {MongoError} Throws a duplicate key error if the update violates a unique index (e.g., email).
- * @returns {Promise<TUserExportDTO>} A promise that resolves to the updated and validated user DTO.
+ * @returns {Promise<TUserDTO>} A promise that resolves to the updated and validated user DTO.
  */
-export const updateUserService = async (id: string, updates: Partial<TUser>): Promise<TUserExportDTO> => {
+export const updateUserService = async (id: string | mongoose.Types.ObjectId, updates: Partial<TUserCreation>): Promise<TUserDTO> => {
     // 1. If a new password is provided in the updates, hash it before saving.
     if (updates.password) {
         updates.password = await bcrypt.hash(updates.password, 10);
@@ -136,27 +118,20 @@ export const updateUserService = async (id: string, updates: Partial<TUser>): Pr
     }
 
     // 4. Transform the updated Mongoose document into a safe DTO for export.
-    const userExportDto = {
-        id: updatedUser._id.toString(),
-        name: updatedUser.name,
-        role: updatedUser.role,
-        email: updatedUser.email,
-        contact: updatedUser.contact,
-        address: updatedUser.address
-    };
+    const userExportDto = mapUserToTUserDTO(updatedUser)
 
     // 5. Validate the final DTO before returning to guarantee its shape.
-    return userExportDTOSchema.parse(userExportDto);
+    return userDTOSchema.parse(userExportDto);
 };
 
 /**
  * Deletes a user from the database by their unique identifier.
  * Assumes the controller has validated the ID format.
- * @param {string} id The unique identifier of the user to delete.
+ * @param {string | mongoose.Types.ObjectId} id The unique identifier of the user to delete.
  * @throws {Error} Throws an error with the message "User not found" if no user matches the provided ID 
- * @returns {Promise<TUserExportDTO>} A promise that resolves to the DTO of the deleted user.
+ * @returns {Promise<TUserDTO>} A promise that resolves to the DTO of the deleted user.
  */
-export const deleteUserService = async (id: string): Promise<TUserExportDTO> => {
+export const deleteUserService = async (id: string | mongoose.Types.ObjectId): Promise<TUserDTO> => {
     const deletedUser = await User.findByIdAndDelete(id).select('-password');
 
     if (!deletedUser) {
@@ -164,14 +139,7 @@ export const deleteUserService = async (id: string): Promise<TUserExportDTO> => 
     }
 
     // 3. Transform the deleted Mongoose document into a safe DTO for export.
-    const userExportDto = {
-        id: deletedUser._id.toString(),
-        name: deletedUser.name,
-        role: deletedUser.role,
-        email: deletedUser.email,
-        contact: deletedUser.contact,
-        address: deletedUser.address
-    };
+    const userExportDto = mapUserToTUserDTO(deletedUser)
 
-    return userExportDTOSchema.parse(userExportDto);
+    return userDTOSchema.parse(userExportDto);
 };

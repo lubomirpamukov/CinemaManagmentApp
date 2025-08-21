@@ -75,9 +75,9 @@ export const createHall = async (req: Request, res: Response) => {
             const newHallDocument = await createHallService(hallDataForService, ses);
 
             //Add hall id to cinema
-            await addHallToCinemaService(cinemaId, newHallDocument._id, ses);
+            await addHallToCinemaService(cinemaId, newHallDocument.id!, ses);
 
-            createdHallObject = newHallDocument.toObject();
+            createdHallObject = newHallDocument;
         });
 
         res.status(201).json({ data: createdHallObject });
@@ -134,7 +134,11 @@ export const deleteHall = async (req: Request, res: Response) => {
 
     try {
         await session.withTransaction(async () => {
-            await removeHallFromCinemaService(hallId, session);
+            const hall = await getHallByIdService(hallId, session)
+            if(!hall) {
+                throw new Error('Hall not found.')
+            }
+            await removeHallFromCinemaService(hall.cinemaId,hallId, session);
             await deleteSessionsByHallIdService(hallId, session);
 
             const deletedHall = await deleteHallByIdService(hallId, session);

@@ -31,7 +31,7 @@ export const createSession = async (
   }
 
   const data = await response.json();
-  return sessionSchema.parse(data);
+  return sessionSchema.parse(data.session);
 };
 
 type SessionFilters = {

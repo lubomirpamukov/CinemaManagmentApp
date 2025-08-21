@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { authentication, authorizeRoles } from '../middleware/auth.middleware';
-import { updateUser } from '../controllers/admin.user.controller';
+import { createUser, updateUser } from '../controllers/admin.user.controller';
 const userRouter: Router = express.Router();
 
 userRouter.patch('/:id', authentication, authorizeRoles(['user']), updateUser)

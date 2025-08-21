@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
-import User, { IUser } from '../models/user.model';
+import User from '../models/user.model';
 import { generateToken, JwtRequest } from '../middleware/auth.middleware';
-import { userSchema, userLoginSchema } from '../utils';
+import { userCreationSchema, userLoginSchema } from '../utils';
 import z, { ZodError } from 'zod';
-import { error } from '../config/logging';
 
 /**
  * @route POST /api/auth/register
@@ -20,7 +19,7 @@ import { error } from '../config/logging';
 export const registerUser = async (req: Request, res: Response) => {
     try {
         // validate user data
-        const { name, email, password, contact, address } = userSchema.parse(req.body);
+        const { name, email, password, contact, address } = userCreationSchema.parse(req.body);
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);

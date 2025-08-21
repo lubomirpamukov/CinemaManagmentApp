@@ -21,9 +21,10 @@ adminRouter.delete('/movies/:id', authentication, authorizeRoles(['admin']), del
 adminRouter.get('/cinemas', authentication, authorizeRoles(['admin']), getCinemas);
 adminRouter.get('/cinemas/:id', authentication, authorizeRoles(['admin']), getCinemaById);
 adminRouter.patch('/cinemas/:id', authentication, authorizeRoles(['admin']), updateCinema);
+
 adminRouter.get('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), getCinemaHalls);
 adminRouter.post('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), createHall);
-adminRouter.delete('/cinemas/:id/halls', authentication, authorizeRoles(['admin']), deleteHall);
+adminRouter.delete('/halls/:hallId', authentication, authorizeRoles(['admin']), deleteHall);
 
 adminRouter.post('/cinemas/:id/halls/:hallId/sessions', authentication, authorizeRoles(['admin']), createSession);
 adminRouter.get('/sessions', authentication, authorizeRoles(['admin']), getSessionsWithFilters);

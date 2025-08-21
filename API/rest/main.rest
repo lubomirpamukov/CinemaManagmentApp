@@ -38,7 +38,7 @@ Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEzOGM4NDMyOTAxM
 
 ### Get me
 GET http://localhost:3123/auth/me
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEzOGM4NDMyOTAxMTBlM2JiMDFhNmIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTEwMTAwMTAsImV4cCI6MTc1MTM2NjQxMH0.BS5_MGh7Rd4_ghaTPToH8dDWKRs9c6XmOWIdeQ2hElc
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVlNjA3YzVlYWZhMmQ0OTliYWRmZGMiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTIxNTAzNTQsImV4cCI6MTc1MjUwNjc1NH0.wpHL4E4pmy_Jzfbjt8fzI3yyv7TjFEHBSv7kDbl9MFU
 
 
 ### Admin get all users
@@ -211,8 +211,7 @@ Content-Type: application/json
 }
 
 ### get reserved seats
-GET http://localhost:3123/sessions/683d78bca4111a39bf13ed85/reserved-seats
-
+GET http://localhost:3123/session/6867c70fa4c972773077245f/reserved-seats
 
 ### get hall by Id
 GET http://localhost:3123/halls/683d7892a4111a39bf13ed46
@@ -248,7 +247,7 @@ Content-Type: application/json
 ]
 
 ### Get seat-layout
-GET http://localhost:3123/session/684dca1546d7accaad09d270/seat-layout
+GET http://localhost:3123/session/6860f6f13adc7f588753871c/seat-layout
 
 
 ### Get movie by ID

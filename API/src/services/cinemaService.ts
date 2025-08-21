@@ -1,19 +1,21 @@
 import Cinema from '../models/cinema.model';
 import Session from '../models/session.model';
 import mongoose from 'mongoose';
-import { TCinema } from '../utils';
+import { cinemaSchema, TCinema } from '../utils';
+import { mapCinemaToTCinema } from '../utils/mapping-functions';
+import { ZodError } from 'zod';
 
 /**
  * Retrives a sorted list of unique city names where a specific movie is being shown.
  * This is achived using a single, efficient database aggregation pipeline that finds all
  * sessions for the movie, looks up their assosiated cinemas,
  * and then extracts and sorts the unique cities from those cinemas.
- * @param {string} movieId The MongoDB ObjectId of the movie to search for.
+ * @param {string | mongoose.Types.ObjecId} movieId The MongoDB ObjectId of the movie to search for.
  * @throws {Error} Throws an error if the movieId is not a valid MongoDB ObjectId format.
  * @throws {Error} Throws generic error if the database query fails.
  * @returns {Promise<string[]>} A promise that resolves to a sorted array of unique city names.
  */
-export const getCinemaCityByMovieIdService = async (movieId: string): Promise<string[]> => {
+export const getCinemaCityByMovieIdService = async (movieId: string | mongoose.Types.ObjectId): Promise<string[]> => {
     if (!mongoose.Types.ObjectId.isValid(movieId)) {
         throw new Error('Invalid MovieId');
     }
@@ -44,13 +46,16 @@ export const getCinemaCityByMovieIdService = async (movieId: string): Promise<st
  * Retrieves a list of cinemas that are showing a specific movie in a gfiven city.
  * This is achived using a single, efficient database aggregation pipeline.
  *
- * @param {string} city The city to serach for cinemas in (case-insensitive).
- * @param {string} movieId The MongoDB ObjectId for the movie.
+ * @param {string | mongoose.Types.ObjectId } city The city to serach for cinemas in (case-insensitive).
+ * @param {string | mongoose.Types.ObjectId } movieId The MongoDB ObjectId for the movie.
  * @throws {Error} Throws an error if the movieId is not a valid MongoDb ObjectId format.
  * @throws {Error} Throws generic error if the database query fails.
- * @returns {Promise<Tcinema[]>} A promise that resolves to an array of cinema DTOs. Returns an empty array if no matches are found.
+ * @returns {Promise<TCinema[]>} A promise that resolves to an array of cinema DTOs. Returns an empty array if no matches are found.
  */
-export const getCinemasByCityAndMovieService = async (city: string, movieId: string): Promise<TCinema[]> => {
+export const getCinemasByCityAndMovieService = async (
+    city: string | mongoose.Types.ObjectId,
+    movieId: string | mongoose.Types.ObjectId
+): Promise<TCinema[]> => {
     if (!mongoose.Types.ObjectId.isValid(movieId)) {
         throw new Error('Invalid Movie ID format');
     }
@@ -80,15 +85,14 @@ export const getCinemasByCityAndMovieService = async (city: string, movieId: str
                 }
             },
             // Stage 6 Promote the cinema document to the root level.
-            { $replaceRoot: { newRoot: '$doc' } },
-            // Stage 7 Add a client-friendly 'id' field.
-            { $addFields: { id: { $toString: '$_id' } } },
-            // Stage 8 : Remove the original '_id; field and other unwanted fields.
-            { $project: { _id: 0, __v: 0 } }
+            { $replaceRoot: { newRoot: '$doc' } }
         ]);
-        return cinemas
+        const cinemaDTOs = cinemas.map(mapCinemaToTCinema);
+        return cinemaSchema.array().parse(cinemaDTOs);
     } catch (error) {
-        console.error(`Error fetching cinemas for city ${city} and movie ${movieId}:`, error);
+        if (error instanceof ZodError) {
+            throw new Error('ZodValidationError');
+        }
         throw new Error(`Failed to retrieve cinemas for city ${city} and movie ${movieId}.`);
     }
 };

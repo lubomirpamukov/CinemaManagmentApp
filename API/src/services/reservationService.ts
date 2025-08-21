@@ -1,149 +1,132 @@
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { CreateReservationRequest, TReservationDisplay } from '../utils';
+import { CreateReservationRequest, ReservationFilter, TReservationDisplay } from '../utils';
 import Reservation, { IPurchasedSnack } from '../models/reservation.model';
 import Session from '../models/session.model';
-import { IReservation, ReservationStatus } from '../models';
-import { fetchAndValidatePrerequisites, getBookedSeatIdsForSession, verifyAndPrepareSeatDetails } from '../utils/reservation.helpers';
+import { ReservationStatus } from '../models';
+import { fetchAndValidatePrerequisites, getBookedSeatIdsForSession, processSnacks, verifyAndPrepareSeatDetails } from '../utils/reservation.helpers';
 import Cinema from '../models/cinema.model';
 import { ISnack } from '../models/cinema.model';
 import Movie from '../models/movie.model';
 
-type SelectedSnacks = {
-    [snackId: string]: number;
-};
+/**
+ * Creates a new reservation for an authenticated user.
+ * This function executes a series of critical operations within a single atomic transaction to ensure data integrity.
+ * 1. Fetches and validates the user, session, and hall.
+ * 2. Checks for seat availability against currently booked seats.
+ * 3. Verifies snack data and calculates the total price for tickets and snacks.
+ * 4. Creates the new Reservation document.
+ * 5. Updates the Session by decrementing the available seat count.
+ * 6. Updates the User by adding the new reservation to their history.
+ *
+ * @param {string} userId The ID of the authenticated user (from JWT).
+ * @param {CreateReservationRequest} reservationInput The reservation details from the request.
+ * @throws {Error} Throws specific, user-friendly errors for invalid data (e.g., `User not found`, `Session not found`, `Seats not available`)
+ * @throws {Error} Throws generic error if the transaction fails for other reasons.
+ * @returns {Promise<TReservationDisplay>} A promise that resolves to a display-firendly DTO of the created reservation.
+ */
+export const createReservationService = async (userId: string, reservationInput: CreateReservationRequest): Promise<TReservationDisplay> => {
+    const dbSession = await mongoose.startSession();
+    dbSession.startTransaction();
 
-export const createReservationService = async (reservationData: CreateReservationRequest): Promise<TReservationDisplay> => {
-    // fetch and validate prerequisite entities
-    const { hall, session, user } = await fetchAndValidatePrerequisites(reservationData.userId, reservationData.sessionId);
+    try {
+        // 1. Fetch and validate prerequsites (within the transaction)
+        const { hall, session, user } = await fetchAndValidatePrerequisites(userId, reservationInput.sessionId, dbSession); // add transaction to this function
 
-    // Fetch movie details needed for the response DTO
-    const movie = await Movie.findById(session.movieId).select('title').lean();
-    if (!movie) throw new Error('Movie for this session not found');
+        const movie = await Movie.findById(session.movieId).select('title').lean();
+        if (!movie) throw new Error('Movie for this session not found.');
 
-    const sessionObjectId = session._id as mongoose.Types.ObjectId;
-    const userObjectId = user._id as mongoose.Types.ObjectId;
+        const cinema = await Cinema.findById(session.cinemaId).lean();
+        if (!cinema) throw new Error('Cinema not found for this session');
 
-    // prepare requested seat ObjectIds
-    const requestedSeatOriginalObjectIds = reservationData.seats.map((seat) => {
-        return new mongoose.Types.ObjectId(seat.originalSeatId);
-    });
+        // 2. Check seat availability
+        const requestedSeatIds = reservationInput.seats.map((seat) => new mongoose.Types.ObjectId(seat.originalSeatId));
+        if (requestedSeatIds.length === 0) throw new Error('No seats selected');
 
-    if (requestedSeatOriginalObjectIds.length === 0) {
-        throw new Error('No seats selected');
-    }
+        const bookedSeatIdsSet = await getBookedSeatIdsForSession(session._id);
+        const unavailableSeatNumbers: string[] = [];
 
-    // get currently booked seats for this session
-    const bookedSeatIdsSet = await getBookedSeatIdsForSession(sessionObjectId);
-
-    //check for seat availability
-    const unavailableSeatNumbers: string[] = [];
-    for (const requestedSeatObjectId of requestedSeatOriginalObjectIds) {
-        if (bookedSeatIdsSet.has(requestedSeatObjectId.toString())) {
-            const seatDetail = hall.seats.find((s) => s._id.equals(requestedSeatObjectId));
-            unavailableSeatNumbers.push(seatDetail ? seatDetail.seatNumber : requestedSeatObjectId.toString());
-        }
-    }
-
-    if (unavailableSeatNumbers.length > 0) {
-        throw new Error(`The following seats are alredy booked or pending for this session: ${unavailableSeatNumbers.join(', ')}.`);
-    }
-
-    // verify requested seats agains hall data, prepare details and calculate price
-    const { verifiedSeatsData, calculatedTotalPrice } = verifyAndPrepareSeatDetails(requestedSeatOriginalObjectIds, hall);
-
-    // fetch cinema and create a snack map for better efficiency
-    const cinema = await Cinema.findById(session.cinemaId).lean(); // Assuming session has cinemaId
-    if (!cinema) throw new Error('Cinema not found for this session');
-
-    const snackMap: { [snackId: string]: ISnack } = {};
-    cinema.snacks.forEach((snack) => {
-        snackMap[snack._id.toString()] = snack;
-    });
-
-    let totalSnackPrice = 0;
-    const selectedSnacks = reservationData.purchasedSnacks || {};
-    const purchasedSnacks: IPurchasedSnack[] = [];
-    // calculate total snack price
-    if (Object.keys(selectedSnacks).length > 0) {
-        // Calculate total snack price
-        for (const snackId in selectedSnacks) {
-            if (selectedSnacks.hasOwnProperty(snackId)) {
-                const quantity = selectedSnacks[snackId];
-                if (quantity) {
-                    const snack = snackMap[snackId]; // Use the snack map for lookup
-                    if (snack) {
-                        totalSnackPrice += snack.price * quantity;
-                        purchasedSnacks.push({
-                            snackId: new mongoose.Types.ObjectId(snack._id),
-                            name: snack.name,
-                            price: snack.price,
-                            quantity: quantity
-                        });
-                    } else {
-                        console.warn(`Snack with ID ${snackId} not found in cinema ${cinema.name}`);
-                    }
-                }
+        for (const seatId of requestedSeatIds) {
+            if (bookedSeatIdsSet.has(seatId.toString())) {
+                const seatDetail = hall.seats.find((s) => s._id.equals(seatId));
+                unavailableSeatNumbers.push(seatDetail ? seatDetail.seatNumber : seatId.toString());
             }
         }
+
+        if (unavailableSeatNumbers.length > 0) {
+            throw new Error(`Seats already booked: ${unavailableSeatNumbers.join(', ')}`);
+        }
+
+        // 3. Process seats and snacks, calculate price.
+        const { verifiedSeatsData, calculatedTotalPrice } = verifyAndPrepareSeatDetails(requestedSeatIds, hall);
+        const { purchasedSnacks, totalSnackPrice } = processSnacks(reservationInput.purchasedSnacks, cinema);
+
+        //4. Create Reservation
+        const reservationCode = uuidv4().substring(0, 8).toUpperCase();
+        const [newReservation] = await Reservation.create(
+            [
+                {
+                    userId: user._id,
+                    sessionId: session._id,
+                    seats: verifiedSeatsData,
+                    totalPrice: calculatedTotalPrice + totalSnackPrice,
+                    status: reservationInput.status || ReservationStatus.PENDING,
+                    reservationCode,
+                    purchasedSnacks
+                }
+            ],
+            { session: dbSession }
+        );
+
+        // 5. Update session and user.
+        session.availableSeats -= verifiedSeatsData.length;
+        user.reservations.push(newReservation._id);
+
+        await session.save({ session: dbSession });
+        await user.save({ session: dbSession });
+
+        await dbSession.commitTransaction();
+
+        // 6. Construct and return response DTO
+         return {
+            _id: newReservation._id.toString(),
+            reservationCode: newReservation.reservationCode!,
+            status: newReservation.status,
+            userId: newReservation.userId.toString(),
+            sessionId: newReservation.sessionId.toString(),
+            totalPrice: newReservation.totalPrice,
+            createdAt: newReservation.createdAt.toISOString(),
+            updatedAt: newReservation.updatedAt.toISOString(),
+            movieName: movie.title,
+            hallName: hall.name,
+            sessionStartTime: session.startTime.toISOString(),
+            seats: newReservation.seats.map((seat) => ({
+                originalSeatId: seat.originalSeatId.toString(),
+                seatNumber: seat.seatNumber,
+                row: seat.row,
+                column: seat.column,
+                type: seat.type,
+                price: seat.price,
+            })),
+            purchasedSnacks: newReservation.purchasedSnacks.map((snack) => ({
+                snackId: snack.snackId.toString(),
+                name: snack.name,
+                price: snack.price,
+                quantity: snack.quantity,
+            })),
+        };
+
+    } catch (error) {
+        //If any errors occurs, abort the entire transaction.
+        await dbSession.abortTransaction();
+        console.error('Reservation Service Transaction Error:', error);
+        throw error
+    } finally {
+        dbSession.endSession();
     }
-    // generate reservation code
-    const reservationCode = uuidv4().substring(0, 8).toUpperCase();
+
     
-    const newReservationDataForModel = {
-        userId: userObjectId,
-        sessionId: sessionObjectId,
-        seats: verifiedSeatsData,
-        totalPrice: calculatedTotalPrice + totalSnackPrice,
-        status: reservationData.status || ReservationStatus.PENDING,
-        reservationCode: reservationCode,
-        purchasedSnacks: purchasedSnacks
-    };
-
-    const newReservation = await Reservation.create(newReservationDataForModel);
-
-    if (newReservation && (newReservation.status === ReservationStatus.PENDING || newReservation.status === ReservationStatus.CONFIRMED)) {
-        await Session.findByIdAndUpdate(sessionObjectId, {
-            $inc: { availableSeats: -verifiedSeatsData.length } // Decrement by the number of reserved seats
-        });
-    }
-
-    // Manually construct the TReservationDisplay object to return
-    const reservationDisplayData: TReservationDisplay = {
-        _id: newReservation._id.toString(),
-        reservationCode: newReservation.reservationCode || 'N/A',
-        status: newReservation.status,
-        userId: newReservation.userId.toString(),
-        sessionId: newReservation.sessionId.toString(),
-        totalPrice: newReservation.totalPrice,
-        createdAt: newReservation.createdAt ? newReservation.createdAt.toISOString() : new Date().toISOString(),
-        updatedAt: newReservation.updatedAt ? newReservation.updatedAt.toISOString() : new Date().toISOString(),
-        movieName: movie.title,
-        hallName: hall.name,
-        sessionStartTime: session.startTime,
-        sessionDate: session.date,
-        seats: (newReservation.seats || []).map((seat) => ({
-            id: seat.originalSeatId.toString(),
-            seatNumber: seat.seatNumber,
-            row: seat.row,
-            column: seat.column,
-            type: seat.type,
-            price: seat.price
-        })),
-        purchasedSnacks: (newReservation.purchasedSnacks || []).map((snack) => ({
-            snackId: snack.snackId.toString(),
-            name: snack.name,
-            price: snack.price,
-            quantity: snack.quantity
-        }))
-    };
-    return reservationDisplayData;
 };
-
-export type ReservationFilter = {
-    userId: string;
-    status?: string;
-}
 
 export const getUserReservationService = async (filter: ReservationFilter): Promise<TReservationDisplay[]> => {
     if (!filter.userId) throw new Error('User ID required.');
@@ -152,7 +135,7 @@ export const getUserReservationService = async (filter: ReservationFilter): Prom
     const userReservations = await Reservation.find(filter)
         .populate({
             path: 'sessionId',
-            select: 'movieId hallId startTime date',
+            select: 'movieId hallId startTime',
             populate: [
                 { path: 'movieId', select: 'title' },
                 { path: 'hallId', select: 'name' }
@@ -176,6 +159,7 @@ export const getUserReservationService = async (filter: ReservationFilter): Prom
             sessionStartTime: session?.startTime || 'N/A',
             sessionDate: session?.date || 'N/A',
             seats: reservation.seats.map((seat) => ({
+                originalSeatId: seat.originalSeatId.toString(),
                 seatNumber: seat.seatNumber,
                 row: seat.row,
                 column: seat.column,
@@ -203,7 +187,7 @@ export const deleteReservationService = async (reservationId: string, userId: st
     const session = await Session.findById(reservation.sessionId);
     if (!session) throw new Error('Could not find the session associated with this reservation.');
 
-    const sessionStartDateTime = new Date(`${session.date}T${session.startTime}`);
+    const sessionStartDateTime = session.startTime;
     const now = new Date();
 
     const hoursUntilSession = (sessionStartDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);

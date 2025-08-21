@@ -13,7 +13,15 @@ export interface JwtRequest extends Request {
     };
 }
 
-//Checks for authorization headers
+/**
+ * Express middleware to authenticate a user by verifying a JWT from cookies.
+ * If the token is valid, it attaches the decoded user payload to `req.user`.
+ * If the token is missing or invalid, it sends a 401 Unauthorized response.
+ * @param {JwtRequest} req The Express request object, extended with a `user` property. 
+ * @param {Response} res The Express response object. 
+ * @param {NextFunction} next The next middleware function in the stack.
+ * @returns 
+ */
 export const authentication = (req: JwtRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
     if (!token) {
@@ -38,7 +46,13 @@ export const authentication = (req: JwtRequest, res: Response, next: NextFunctio
     }
 };
 
-//checks if user has the needed role to acess from the given roles
+/**
+ * Middleware factory that creates a role-based authorization check.
+ * It should be userd AFTER the authentication middleware.
+ * @param {UserRole[]} allowedRoles An array of roles that are permitted to access the route.
+ * @returns {Function} An Express middleware function that checks the user's role.
+ * If the role is not allowed, it sends 403 Forbidden response.
+ */
 export function authorizeRoles(allowedRoles: UserRole[]) {
     return (req: JwtRequest, res: Response, next: NextFunction) => {
         const user = req.user;
@@ -51,6 +65,13 @@ export function authorizeRoles(allowedRoles: UserRole[]) {
     };
 }
 
+/**
+ * Generates a JSON Web Token (JWT) for a user.
+ * @param {mongoose.Types.ObjectId} _id The user's ID. 
+ * @param {string} role The user's role. 
+ * @param {string} email The user's email.
+ * @returns 
+ */
 export const generateToken = (_id: mongoose.Types.ObjectId, role: string, email: string) => {
     return jwt.sign({ _id, role, email }, JWT_SECRET, { expiresIn: '99h' });
 };

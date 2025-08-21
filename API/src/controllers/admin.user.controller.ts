@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminUserService';
 import mongoose from 'mongoose';
-import { userSchema } from '../utils';
+import { userCreationSchema, userDTOSchema } from '../utils';
 
 /**
  *
@@ -51,7 +51,7 @@ export const getUserById = async (req: Request, res: Response) => {
  */
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const validUserData = userSchema.parse(req.body);
+        const validUserData = userCreationSchema.parse(req.body);
         const newUser = await createUserService(validUserData);
         res.status(201).json(newUser);
     } catch (err: any) {
@@ -81,7 +81,7 @@ export const updateUser = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'Invalid user ID format.' });
         }
 
-        const validatedUpdates = userSchema.partial().parse(req.body);
+        const validatedUpdates = userDTOSchema.partial().parse(req.body);
 
         const updatedUser = await updateUserService(id, validatedUpdates);
         res.status(201).json(updatedUser);

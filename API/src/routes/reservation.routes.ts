@@ -4,7 +4,7 @@ import { createReservation, deleteReservation, getUserReservations } from '../co
 
 const reservationRouter: Router = express.Router();
 
-reservationRouter.post('/', authentication, authorizeRoles(['admin', 'user']), createReservation);
+reservationRouter.post('/', authentication, authorizeRoles(['user']), createReservation);
 reservationRouter.get('/', authentication, authorizeRoles(['user']), getUserReservations);
 reservationRouter.delete('/:reservationId', authentication, authorizeRoles(['user']), deleteReservation);
 

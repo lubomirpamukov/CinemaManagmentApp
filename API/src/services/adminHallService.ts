@@ -3,15 +3,16 @@ import mongoose from 'mongoose';
 import Cinema from '../models/cinema.model';
 import Session from '../models/session.model';
 import { hallSchema, THall } from '../utils';
+import { mapHallToTHall } from '../utils/mapping-functions';
 
 /**
  * Fetches halls of specific cinema based on ID from the database, transforms it into DTO,
  * and validates them against hall schema.
- * @param {string} cinemaId The ID of the cinema.
+ * @param {string | mongoose.Types.ObjectId} cinemaId The ID of the cinema.
  * @throws {Error} If no halls are found, or the data from the database fails validation.
  * @returns {Promise<THall[]>} Resolves to array of THall
  */
-export const getCinemaHallsService = async (cinemaId: string): Promise<THall[]> => {
+export const getCinemaHallsService = async (cinemaId: string | mongoose.Types.ObjectId): Promise<THall[]> => {
     const cinemaExists = await Cinema.findById(cinemaId).lean();
     if (!cinemaExists) {
         throw new Error('Cinema not found');
@@ -45,16 +46,18 @@ export const getCinemaHallsService = async (cinemaId: string): Promise<THall[]> 
 };
 
 /**
- * Creates new hall document in the database.
+ * Creates new hall document in the database, validation of the hall data is made in the parrent controller.
  * Does NOT modify the parent cinema.
  * @param {THall} hallData The validated hall data, including cinemaId.
+ * @throws {Error} Throws error if hall data is not valid.
  * @param {mongoose.ClientSession} [session] Optional Mongoose session for transactions.
- * @returns {Promise<IHall>} A promise that resolves to the created Mongoose Hall document.
+ * @returns {Promise<THall>} A promise that resolves to the created and validated THall DTO.
  */
-export const createHallService = async (hallData: THall, session?: mongoose.ClientSession): Promise<IHall> => {
+export const createHallService = async (hallData: THall, session?: mongoose.ClientSession): Promise<THall> => {
     const hall = new Hall(hallData);
     await hall.save({ session });
-    return hall;
+    const tHall = mapHallToTHall(hall);
+    return hallSchema.parse(tHall);
 };
 
 /**
@@ -70,19 +73,20 @@ export const deleteHallByIdService = async (hallId: string, session?: mongoose.C
 
 /**
  * Fetches a hall by its ID, transforms it into a DTO, and validates it.
- * @param {string} id The ID of the hall to fetch.
+ * @param {string | mongoose.Types.ObjectId} id The ID of the hall to fetch.
+ * @param {mongoose.ClientSession} [session] Optional mongoose session for transaction
  * @throws {Error} Throws an error if the hall is not found.
- * @returns {Promise<THall>} A promise that resolves to the validated hall DTO.
+ * @returns {Promise<THall | null>} A promise that resolves to the validated hall DTO.
  */
-export const getHallByIdService = async (id: string): Promise<THall> => {
+export const getHallByIdService = async (id: string | mongoose.Types.ObjectId, session?: mongoose.ClientSession): Promise<THall | null> => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('Invalid Hall id format');
     }
 
-    const hall = await Hall.findById(id).lean();
+    const hall = await Hall.findById(id, {session}).lean();
 
     if (!hall) {
-        throw new Error(`Hall with id ${id} not found.`);
+        return null
     }
 
     const hallDto: THall = {

@@ -42,7 +42,7 @@ export const movieSchema = z.object({
         .or(z.literal('').transform(() => undefined))
 });
 
-export type MovieZod = z.infer<typeof movieSchema>;
+export type TMovie = z.infer<typeof movieSchema>;
 
 //Paginated response schema
 export const moviePaginatedSchema = z.object({
@@ -50,3 +50,11 @@ export const moviePaginatedSchema = z.object({
     totalPages: z.number(),
     currentPage: z.number()
 });
+
+export type TMoviePaginated = z.infer<typeof moviePaginatedSchema>;
+
+export type ShowcaseMovies = {
+    newMovies: TMovie[];
+    popularMovies: TMovie[];
+    recommendedMovies: TMovie[];
+};

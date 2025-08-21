@@ -32,7 +32,7 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
 
     // Update the server
     try {
-      await deleteHall(cinema.id!, id);
+      await deleteHall(id);
     } catch (error) {
       console.error("Failed to delete hall:", error);
       // Restore the original state if the API call fails
@@ -58,7 +58,6 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
               </p>
               <p>
                 <strong>Movies Scheduled:</strong>{" "}
-                {hall.movieProgram?.length || 0}
               </p>
             </div>
             <ActionButton
