@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Cinema } from "../../utils";
+import { TCinema } from "../../utils";
 import { useCinemas } from "../../hooks";
 import styles from "./CinemaList.module.css";
 import Spinner from "../Spinner";
 
-export type CinemaWithAction = Cinema;
+export type CinemaWithAction = TCinema;
 
 const CinemaList: React.FC = () => {
   const { cinemas, loading } = useCinemas();

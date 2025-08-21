@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { Cinema } from "../utils";
+import { TCinema } from "../utils";
 import { getCinemas } from "../services";
 
 export const useCinemas = () => {
-  const [cinemas, setCinemas] = useState<Cinema[]>([]);
+  const [cinemas, setCinemas] = useState<TCinema[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,7 @@ export const useCinemas = () => {
       setLoading(true);
       try {
         if (isActive) {
-          const data: Cinema[] = await getCinemas();
+          const data: TCinema[] = await getCinemas();
 
           setCinemas(data);
           setError(null);

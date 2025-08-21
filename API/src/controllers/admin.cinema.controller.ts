@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
-import { getCinemasService, getCinemaByIdService, updateCinemaByIdService } from '../services/adminCinemaService';
+import { getCinemasService, getCinemaByIdService, updateCinemaByIdService, createCinemaService } from '../services/adminCinemaService';
 import mongoose from 'mongoose';
 import { cinemaSchema } from '../utils';
+import { type } from 'node:os';
+import { ZodError } from 'zod';
+import { error } from '../config/logging';
 
 /**
  * @route GET /api/admin/cinemas
@@ -13,7 +16,7 @@ export const getCinemas = async (req: Request, res: Response) => {
         const cinemas = await getCinemasService();
         res.status(200).json({ cinemas });
     } catch (err: any) {
-        if (err.name === 'ZodError') {
+        if (err instanceof ZodError) {
             return res.status(400).json({ error: 'Data validation failed', details: err.errors });
         }
         res.status(500).json({ error: err.message });
@@ -21,7 +24,7 @@ export const getCinemas = async (req: Request, res: Response) => {
 };
 
 /**
- * @route GET /api/admin/cinemas
+ * @route GET /api/admin/cinemas/:id
  * @desc Get cinema by ID
  * @access Private (Admin)
  */
@@ -37,7 +40,7 @@ export const getCinemaById = async (req: Request, res: Response) => {
 
         res.status(200).json({ cinema });
     } catch (err: any) {
-        if (err.name === 'ZodError') {
+        if (err instanceof ZodError) {
             return res.status(400).json({ error: 'Cinema data validation failed.', details: err.errors });
         }
 
@@ -68,7 +71,7 @@ export const updateCinema = async (req: Request, res: Response) => {
 
         res.status(200).json({ cinema: updatedCinema });
     } catch (err: any) {
-        if (err.name === 'ZodError') {
+        if (err instanceof ZodError) {
             return res.status(400).json({ error: 'Updates validation failed', details: err.errors });
         }
 
@@ -78,3 +81,27 @@ export const updateCinema = async (req: Request, res: Response) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+/**
+ * POST /api/admin/cinemas
+ * @description Create a new cinema document
+ * @access Private (Admin)
+ */
+export const createCinema = async (req: Request, res: Response) => {
+    try {
+        const validCinema = cinemaSchema.parse(req.body)
+
+        const createdCinema = await createCinemaService(validCinema);
+
+        res.status(201).json(createdCinema);
+    } catch (err: any) {
+
+        console.error('Create cinema error:', err);
+        
+        if (err instanceof ZodError) {
+            return res.status(400).json ({ error: 'Validation failed', details: err.errors})
+        }
+
+        res.status(500).json({error: 'Failed to create cinema'});
+    }
+}

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { Cinema } from "../utils";
+import { TCinema } from "../utils";
 import { getCinemaById } from "../services";
 
 export const useCinemaById = (cinemaId: string) => {
-  const [cinema, setCinema] = useState<Cinema | null>(null);
+  const [cinema, setCinema] = useState<TCinema | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

@@ -35,6 +35,18 @@ export const getCinemaByIdService = async (id: string): Promise<TCinema> => {
     return validatedCinema;
 };
 
+
+/**
+ * Creates a cinema document, transforms it into DTO and validates them agains cinema schema
+ * @param {TCinema} cinema - Cinema object that will be created
+ * @returns {Promise<TCinema>} - Resolves to a DTO object of the cinema document.
+ */
+export const createCinemaService = async (cinema: TCinema): Promise<TCinema> => {
+    const cinemaDocument = await Cinema.create(cinema);
+    const dto = mapCinemaToTCinema(cinemaDocument);
+    return cinemaSchema.parse(dto)
+}
+
 /**
  * Updates a cinema's details by its ID.
  * Assumes the `updates` object has been validated by the controller.
@@ -90,3 +102,5 @@ export const removeHallFromCinemaService = async (
 ): Promise<mongoose.UpdateWriteOpResult | null> => {
     return await Cinema.updateOne({ _id: cinemaId, halls: hallId }, { $pull: { halls: hallId } }, { session });
 };
+
+

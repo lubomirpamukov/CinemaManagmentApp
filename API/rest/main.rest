@@ -114,7 +114,7 @@ GET http://localhost:3123/admin/cinemas
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDY4NzE3MTIsImV4cCI6MTc0NzIyODExMn0._XVsUB3L0llrvuxa7_E8vsUetmJZWyU5ddinBmtuTUY
 
 ### Get Cinema by ID
-GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6
+GET http://localhost:3123/admin/cinemas/68a6cd138086f87e3ff6c239
 
 ### Get Halls by Cinema Id
 GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls

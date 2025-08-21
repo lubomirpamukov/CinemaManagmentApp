@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import styles from "./HallList.module.css";
 import { deleteHall } from "../../services";
 import ActionButton from "../buttons/ActionButton";
-import { Cinema, Hall } from "../../utils";
+import { TCinema, Hall } from "../../utils";
 
 type HallListProps = {
   halls: Hall[];
-  cinema: Cinema;
+  cinema: TCinema;
 };
 
 const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {

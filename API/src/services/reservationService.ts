@@ -8,6 +8,7 @@ import { fetchAndValidatePrerequisites, getBookedSeatIdsForSession, processSnack
 import Cinema from '../models/cinema.model';
 import { ISnack } from '../models/cinema.model';
 import Movie from '../models/movie.model';
+import { mapReservationToDisplayDTO } from '../utils/mapping-functions';
 
 /**
  * Creates a new reservation for an authenticated user.
@@ -33,10 +34,12 @@ export const createReservationService = async (userId: string, reservationInput:
         // 1. Fetch and validate prerequsites (within the transaction)
         const { hall, session, user } = await fetchAndValidatePrerequisites(userId, reservationInput.sessionId, dbSession); // add transaction to this function
 
-        const movie = await Movie.findById(session.movieId).select('title').lean();
-        if (!movie) throw new Error('Movie for this session not found.');
+        const [movie, cinema] = await Promise.all([
+            Movie.findById(session.movieId).select('title').lean().session(dbSession),
+            Cinema.findById(session.cinemaId).lean().session(dbSession)
+        ]);
 
-        const cinema = await Cinema.findById(session.cinemaId).lean();
+        if (!movie) throw new Error('Movie for this session not found.');
         if (!cinema) throw new Error('Cinema not found for this session');
 
         // 2. Check seat availability
@@ -88,33 +91,7 @@ export const createReservationService = async (userId: string, reservationInput:
         await dbSession.commitTransaction();
 
         // 6. Construct and return response DTO
-         return {
-            _id: newReservation._id.toString(),
-            reservationCode: newReservation.reservationCode!,
-            status: newReservation.status,
-            userId: newReservation.userId.toString(),
-            sessionId: newReservation.sessionId.toString(),
-            totalPrice: newReservation.totalPrice,
-            createdAt: newReservation.createdAt.toISOString(),
-            updatedAt: newReservation.updatedAt.toISOString(),
-            movieName: movie.title,
-            hallName: hall.name,
-            sessionStartTime: session.startTime.toISOString(),
-            seats: newReservation.seats.map((seat) => ({
-                originalSeatId: seat.originalSeatId.toString(),
-                seatNumber: seat.seatNumber,
-                row: seat.row,
-                column: seat.column,
-                type: seat.type,
-                price: seat.price,
-            })),
-            purchasedSnacks: newReservation.purchasedSnacks.map((snack) => ({
-                snackId: snack.snackId.toString(),
-                name: snack.name,
-                price: snack.price,
-                quantity: snack.quantity,
-            })),
-        };
+         return mapReservationToDisplayDTO(newReservation, movie.title, hall.name, session.startTime)
 
     } catch (error) {
         //If any errors occurs, abort the entire transaction.
