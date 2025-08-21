@@ -23,24 +23,23 @@ describe('User Routes', () => {
 
     it('should create a user', async () => {
         const response = await request(application)
-            .post('/api/auth/register')
+            .post('/auth/register')
             .send({
-                role: 'distributor',
                 name: 'syed ammar dis',
                 email: 'dis2@gmail.com',
-                password: '123456',
+                password: '12345678asdf',
                 contact: '1234567890',
-                business_name: 'Techm',
                 address: {
-                    line1: '123 Main St',
+                    line1: '1234 Main St',
                     city: 'Mumbai',
                     state: 'Maharashtra',
                     zipcode: '400001'
-                },
-                geolocation: { lat: 19.076, long: 72.8777 }
+                }
             });
-
         expect(response.status).toBe(201);
-        expect(response.body.message).toBe('User created');
+        expect(response.body).toHaveProperty('user');
+        expect(response.body.user).toHaveProperty('email', 'dis2@gmail.com');
+        expect(response.body.user).toHaveProperty('id');
+        expect(response.body.user.id).toEqual(expect.any(String));
     });
 });
