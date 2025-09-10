@@ -2,6 +2,9 @@ import React from "react";
 import { SessionDisplay } from "../../utils";
 import styles from "./SessionDetails.module.css";
 import ActionButton from "../buttons/ActionButton";
+import SessionSeatMap from "./SessionSeatMap";
+import { useHallById } from "../../hooks";
+import Spinner from "../Spinner";
 
 type SessionDetailsProps = {
   session: SessionDisplay;
@@ -13,7 +16,12 @@ const SessionDetail: React.FC<SessionDetailsProps> = ({ session, onClose }) => {
     return null;
   }
 
+  const { hall, loading } = useHallById(session.hallId);
+
   //to do: make calls for seat layout and avaliablity here:
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className={styles.overlay}>
@@ -44,7 +52,7 @@ const SessionDetail: React.FC<SessionDetailsProps> = ({ session, onClose }) => {
           <p>
             <strong>Time:</strong> {session.startTime} - {session.endTime}
           </p>
-          <h1>Add seat layout and avaliablity here</h1>
+          <SessionSeatMap sessionId={session._id} hall={hall!} />
         </div>
       </div>
     </div>

@@ -22,4 +22,4 @@ export const cinemaSchema = z.object({
     .or(z.literal("").transform(() => undefined)),
 });
 
-export type Cinema = z.infer<typeof cinemaSchema>;
+export type TCinema = z.infer<typeof cinemaSchema>;

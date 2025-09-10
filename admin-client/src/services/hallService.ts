@@ -1,12 +1,15 @@
 import { hallSchema, Hall } from "../utils";
 
-const BASE_URL = "http://localhost:3123/admin";
+const BASE_URL = "http://localhost:3123";
 
 export const getHallsByCinemaId = async (cinemaId: string): Promise<Hall[]> => {
   try {
-    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`, {
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${BASE_URL}/admin/cinemas/${cinemaId}/halls`,
+      {
+        credentials: "include",
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -25,7 +28,7 @@ export const getHallsByCinemaId = async (cinemaId: string): Promise<Hall[]> => {
 
 export const getHalls = async (): Promise<Hall[]> => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(`${BASE_URL}/admin`);
     if (!response.ok) {
       throw new Error("Error fetching halls");
     }
@@ -37,11 +40,13 @@ export const getHalls = async (): Promise<Hall[]> => {
   }
 };
 
-export const getHallById = async (id: string): Promise<Hall> => {
+export const getHallById = async (hallId: string): Promise<Hall> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`);
+    const response = await fetch(`${BASE_URL}/halls/${hallId}`, {
+      credentials: "include",
+    });
     if (!response.ok) {
-      throw new Error(`Error fetching hall with id ${id}`);
+      throw new Error(`Error fetching hall with id ${hallId}`);
     }
     const data = await response.json();
     return hallSchema.parse(data);
@@ -70,25 +75,30 @@ export const createHall = async (
   hall: Hall
 ): Promise<Hall> => {
   try {
-    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(hall),
-    });
+    const response = await fetch(
+      `${BASE_URL}/admin/cinemas/${cinemaId}/halls`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hall),
+      }
+    );
     if (!response.ok) {
-      throw new Error("Error creating hall");
+      const errorData = await response.json();
+      console.error("Server error:", errorData);
+      throw new Error(errorData.error || "Error creating hall");
     }
-    const data = await response.json();
-    return hallSchema.parse(data);
+    const responseData = await response.json();
+
+    return hallSchema.parse(responseData.data);
   } catch (error) {
     console.error("Error creating hall:", error);
     throw error; // to do log
   }
 };
-
 export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
@@ -109,21 +119,17 @@ export const updateHall = async (id: string, hall: Hall): Promise<Hall> => {
   }
 };
 
-export const deleteHall = async (
-  cinemaId: string,
-  id: string
-): Promise<void> => {
+export const deleteHall = async (hallId: string): Promise<void> => {
   try {
-    const response = await fetch(`${BASE_URL}/cinemas/${cinemaId}/halls`, {
+    const response = await fetch(`${BASE_URL}/admin/halls/${hallId}`, {
       method: "DELETE",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ hallId: id }),
     });
     if (!response.ok) {
-      throw new Error(`Error deleting hall with id ${id}`);
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || `Error deleting hall with id ${hallId}`
+      );
     }
   } catch (error) {
     console.error("Error deleting hall:", error);

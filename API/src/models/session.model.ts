@@ -1,12 +1,13 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ISession extends Document {
+    _id: mongoose.Types.ObjectId;
     cinemaId: mongoose.Types.ObjectId;
     hallId: mongoose.Types.ObjectId;
     movieId: mongoose.Types.ObjectId;
-    date: string; // "YYYY-MM-DD"
-    startTime: string; // "HH:MM"
-    endTime: string; // "HH:MM"
+    availableSeats: number;
+    startTime: Date; // "HH:MM"
+    endTime: Date; // "HH:MM"
 }
 
 const SessionSchema: Schema<ISession> = new Schema(
@@ -29,18 +30,17 @@ const SessionSchema: Schema<ISession> = new Schema(
             required: true,
             trim: true
         },
-        date: {
-            type: String,
-            required: true,
-            trim: true
+        availableSeats: {
+            type: Number,
+            required: true
         },
         startTime: {
-            type: String,
+            type: Date,
             required: true,
             trim: true
         },
         endTime: {
-            type: String,
+            type: Date,
             required: true,
             trim: true
         }

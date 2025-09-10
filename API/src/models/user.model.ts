@@ -5,9 +5,9 @@ export type UserRole = 'admin' | 'user';
 export interface IUser extends Document {
     _id: mongoose.Types.ObjectId;
     role: UserRole;
+    reservations: mongoose.Types.ObjectId[];
     hash: string;
     name?: string;
-    userName: string;
     email: string;
     password: string;
     contact?: string;
@@ -22,9 +22,14 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema(
     {
         role: { type: String, enum: ['admin', 'user'], required: true, default: 'user' },
+        reservations: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Reservation'
+            }
+        ],
         hash: { type: String },
         name: { type: String },
-        userName: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         contact: { type: String },

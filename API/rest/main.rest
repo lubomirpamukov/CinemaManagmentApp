@@ -6,7 +6,6 @@ GET http://localhost:3123/main/healthcheck
 
 ###
 GET http://localhost:3123/users/protected
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDU5NDA1MDgsImV4cCI6MTc0NTk0NDEwOH0.rINcvA84BJmNs6W3IFcvGGOqWq8hvDp8N1xUGQ6e1A8
 ### Create  User
 POST http://localhost:3123/auth/register
 Content-Type: application/json
@@ -35,7 +34,12 @@ POST http://localhost:3123/auth/logout
 
 ### Check authentication
 GET http://localhost:3123/auth/check-auth
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYwOTIzNTAsImV4cCI6MTc0NjQ0ODc1MH0.XowyZ3AgR2E_sVgSDyMksq6me23NvVuKMfSjCkavnh4
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEzOGM4NDMyOTAxMTBlM2JiMDFhNmIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTEwMTAwMTAsImV4cCI6MTc1MTM2NjQxMH0.BS5_MGh7Rd4_ghaTPToH8dDWKRs9c6XmOWIdeQ2hElc
+
+### Get me
+GET http://localhost:3123/auth/me
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVlNjA3YzVlYWZhMmQ0OTliYWRmZGMiLCJyb2xlIjoidXNlciIsImVtYWlsIjoiZXhhbXBsZUBnbWFpbC5jb20iLCJpYXQiOjE3NTIxNTAzNTQsImV4cCI6MTc1MjUwNjc1NH0.wpHL4E4pmy_Jzfbjt8fzI3yyv7TjFEHBSv7kDbl9MFU
+
 
 ### Admin get all users
 GET http://localhost:3123/admin/users
@@ -45,7 +49,6 @@ POST http://localhost:3123/admin/users
 Content-Type: application/json
 
 {
-  "userName": "george",
   "name": "George",
   "email": "example@gmail.com",
   "password": "securepassword"
@@ -72,11 +75,6 @@ Content-Type: application/json
 
 ### Admin delete user
 DELETE  http://localhost:3123/admin/users/6811e529c54307a90c238bec
-
-
-
-
-
 
 
 ### Get Movies
@@ -116,7 +114,7 @@ GET http://localhost:3123/admin/cinemas
 Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEwZTAwNjkzMGU1ZDM5NGE5NjI3NWIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDY4NzE3MTIsImV4cCI6MTc0NzIyODExMn0._XVsUB3L0llrvuxa7_E8vsUetmJZWyU5ddinBmtuTUY
 
 ### Get Cinema by ID
-GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6
+GET http://localhost:3123/admin/cinemas/68a6cd138086f87e3ff6c239
 
 ### Get Halls by Cinema Id
 GET http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls
@@ -196,3 +194,70 @@ Content-Type: application/json
 
 ### Get filtered sessions
 GET http://localhost:3123/admin/sessions
+
+### Create a new reservation
+POST http://localhost:3123/reservation
+Content-Type: application/json
+
+{
+  "userId": "6811e540c54307a90c238bee", 
+  "sessionId": "684dca1546d7accaad09d270", 
+  "seats": [
+    {
+      "originalSeatId": "683d7892a4111a39bf13ed47" 
+    }
+  ],
+  "status": "pending"
+}
+
+### get reserved seats
+GET http://localhost:3123/session/6867c70fa4c972773077245f/reserved-seats
+
+### get hall by Id
+GET http://localhost:3123/halls/683d7892a4111a39bf13ed46
+
+###
+GET http://localhost:3123/movies
+
+### Login as  User
+POST http://localhost:3123/auth/login
+Content-Type: application/json
+
+{
+    "email": "example@gmail.com",
+    "password": "securepassword"
+}
+
+### get cinema cities by movie
+GET http://localhost:3123/cinemas/movies/684070c13771f2dcaa327d59
+
+### Get cinemas by movie and city
+GET http://localhost:3123/cinemas/by-city-and-movie?movieId=684070c13771f2dcaa327d59&city=San+Francisco15
+
+### Get session date by cinema and movie
+GET http://localhost:3123/session/available-dates?movieId=6814c671c1d5ea76132b8624&cinemaId=68207e09ddb4d49f740049b6
+
+### Get Hall Names by IDs
+POST http://localhost:3123/halls/names
+Content-Type: application/json
+
+[
+  "683d7892a4111a39bf13ed46",
+  "683ec9b439d387ddc64155a0"
+]
+
+### Get seat-layout
+GET http://localhost:3123/session/6860f6f13adc7f588753871c/seat-layout
+
+
+### Get movie by ID
+GET http://localhost:3123/movies/6814c671c1d5ea76132b8624
+
+### Get movie showcase by ID
+GET http://localhost:3123/movies/showcase/6814c671c1d5ea76132b8624
+
+### Get user reservations
+GET http://localHost:3123/reservation/user/68138c843290110e3bb01a6b
+
+### Delete user reservation
+DELETE  http://localHost:3123/reservation/6859204653734b91c6105edf

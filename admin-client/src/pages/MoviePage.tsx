@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 
-import { useSearch } from "../hooks";
-import { useDebounce, usePaginated } from "../hooks";
+import { useDebounce, usePaginated, useSearch } from "../hooks";
 import Pagination from "../components/buttons/Pagination";
 import { movieSchema } from "../utils";
 import MovieList from "../components/movie/MovieList";

@@ -7,18 +7,12 @@ import { hallSchema, Hall, seatsSchema } from "../../utils";
 import Spinner from "../Spinner";
 import styles from "./HallForm.module.css";
 import { createHall } from "../../services";
-import { useMovies } from "../../hooks";
 
 const HallForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { cinemaId } = useParams<{ cinemaId: string }>();
-  const { movies, loading } = useMovies();
-
-  if (loading) {
-    <Spinner/>
-  }
 
   const {
     register,
@@ -32,18 +26,8 @@ const HallForm: React.FC = () => {
       cinemaId: cinemaId,
       name: "",
       layout: { rows: 5, columns: 5 },
-      movieProgram: [],
       seats: [],
     },
-  });
-
-  const {
-    fields: movieFields,
-    append: appendMovie,
-    remove: removeMovie,
-  } = useFieldArray({
-    control,
-    name: "movieProgram",
   });
 
   const {
@@ -87,7 +71,7 @@ const HallForm: React.FC = () => {
           row: r,
           column: c,
           seatNumber: `${rowLabel}${c}`,
-          isAvailable: "available",
+          isAvailable: true,
           type: "regular",
           price: 10, // Default price
         });
@@ -177,93 +161,6 @@ const HallForm: React.FC = () => {
             className={styles.secondaryButton}
           >
             Generate Seats
-          </button>
-        </div>
-
-        <div className={styles.formSection}>
-          <h2>Movie Program</h2>
-          {errors.movieProgram?.message && (
-            <p className={styles.sectionError}>{errors.movieProgram.message}</p>
-          )}
-
-          {movieFields.map((field, index) => (
-            <div key={field.id} className={styles.arrayItem}>
-              <label htmlFor={`movieId-${index}`} className={styles.formGroup}>
-                Movies
-                <select
-                  id={`movieId-${index}`}
-                  {...register(`movieProgram.${index}.movieId`)}
-                  className={styles.select}
-                >
-                  <option value="">Select a movie</option>
-                  {movies.map((movie) => (
-                    <option key={movie.id} value={movie.id}>
-                      {movie.title}
-                    </option>
-                  ))}
-                </select>
-                {errors.movieProgram?.[index]?.movieId && (
-                  <p className={styles.fieldError}>
-                    {errors.movieProgram[index]?.movieId?.message}
-                  </p>
-                )}
-              </label>
-
-              <label
-                htmlFor={`startTime-${index}`}
-                className={styles.formGroup}
-              >
-                Start Time
-                <input
-                  id={`startTime-${index}`}
-                  type="datetime-local"
-                  {...register(`movieProgram.${index}.startTime`)}
-                  className={styles.input}
-                />
-                {errors.movieProgram?.[index]?.startTime && (
-                  <p className={styles.fieldError}>
-                    {errors.movieProgram[index]?.startTime?.message}
-                  </p>
-                )}
-              </label>
-
-              <div className={styles.formGroup}>
-                <label htmlFor={`endTime-${index}`}>End Time</label>
-                <input
-                  id={`endTime-${index}`}
-                  type="datetime-local"
-                  {...register(`movieProgram.${index}.endTime`)}
-                  className={styles.input}
-                />
-                {errors.movieProgram?.[index]?.endTime && (
-                  <p className={styles.fieldError}>
-                    {errors.movieProgram[index]?.endTime?.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => removeMovie(index)}
-                className={styles.removeButton}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={() =>
-              appendMovie({
-                movieId: "",
-                startTime: "",
-                endTime: "",
-              })
-            }
-            className={styles.addButton}
-          >
-            Add Movie
           </button>
         </div>
 
@@ -371,7 +268,7 @@ const HallForm: React.FC = () => {
                 row: 1,
                 column: 1,
                 seatNumber: "A1",
-                isAvailable: "available",
+                isAvailable: true,
                 type: "regular",
                 price: 10,
               })

@@ -1,0 +1,6 @@
+export * from './cinema.model';
+export * from './hall.model';
+export * from './movie.model';
+export * from './reservation.model';
+export * from './session.model';
+export * from './user.model';

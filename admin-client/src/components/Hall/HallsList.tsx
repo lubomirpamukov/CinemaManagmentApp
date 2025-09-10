@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import styles from "./HallList.module.css";
 import { deleteHall } from "../../services";
 import ActionButton from "../buttons/ActionButton";
-import { Cinema, Hall } from "../../utils";
+import { TCinema, Hall } from "../../utils";
 
 type HallListProps = {
   halls: Hall[];
-  cinema: Cinema;
+  cinema: TCinema;
 };
 
 const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
@@ -32,7 +32,7 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
 
     // Update the server
     try {
-      await deleteHall(cinema.id!, id);
+      await deleteHall(id);
     } catch (error) {
       console.error("Failed to delete hall:", error);
       // Restore the original state if the API call fails
@@ -58,7 +58,6 @@ const HallList: React.FC<HallListProps> = ({ cinema, halls }) => {
               </p>
               <p>
                 <strong>Movies Scheduled:</strong>{" "}
-                {hall.movieProgram?.length || 0}
               </p>
             </div>
             <ActionButton

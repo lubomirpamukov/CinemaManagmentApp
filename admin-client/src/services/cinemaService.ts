@@ -1,8 +1,8 @@
-import { Cinema, cinemaSchema } from "../utils";
+import { TCinema, cinemaSchema } from "../utils";
 
 const BASE_URL = "http://localhost:3123/admin/cinemas";
 //Fetch all cinemas
-export const getCinemas = async (): Promise<Cinema[]> => {
+export const getCinemas = async (): Promise<TCinema[]> => {
   try {
     const response = await fetch(BASE_URL, {
       credentials: "include",
@@ -11,7 +11,7 @@ export const getCinemas = async (): Promise<Cinema[]> => {
       throw new Error("Failed to fetch cinemas");
     }
     const data = await response.json();
-    return cinemaSchema.array().parse(data);
+    return cinemaSchema.array().parse(data.cinemas);
   } catch (error) {
     console.log(error); //to do log error
     throw error;
@@ -19,7 +19,7 @@ export const getCinemas = async (): Promise<Cinema[]> => {
 };
 
 //Fetch cinema by ID
-export const getCinemaById = async (id: string): Promise<Cinema> => {
+export const getCinemaById = async (id: string): Promise<TCinema> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       credentials: "include",
@@ -28,21 +28,21 @@ export const getCinemaById = async (id: string): Promise<Cinema> => {
       throw new Error("Failed to fetch cinema");
     }
     const data = await response.json();
-    return cinemaSchema.parse(data);
+    return cinemaSchema.parse(data.cinema);
   } catch (error) {
-    console.log(error); //To do log error
     throw error;
   }
 };
 
-export type CinemaInput = Omit<Cinema, "id">;
+export type CinemaInput = Omit<TCinema, "id">;
 
 //Create cinema
-export const createCinema = async (cinema: CinemaInput): Promise<Cinema> => {
+export const createCinema = async (cinema: CinemaInput): Promise<TCinema> => {
   cinemaSchema.parse(cinema); // validate data before API call
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json",
       },
@@ -63,8 +63,8 @@ export const createCinema = async (cinema: CinemaInput): Promise<Cinema> => {
 //Update existing cinema
 export const updateCinema = async (
   id: string,
-  cinema: Cinema
-): Promise<Cinema> => {
+  cinema: TCinema
+): Promise<TCinema> => {
   try {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: "PATCH",
@@ -79,7 +79,7 @@ export const updateCinema = async (
       throw new Error("Failed to update movie");
     }
     const data = await response.json();
-    return cinemaSchema.parse(data);
+    return cinemaSchema.parse(data.cinema);
   } catch (error) {
     console.log(error); // to do logger
     throw error;
@@ -89,11 +89,12 @@ export const updateCinema = async (
 //Delete cinema
 export const deleteCinema = async (id: string): Promise<boolean> => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+    const response = await fetch(`${BASE_URL}/${id}`, { 
+      credentials: 'include',
+      method: "DELETE" });
     if (!response.ok) {
       throw new Error("Failed to delete Cinema");
     }
-    console.log(`Cinema with id ${id} deleted successfully.`);
     return true;
   } catch (error) {
     console.log(error); //to do logger

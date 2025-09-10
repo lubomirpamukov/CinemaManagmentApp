@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { registerUser, loginUser, logoutUser, checkAuth } from '../controllers/auth.controller';
+import { registerUser, loginUser, logoutUser, checkAuth, getMe } from '../controllers/auth.controller';
 import { authentication } from '../middleware/auth.middleware';
 
 const authRouter: Router = express.Router();
@@ -31,5 +31,12 @@ authRouter.post('/logout', logoutUser);
  * @access  (Protected)
  */
 authRouter.get('/check-auth', authentication, checkAuth);
+
+/**
+ * @route GET /api/auth/me
+ * @desc Get the authenticated user's full object
+ * @access (Protected)
+ */
+authRouter.get('/me', authentication, getMe)
 
 export default authRouter;

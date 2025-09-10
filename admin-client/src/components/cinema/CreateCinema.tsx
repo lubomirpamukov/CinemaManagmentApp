@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 import styles from "./CreateCinema.module.css";
 import { createCinema } from "../../services";
@@ -19,7 +18,6 @@ const CreateCinema: React.FC = () => {
   } = useForm<CinemaFormValues>({
     resolver: zodResolver(cinemaSchema),
     defaultValues: {
-      id: uuidv4(),
       halls: [],
       snacks: [
         {
@@ -34,16 +32,18 @@ const CreateCinema: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (cinema: CinemaFormValues) => {
-    console.log("Cinema created successfully", cinema);
-    await createCinema(cinema);
-    navigate(`/cinemas/${cinema.id}/edit`);
+    try {
+      const created = await createCinema(cinema);
+      navigate(`/cinemas/${created.id}/edit`)
+    } catch (err) {
+      console.error('Create cinema failed', err);
+    }
   };
 
   return (
     <div className={styles.createCinemaContainer}>
       <h1>Create Cinema</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        {/* Name field */}
         <label htmlFor="cinema-name" className={styles.formGroup}>
           {" "}
           Cinema Name:

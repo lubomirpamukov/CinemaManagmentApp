@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { hallSchema } from './HallValidation';
+import mongoose from 'mongoose';
 
 export const CinemaValidation = {
     city: 'City must be between 3 and 150 characters long.',
@@ -23,6 +25,12 @@ export const snackSchema = z.object({
     price: z.number().min(0.1, SnackValidation.snackPrice).max(1000, SnackValidation.snackPrice)
 });
 
+export type SelectedSnacks = {
+    [snackId: string]: number;
+};
+
+export type TSnack = z.infer<typeof snackSchema>;
+
 export const cinemaSchema = z.object({
     id: z.string().optional(),
     city: z.string().min(3, CinemaValidation.city).max(150, CinemaValidation.city),
@@ -36,4 +44,26 @@ export const cinemaSchema = z.object({
         .or(z.literal('').transform(() => undefined))
 });
 
-export type CinemaZod = z.infer<typeof cinemaSchema>;
+export type TCinema = z.infer<typeof cinemaSchema>;
+
+export const cinemaWithHallsSchema = z.object({
+    id: z.string().optional(),
+    city: z.string().min(3, CinemaValidation.city).max(150, CinemaValidation.city),
+    name: z.string().min(4, CinemaValidation.name).max(100, CinemaValidation.name),
+    halls: z.array(hallSchema),
+    snacks: z.array(snackSchema),
+    imgURL: z
+        .string()
+        .url({ message: CinemaValidation.url })
+        .optional()
+        .or(z.literal('').transform(() => undefined))
+});
+
+export type TCinemaWithHalls = z.infer<typeof cinemaWithHallsSchema>
+
+export const cinemasQuerySchema = z.object({
+    city: z.string({ required_error: 'City is required'}).min(1, 'City cannot be empty'),
+    movieId: z.string({ required_error: 'Movie ID is required. '}).refine((val) => mongoose.Types.ObjectId.isValid(val), {
+        message: 'Invalid Movie ID format.'
+    })
+})

@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Cinema, Movie, Hall } from "../../utils";
+import { TCinema, Movie, Hall } from "../../utils";
 import { getHallsByCinemaId, createSession } from "../../services";
 import ActionButton from "../buttons/ActionButton";
 import styles from "./SessionForm.module.css";
 import { Session } from "../../utils/";
 
 type SessionFormProps = {
-  cinemas: Cinema[];
+  cinemas: TCinema[];
   movies: Movie[];
 };
 
@@ -21,7 +21,9 @@ const SessionForm: React.FC<SessionFormProps> = ({ cinemas, movies }) => {
     formState: { errors },
   } = useForm<Session>();
   const [halls, setHalls] = useState<Hall[]>([]);
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverError, setServerError] = useState<string[] | string | null>(
+    null
+  );
 
   const selectedCinema = watch("cinemaId");
   const selectedHall = watch("hallId");
@@ -45,18 +47,37 @@ const SessionForm: React.FC<SessionFormProps> = ({ cinemas, movies }) => {
       setValue("startTime", "");
       setValue("endTime", "");
     } catch (error: any) {
-      let message = "Unknown error";
-      if (error instanceof Error) {
-        try {
-          const parsed = JSON.parse(
-            error.message.replace("Failed to create session: ", "")
+      // serverError can now be a string or string[]
+      let errorsToDisplay: string | string[] =
+        "An unknown error occurred while creating the session.";
+      if (error instanceof Error && error.message) {
+        const serviceErrorMessagePrefix = "Failed to create session: ";
+        if (error.message.startsWith(serviceErrorMessagePrefix)) {
+          const jsonString = error.message.substring(
+            serviceErrorMessagePrefix.length
           );
-          message = parsed.error || error.message;
-        } catch {
-          message = error.message;
+          try {
+            const parsedError = JSON.parse(jsonString);
+            if (parsedError.error && Array.isArray(parsedError.error)) {
+              errorsToDisplay = parsedError.error.map(
+                (issue: { path?: string[]; message: string }) =>
+                  `${issue.path ? issue.path.join(".") + ": " : ""}${
+                    issue.message
+                  }`
+              );
+            } else if (parsedError.message) {
+              errorsToDisplay = parsedError.message;
+            } else {
+              errorsToDisplay = jsonString;
+            }
+          } catch (e) {
+            errorsToDisplay = jsonString;
+          }
+        } else {
+          errorsToDisplay = error.message;
         }
       }
-      setServerError(message);
+      setServerError(errorsToDisplay);
     }
   };
 

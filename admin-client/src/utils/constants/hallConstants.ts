@@ -1,4 +1,4 @@
-import { Hall } from "../../services/hallService";
+import { Hall } from "../HallsValidationSchema";
 
 export const HallValidation = {
   name: "Hall name must be between 3 and 100 characters long",
@@ -19,6 +19,5 @@ export const DEFAULT_HALL_VALUES: Hall = {
     rows: 10,
     columns: 15,
   },
-  movieProgram: [],
   seats: [],
 };

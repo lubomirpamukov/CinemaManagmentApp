@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ISeat } from '../models';
 
 export const HallValidation = {
     name: 'Hall name must be between 3 and 100 characters long',
@@ -11,19 +12,16 @@ export const HallValidation = {
 };
 
 export const seatsSchema = z.object({
+    originalSeatId: z.string().optional(),
     row: z.number(),
     column: z.number(),
     seatNumber: z.string().min(1, HallValidation.seatName).max(10, HallValidation.seatName),
-    isAvailable: z.enum(['reserved', 'available', 'sold']),
+    isAvailable: z.boolean().optional(),
     type: z.enum(['regular', 'vip', 'couple']),
     price: z.number().min(0, HallValidation.price)
 });
 
-export const movieProgramSchema = z.object({
-    movieId: z.string(),
-    startTime: z.string(),
-    endTime: z.string()
-});
+export type TSeat = z.infer<typeof seatsSchema>;
 
 export const hallSchema = z
     .object({
@@ -34,7 +32,6 @@ export const hallSchema = z
             rows: z.number().min(1, HallValidation.layoutRows).max(50, HallValidation.layoutRows),
             columns: z.number().min(1, HallValidation.layoutColumns).max(50, HallValidation.layoutColumns)
         }),
-        movieProgram: z.array(movieProgramSchema),
         seats: z.array(seatsSchema)
     })
     .refine(
@@ -45,4 +42,20 @@ export const hallSchema = z
         }
     );
 
-export type Hall = z.infer<typeof hallSchema>;
+export type THall = z.infer<typeof hallSchema>;
+
+export interface ISeatWithAvailability extends Omit<ISeat, '_id'> {
+    _id: string;
+    isAvailable: boolean;
+}
+
+export type IHallSeatLayoutResponse = {
+    sessionId: string;
+    hallId: string;
+    hallName: string;
+    hallLayout: {
+        rows: number;
+        columns: number;
+    };
+    seats: ISeatWithAvailability[];
+};

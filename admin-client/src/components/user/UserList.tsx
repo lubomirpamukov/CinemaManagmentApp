@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
 import styles from "./UserList.module.css";
-import { User } from "../../utils";
+import { TUser } from "../../utils";
 import UserShow from "./UserShow";
 import ActionButton from "../buttons/ActionButton";
 import Spinner from "../Spinner";
 
-type UserWithoutRole = Omit<User, "role">;
+type UserWithoutRole = Omit<TUser, "role">;
 
 type UserListProps = {
   users: UserWithoutRole[];

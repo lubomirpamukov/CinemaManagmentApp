@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 import { getUsers } from "../services";
-import { User } from "../utils";
+import { TUser } from "../utils";
 
 export const useUsers = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<TUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -12,7 +12,7 @@ export const useUsers = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const data: User[] = await getUsers();
+        const data: TUser[] = await getUsers();
         setUsers(data);
         setError(null);
       } catch (error) {
