@@ -97,8 +97,6 @@ describe('Reservation Service', () => {
 
             // Act
             const result = await createReservationService(userId, reservationInput as any);
-            console.log(result);
-            console.log(mockDto);
             // Assert
             expect(result).toEqual(mockDto);
             expect(mockDbSession.startTransaction).toHaveBeenCalledTimes(1);

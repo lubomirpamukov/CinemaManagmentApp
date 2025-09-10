@@ -76,6 +76,7 @@ describe('getCinemaCityByMovieIdService', () => {
 
     it('should return an empty array if the aggregation finds no matching cities', async () => {
         // Arrange
+        jest.clearAllMocks();
         const movieId = new mongoose.Types.ObjectId();
         (Session.aggregate as jest.Mock).mockResolvedValue([]);
 
@@ -132,7 +133,6 @@ describe('getCinemasByCityAndMovieService', () => {
         jest.spyOn(cinemaSchema, 'array').mockReturnValue(mockArraySchema as any);
         // Act
         const actualResult = await getCinemasByCityAndMovieService(city, movieId);
-        console.log(actualResult);
         // Assert
         const expectedResult = mockCinemas.map(mapCinemaToTCinema);
         expect(mockArraySchema.parse).toHaveBeenCalledTimes(1);
@@ -166,6 +166,7 @@ describe('getCinemasByCityAndMovieService', () => {
 
     it('should throw generic error if database error occures', async () => {
         // Arrange
+        jest.clearAllMocks();
         const movieId = new mongoose.Types.ObjectId();
         const city = 'Metropolis';
         const dbError = new Error('Database error');
