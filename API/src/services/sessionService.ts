@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import {
     IHallSeatLayoutResponse,
     ISeatWithAvailability,
-    TSeat,
+    TSeatReservation,
     SessionFilters,
     SessionPaginatedResponse,
     TSession,
@@ -64,7 +64,7 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
     });
     await newSession.save();
 
-    return mapSessionToDisplayDTO(newSession, movie, hall, cinema)
+    return mapSessionToDisplayDTO(newSession, movie, hall, cinema);
 };
 
 /**
@@ -180,7 +180,7 @@ export const getSessionSeatLayoutService = async (sessionId: string): Promise<IH
         };
     });
 
-    return mapToHallSeatLayoutDTO(session._id, hall, seatsWithAvailability)
+    return mapToHallSeatLayoutDTO(session._id, hall, seatsWithAvailability);
 };
 
 /**
@@ -190,9 +190,9 @@ export const getSessionSeatLayoutService = async (sessionId: string): Promise<IH
  * @param {string} sessionId The ID of the session to check for reserved seats.
  * @throws {Error} Throws `Invalid session ID format` if the ID is not a valid MongoDB ObjectId.
  * @throws {Error} Throws `Failed to retrieve reservation for session...` on database errors.
- * @returns {Promise<TSeat[]>} A promise that resolves to an array of reserved seat DTOs.
+ * @returns {Promise<TSeatReservation[]>} A promise that resolves to an array of reserved seat DTOs.
  */
-export const getReservedSessionSeatsService = async (sessionId: string): Promise<TSeat[]> => {
+export const getReservedSessionSeatsService = async (sessionId: string): Promise<TSeatReservation[]> => {
     if (!mongoose.Types.ObjectId.isValid(sessionId)) {
         throw new Error('Invalid session ID format');
     }
@@ -203,7 +203,7 @@ export const getReservedSessionSeatsService = async (sessionId: string): Promise
             .select('seats')
             .lean();
 
-        const reservedSeats: TSeat[] = reservations.flatMap((reservation) =>
+        const reservedSeats: TSeatReservation[] = reservations.flatMap((reservation) =>
             reservation.seats.map((seat) => ({
                 originalSeatId: seat.originalSeatId.toString(),
                 row: seat.row,

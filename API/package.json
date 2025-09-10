@@ -8,7 +8,7 @@
         "prod": "npm run build && npm start",
         "build": "npx rimraf dist && tsc -p tsconfig.build.json",
         "start": "node dist/server.js",
-        "test": "jest --runInBand"
+        "test": "NODE_ENV=test jest --runInBand --watch"
     },
     "keywords": [
         "decorators",
@@ -16,7 +16,7 @@
         "express",
         "routing"
     ],
-    "author": "Saman Arif",
+    "author": "Lubomir Pamukov",
     "license": "MIT",
     "devDependencies": {
         "@types/cookie-parser": "^1.4.8",

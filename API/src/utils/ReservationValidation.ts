@@ -56,7 +56,7 @@ export const seatSchema = z.object({
     }),
     price: z.number({ required_error: ReservedSeatValidationMessages.priceRequired }).min(0, { message: ReservedSeatValidationMessages.priceMin })
 });
-export type TSeat = z.infer<typeof seatSchema>;
+export type TSeatReservation = z.infer<typeof seatSchema>;
 
 const statusTypes = ['pending', 'confirmed', 'failed', 'completed'] as const;
 

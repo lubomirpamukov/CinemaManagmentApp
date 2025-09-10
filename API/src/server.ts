@@ -39,6 +39,11 @@ export const Main = async () => {
             throw new Error('MONGO_URL environment variable is not set');
         }
 
+        // Connects to local mongodb database for testing
+        if (process.env.NODE_ENV === 'test') {
+            process.env.MONGO_URL = 'mongodb://localhost/CinemaManagment_test';
+        }
+
         const connection = await mongoose.connect(process.env.MONGO_URL, mongo.MOGO_OPTIONS);
         isConnected = true;
         logging.log('Connected to db', connection.version);
