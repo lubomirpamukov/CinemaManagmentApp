@@ -21,6 +21,7 @@ export const seatsSchema = z.object({
     price: z.number().min(0, HallValidation.price)
 });
 
+export type TSeat = z.infer<typeof seatsSchema>;
 
 export const hallSchema = z
     .object({

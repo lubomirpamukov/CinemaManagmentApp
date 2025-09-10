@@ -1,9 +1,11 @@
-import { ICinema, IMovie, IReservation, ISnack, IUser } from '../models';
+import mongoose from 'mongoose';
+import { ICinema, IMovie, IReservation, ISession, ISnack, IUser } from '../models';
 import { IHall } from '../models/hall.model';
-import { THall } from '../utils/HallValidation';
+import { IHallSeatLayoutResponse, ISeatWithAvailability, THall } from '../utils/HallValidation';
 import { TCinema, TSnack } from './CinemaValidation';
 import { TMovie } from './MovieValidation';
 import { TReservation, TReservationDisplay } from './ReservationValidation';
+import { TSessionDisplay } from './SessionValidationSchema';
 import { TUserDTO } from './UserValidation';
 
 /**
@@ -32,6 +34,23 @@ export const mapHallToTHall = (hall: IHall): THall => {
                   price: seat.price
               }))
             : []
+    };
+};
+
+/**
+ * Maps a session, its hall, and processed seat availability data to a hall seat layout DTO.
+ * @param {string | mongoose.Types.ObjectId} sessionId - The mongoose session document.
+ * @param {IHall} hall - The populated hall document from the session.
+ * @param {ISeatWithAvailability[]} seatsWithAvailability - The pre-processed array of seats with their availability status.
+ * @returns {IHallSeatLayoutResponse} The complete hall seat layout DTO
+ */
+export const mapToHallSeatLayoutDTO = (sessionId: string | mongoose.Types.ObjectId, hall: IHall, seatsWithAvailability: ISeatWithAvailability[]): IHallSeatLayoutResponse => {
+    return {
+        sessionId: sessionId.toString(),
+        hallId: hall._id.toString(),
+        hallName: hall.name,
+        hallLayout: hall.layout,
+        seats: seatsWithAvailability
     };
 };
 
@@ -141,5 +160,28 @@ export const mapReservationToDisplayDTO = (
             price: snack.price,
             quantity: snack.quantity
         }))
+    };
+};
+
+/**
+ * Maps a Mongoose Session document and its related populated documents to a TSessionDisplay DTO.
+ * @param {ISession} session - The Mongoose session document.
+ * @param {IMovie} movie - The related movie document.
+ * @param {IHall} hall - The realted hall document.
+ * @param {ICinema} cinema - The related cinema document.
+ * @returns {TSessionDisplay} Session display dto.
+ */
+export const mapSessionToDisplayDTO = (session: ISession, movie: IMovie, hall: IHall, cinema: ICinema): TSessionDisplay => {
+    return {
+        _id: session._id.toString(),
+        cinemaId: session.cinemaId.toString(),
+        cinemaName: cinema.name,
+        hallId: session.hallId.toString(),
+        hallName: hall.name,
+        movieId: session.movieId.toString(),
+        movieName: movie.title,
+        startTime: session.startTime.toISOString(),
+        endTime: session.endTime.toISOString(),
+        availableSeats: session.availableSeats
     };
 };

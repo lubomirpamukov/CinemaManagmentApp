@@ -16,6 +16,8 @@ import Hall, { IHall, ISeat as IHallSeatDefinition } from '../models/hall.model'
 import { getBookedSeatIdsForSession } from '../utils/reservation.helpers';
 import { SeatType } from '../models';
 import Movie from '../models/movie.model';
+import Cinema from '../models/cinema.model';
+import { mapSessionToDisplayDTO, mapToHallSeatLayoutDTO } from '../utils/mapping-functions';
 
 /**
  * Creates a new session after checking business logic constraints.
@@ -26,17 +28,13 @@ import Movie from '../models/movie.model';
  * @returns {Promise<TSession>} A promise that resolves to the DTO of the newly created session.
  */
 export const createSessionService = async (sessionData: TSession): Promise<TSessionDisplay> => {
-    const { hallId, movieId, startTime, endTime } = sessionData;
+    const { hallId, movieId, cinemaId, startTime, endTime } = sessionData;
 
-    const [hall, movie] = await Promise.all([Hall.findById(hallId), Movie.findById(movieId)]);
+    const [hall, movie, cinema] = await Promise.all([Hall.findById(hallId), Movie.findById(movieId), Cinema.findById(cinemaId)]);
 
-    if (!hall) {
-        throw new Error('Hall not found');
-    }
-
-    if (!movie) {
-        throw new Error('Movie not found');
-    }
+    if (!hall) throw new Error('Hall not found');
+    if (!movie) throw new Error('Movie not found');
+    if (!cinema) throw new Error('Cinema not found');
 
     // Checks for overlapping sessions using the provided startTime and endTime
     const existingSession = await Session.findOne({
@@ -66,18 +64,7 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
     });
     await newSession.save();
 
-    return {
-        _id: newSession._id.toString(),
-        cinemaId: newSession.cinemaId.toString(),
-        cinemaName: hall.name,
-        hallId: newSession.hallId.toString(),
-        hallName: hall.name,
-        movieId: newSession.movieId.toString(),
-        movieName: movie.title,
-        startTime: newSession.startTime.toISOString(),
-        endTime: newSession.endTime.toISOString(),
-        availableSeats: newSession.availableSeats
-    };
+    return mapSessionToDisplayDTO(newSession, movie, hall, cinema)
 };
 
 /**
@@ -174,7 +161,7 @@ export const getSessionSeatLayoutService = async (sessionId: string): Promise<IH
     }
 
     if (!session.hallId) {
-        throw new Error(`Hall for session ${session} not found`);
+        throw new Error(`Hall for session ${session._id} not found`);
     }
 
     const hall = session.hallId;
@@ -193,13 +180,7 @@ export const getSessionSeatLayoutService = async (sessionId: string): Promise<IH
         };
     });
 
-    return {
-        sessionId: session._id!.toString(),
-        hallId: hall._id.toString(),
-        hallName: hall.name,
-        hallLayout: hall.layout,
-        seats: seatsWithAvailability
-    };
+    return mapToHallSeatLayoutDTO(session._id, hall, seatsWithAvailability)
 };
 
 /**
@@ -243,10 +224,10 @@ export const getReservedSessionSeatsService = async (sessionId: string): Promise
 /**
  * Retrieves a sorted list of unique future date on wich a specific movie is showing at a specific cinema.
  * This is used to populate a date picker on the frontend, allowing users to see wich days have available sessions.
- * @param {string} movieId The ID of the movie to find available dates for 
+ * @param {string} movieId The ID of the movie to find available dates for
  * @param {string} cinemaId The ID of the cinema to search within
  * @throws {Error} Throws if the movieId or cinemaId are not valid MongoDB ObjectId formats.
- * @throws {Error} Throws a generic error if the database query fails 
+ * @throws {Error} Throws a generic error if the database query fails
  * @returns {Promise<string[]>} A promise that resolves to a sorted array of unique date strings
  */
 export const getAvailableDatesForMovieInCinemaService = async (movieId: string, cinemaId: string): Promise<string[]> => {

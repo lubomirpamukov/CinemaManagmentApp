@@ -30,7 +30,7 @@ const createMockDbCinemas = () => [
 /**
  * Unit tests for getCinemaCityByMovieIdService
  *
- * This test suite verifies the service's logic for finding a unique, sorted list of cities for givem movie.
+ * This test suite verifies the service's logic for finding a unique, sorted list of cities for given movie.
  * It ensures that:
  * - That the service validates the movie ID format correctly, throwing an error for invalid IDs.
  * - That `Session.aggregate` method is called with the correct, multi-stage pipeline.
