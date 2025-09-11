@@ -1,22 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getMoviesService, deleteMovieService, updateMovieService, createMovieService } from '../services/adminMovieService';
 import mongoose from 'mongoose';
 import { movieSchema } from '../utils';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * @route GET /api/admin/movies
  * @desc Get all movies
  * @access Private (Admin)
  */
-export const getMovies = async (req: Request, res: Response) => {
+export const getMovies = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paginatedMovies = await getMoviesService(req.query);
         res.status(200).json(paginatedMovies);
     } catch (err: any) {
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: err.errors });
-        }
-        res.status(500).json({ error: err.message });
+        next(err)
     }
 };
 
@@ -25,26 +23,19 @@ export const getMovies = async (req: Request, res: Response) => {
  * @desc Updates a Movie's details
  * @access Private (Admin)
  */
-export const updateMovie = async (req: Request, res: Response) => {
+export const updateMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid movie ID format.' });
+            throw new CustomError('Invalid movie Id format.', 400)
         }
 
         const validatedUpdates = movieSchema.partial().parse(req.body);
         const updatedMovie = await updateMovieService(id, validatedUpdates);
-        res.status(201).json({ movie: updatedMovie });
+        res.status(200).json({ movie: updatedMovie });
     } catch (err: any) {
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: `Invalid update data`, details: err.errors });
-        }
-
-        if (err.message === 'Movie not found') {
-            return res.status(400).json({ error: err.message });
-        }
-        res.status(500).json({ error: err.message });
+        next(err)
     }
 };
 
@@ -53,21 +44,13 @@ export const updateMovie = async (req: Request, res: Response) => {
  *@desc Create new Movie.
  *@access Private (Admin)
  */
-export const createMovie = async (req: Request, res: Response) => {
+export const createMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const validMovieData = movieSchema.parse(req.body);
         const newMovie = await createMovieService(validMovieData);
         res.status(201).json(newMovie);
     } catch (err: any) {
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: err.errors });
-        }
-
-        //Handle mongoDb unique constraint errors
-        if (err.code === 11000) {
-            return res.status(409).json({ error: 'A movie with the provided title already exists.' });
-        }
-        res.status(500).json({ error: err.message });
+        next(err)
     }
 };
 
@@ -76,18 +59,15 @@ export const createMovie = async (req: Request, res: Response) => {
  * @desc Deletes a movie by its ID
  * @access Private (Admin)
  */
-export const deleteMovie = async (req: Request, res: Response) => {
+export const deleteMovie = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid movie ID format.' });
+            throw new CustomError('Invalid movie Id format.', 400);
         }
         await deleteMovieService(id);
         res.status(204).send();
     } catch (err: any) {
-        if (err.message.includes('Movie not found')) {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: err.message });
+        next(err)
     }
 };

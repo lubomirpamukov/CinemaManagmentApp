@@ -49,6 +49,7 @@ const MovieSchema: Schema = new Schema(
         title: {
             type: String,
             required: [true, 'Movie title is required.'],
+            unique: true,
             minlength: [3, 'Title must be between 3 and 60 characters.'],
             maxlength: [60, 'Title must be between 3 and 60 characters.'],
             trim: true
