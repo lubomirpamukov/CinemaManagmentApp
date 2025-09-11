@@ -5,6 +5,7 @@ import { paginate } from '../utils/PaginationUtils';
 import User, { IUser } from '../models/user.model';
 import { mapUserToTUserDTO } from '../utils/mapping-functions';
 import mongoose from 'mongoose';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * Fetches a paginated list of users, with optional searching.
@@ -57,7 +58,7 @@ export const getUsersService = async (query: any): Promise<TUserPaginated> => {
  */
 export const getUserByIdService = async (id: string | mongoose.Types.ObjectId): Promise<TUserDTO> => {
     const user = await User.findById(id).lean().select('-password');
-    if (!user) throw new Error('User not found');
+    if (!user) throw new CustomError('User not found', 404);
 
     const userExportDto = mapUserToTUserDTO(user)
 
@@ -114,7 +115,7 @@ export const updateUserService = async (id: string | mongoose.Types.ObjectId, up
 
     // 3. If no user was found with that ID, throw an error.
     if (!updatedUser) {
-        throw new Error('User not found');
+        throw new CustomError('User not found', 404);
     }
 
     // 4. Transform the updated Mongoose document into a safe DTO for export.
@@ -135,7 +136,7 @@ export const deleteUserService = async (id: string | mongoose.Types.ObjectId): P
     const deletedUser = await User.findByIdAndDelete(id).select('-password');
 
     if (!deletedUser) {
-        throw new Error('User not found');
+        throw new CustomError('User not found', 404);
     }
 
     // 3. Transform the deleted Mongoose document into a safe DTO for export.
