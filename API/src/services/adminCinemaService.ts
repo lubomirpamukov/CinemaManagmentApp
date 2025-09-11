@@ -2,6 +2,7 @@ import { TCinema, cinemaSchema } from '../utils/CinemaValidation';
 import Cinema, { ICinema } from '../models/cinema.model';
 import mongoose from 'mongoose';
 import { mapCinemaToTCinema } from '../utils/mapping-functions';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * Fetches all cinemas from the database, transforms them into DTO,
@@ -23,12 +24,12 @@ export const getCinemasService = async (): Promise<TCinema[]> => {
  * and validates them against cinema schema.
  * @param {string} id The ID of the cinema.
  * @throws {ZodError} If the data from the database fails validation.
- * @throws {Error} If cinema document dosnt exist throws `Cinema not found`
+ * @throws {CustomError} If cinema document dosnt exist throws `Cinema not found`
  * @returns {Promise<TCinema>} Resolves to a valid cinema object.
  */
 export const getCinemaByIdService = async (id: string): Promise<TCinema> => {
     const cinemaFromDB: ICinema | null = await Cinema.findById(id).lean();
-    if (!cinemaFromDB) throw new Error('Cinema not found');
+    if (!cinemaFromDB) throw new CustomError('Cinema not found', 404);
 
     const transformedCinemaDTO = mapCinemaToTCinema(cinemaFromDB);
     const validatedCinema = cinemaSchema.parse(transformedCinemaDTO);

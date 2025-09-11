@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
     getCinemasService,
     getCinemaByIdService,
@@ -11,6 +11,7 @@ import { cinemaSchema } from '../utils';
 import { type } from 'node:os';
 import { ZodError } from 'zod';
 import { error } from '../config/logging';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * @route GET /api/admin/cinemas
@@ -34,27 +35,20 @@ export const getCinemas = async (req: Request, res: Response) => {
  * @desc Get cinema by ID
  * @access Private (Admin)
  */
-export const getCinemaById = async (req: Request, res: Response) => {
+export const getCinemaById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ message: 'Invalid cinema ID format.' });
+            //return res.status(400).json({ message: 'Invalid cinema ID format.' });
+            throw new CustomError('Invalid Cinema ID format.', 400)
         }
 
         const cinema = await getCinemaByIdService(id);
 
+
         res.status(200).json({ cinema });
     } catch (err: any) {
-        if (err instanceof ZodError) {
-            return res.status(400).json({ error: 'Cinema data validation failed.', details: err.errors });
-        }
-
-        if (err.message.includes('not found')) {
-            return res.status(404).json({ error: err.message });
-        }
-
-        res.status(500).json({ error: err.message });
+        next(err)
     }
 };
 

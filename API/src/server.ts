@@ -1,6 +1,6 @@
 import http from 'http';
-import express from 'express';
-import mongoose from 'mongoose';
+import express, { NextFunction, Request, Response } from 'express';
+import mongoose, { Error } from 'mongoose';
 import cookieParser from 'cookie-parser';
 import './config/logging';
 import { corsHandler } from './middleware/corsHandler';
@@ -16,6 +16,7 @@ import hallsRouter from './routes/halls.routes';
 import movieRouter from './routes/movie.routes';
 import cinemaRouter from './routes/cinema.routes';
 import dotenv from 'dotenv';
+import { errorHandler } from './middleware/errorHandler';
 dotenv.config();
 export const application = express();
 export let httpServer: ReturnType<typeof http.createServer>;
@@ -70,6 +71,8 @@ export const Main = async () => {
 
     logging.log('Define Routing Error');
     application.use(routeNotFound);
+
+    application.use(errorHandler)
 
     logging.log('Starting Server');
     httpServer = http.createServer(application);
