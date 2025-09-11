@@ -6,6 +6,7 @@ import { getPaginationQuerySchema } from '../utils';
 import { moviePaginatedSchema } from '../utils';
 import mongoose from 'mongoose';
 import { mapMovieToTMovie } from '../utils/mapping-functions';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * Fetches a paginated list of movies, with optional searching across title, director, and genre
@@ -63,7 +64,7 @@ export const updateMovieService = async (id: string | mongoose.Types.ObjectId, u
     });
 
     if (!updatedMovie) {
-        throw new Error('Movie not found');
+        throw new CustomError('Movie not found', 404);
     }
 
     const movieExportDto = mapMovieToTMovie(updatedMovie);
@@ -104,7 +105,7 @@ export const deleteMovieService = async (id: string | mongoose.Types.ObjectId): 
         const deletedMovie = await Movie.findByIdAndDelete(id, { session }); // delete the movie
 
         if (!deletedMovie) {
-            throw new Error('Movie not found.');
+            throw new CustomError('Movie not found.', 404);
         }
 
         await session.commitTransaction();

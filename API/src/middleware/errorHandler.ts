@@ -21,7 +21,7 @@ export class CustomError extends Error {
     }
 }
 
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(err: Error , req: Request, res: Response, next: NextFunction) {
     // Handle custom errors
     if (err instanceof CustomError) {
         return res.status(err.statusCode).json(err.formatError());
@@ -39,6 +39,11 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
             error: 'Validation Error',
             details: errors
         });
+    }
+
+     // Handle MongoDB unique constraint errors (code 11000)
+    if ((err as any).code === 11000) {
+        return res.status(409).json({ error: 'A movie with the provided title already exists.' });
     }
 
     //Handle generic errors
