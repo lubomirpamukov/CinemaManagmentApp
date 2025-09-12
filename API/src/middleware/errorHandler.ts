@@ -43,7 +43,8 @@ export function errorHandler(err: Error , req: Request, res: Response, next: Nex
 
      // Handle MongoDB unique constraint errors (code 11000)
     if ((err as any).code === 11000) {
-        return res.status(409).json({ error: 'A movie with the provided title already exists.' });
+        const field = Object.keys((err as any).keyPattern)[0];
+        return res.status(409).json({ error: `A record with the provided ${field} already exist.` });
     }
 
     //Handle generic errors
