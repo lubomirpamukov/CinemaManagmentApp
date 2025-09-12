@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 import User from '../models/user.model';
 import { generateToken, JwtRequest } from '../middleware/auth.middleware';
 import { userCreationSchema, userLoginSchema } from '../utils';
 import z, { ZodError } from 'zod';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * @route POST /api/auth/register
@@ -16,7 +17,7 @@ import z, { ZodError } from 'zod';
  * - On email alredy exist in the database: Returns 409 status with generic error message.
  * - On server errirL Returns a 500 status with generic error message.
  */
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // validate user data
         const { name, email, password, contact, address } = userCreationSchema.parse(req.body);
@@ -36,20 +37,8 @@ export const registerUser = async (req: Request, res: Response) => {
 
         await user.save();
         return res.status(201).json({ user: { email: user.email, id: user._id.toString() } });
-    } catch (error: any) {
-        // Handle Zod validation errors
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation failed', details: error.errors });
-        }
-
-        // Handle existing user error
-        if (error.code === 11000) {
-            return res.status(409).json({ error: 'An account with this email alredy exists.' });
-        }
-
-        // Generic server error
-        console.error('Registration Error:', error);
-        return res.status(500).json({ message: 'An unexpected error occurred.' });
+    } catch (err: any) {
+        next(err)
     }
 };
 
@@ -66,7 +55,7 @@ export const registerUser = async (req: Request, res: Response) => {
  * - On authenticatation failure (user not found or wrong password): Returns a 401 status with generic error message.
  * - On server error: Returns a 500 status with a generic error message.
  */
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Validate the incoming request body.
         const { email, password } = userLoginSchema.parse(req.body);
@@ -76,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
         const isPasswordValid = user ? await bcrypt.compare(password, user.password) : false;
 
         if (!user || !isPasswordValid) {
-            return res.status(401).json({ error: 'Invalid email or password.' });
+            throw new CustomError('Invalid email or password', 401)
         }
 
         const token = generateToken(user._id, user.role, user.email);
@@ -96,12 +85,8 @@ export const loginUser = async (req: Request, res: Response) => {
                 role: user.role
             }
         });
-    } catch (error: any) {
-        if (error instanceof ZodError) {
-            return res.status(400).json({ error: 'Validation failed', details: error.errors });
-        }
-        console.error('Login Error:', error);
-        res.status(500).json({ error: error.message });
+    } catch (err: any) {
+       next(err)
     }
 };
 
@@ -117,7 +102,7 @@ export const loginUser = async (req: Request, res: Response) => {
  * - On success: Returns a 200 status with success message.
  * - On server error: Returns 500 status with generic error message.
  */
-export const logoutUser = (req: Request, res: Response) => {
+export const logoutUser = (req: Request, res: Response, next: NextFunction) => {
     try {
         res.clearCookie('token', {
             httpOnly: true,
@@ -126,9 +111,8 @@ export const logoutUser = (req: Request, res: Response) => {
         });
 
         return res.status(200).json({ message: 'Logout successful' });
-    } catch (error: any) {
-        console.error('Logout Error:', error);
-        return res.status(500).json({ error: 'An unexpected error occurred during logout.' });
+    } catch (err: any) {
+        next(err)
     }
 };
 
@@ -147,12 +131,12 @@ export const logoutUser = (req: Request, res: Response) => {
  * - If not authenticated: Returns a 401 status with an error message.
  * - On server error: Returns a 500 status with a generic error message.
  */
-export const checkAuth = (req: JwtRequest, res: Response) => {
+export const checkAuth = (req: JwtRequest, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
 
         if (!user) {
-            return res.status(401).json({ message: 'Not authenticated' });
+            throw new CustomError('Not authenticated', 401)
         }
 
         return res.status(200).json({
@@ -160,9 +144,8 @@ export const checkAuth = (req: JwtRequest, res: Response) => {
             email: user.email,
             role: user.role
         });
-    } catch (error: any) {
-        console.error('Check Auth Error:', error);
-        return res.status(500).json({ error: 'An unexpected error occcurred.' });
+    } catch (err: any) {
+      next(err)
     }
 };
 
