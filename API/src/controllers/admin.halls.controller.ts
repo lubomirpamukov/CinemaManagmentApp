@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import {
     getCinemaHallsService,
     createHallService,
@@ -10,6 +10,8 @@ import {
 import { addHallToCinemaService } from '../services';
 import { hallSchema, THall } from '../utils/HallValidation';
 import mongoose from 'mongoose';
+import { CustomError } from '../middleware/errorHandler';
+import Cinema from '../models/cinema.model';
 
 /**
  *
@@ -17,27 +19,17 @@ import mongoose from 'mongoose';
  * @desc Get all halls for a specific cinema
  * @access Private (Admin)
  */
-export const getCinemaHalls = async (req: Request, res: Response) => {
+export const getCinemaHalls = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id: cinemaId } = req.params;
         if (!mongoose.Types.ObjectId.isValid(cinemaId)) {
-            return res.status(400).json({ error: 'Invalid cinema ID format.' });
+            throw new CustomError('Invalid Cinema Id format.', 404);
         }
 
         const halls = await getCinemaHallsService(cinemaId);
         res.status(200).json(halls);
     } catch (err: any) {
-        //Handle Zod validation errors from the service layer
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: 'Hall data validation failed', details: err.errors });
-        }
-
-        //Handle specific " not found " error from the service
-        if (err.message.includes('not found')) {
-            return res.status(404).json({ error: err.message });
-        }
-
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
@@ -46,46 +38,46 @@ export const getCinemaHalls = async (req: Request, res: Response) => {
  * @desc Create a new hall and link it to a cinema in a transaction
  * @access Private (Admin)
  */
-export const createHall = async (req: Request, res: Response) => {
-    const { id: cinemaId } = req.params;
-    const hallDataFromRequest = req.body;
-
-    //Validate all inputs before starting the transaction
-    if (!mongoose.Types.ObjectId.isValid(cinemaId)) {
-        return res.status(400).json({ error: 'Invalid cinema ID format.' });
-    }
-
-    let validatedHallData: THall;
-
-    try {
-        validatedHallData = await hallSchema.parseAsync(hallDataFromRequest);
-    } catch (error: any) {
-        return res.status(400).json({ error: 'Invalid hall data provided.', details: error.errors });
-    }
-
-    //Starting transaction session
+export const createHall = async (req: Request, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
+
     try {
+        const { id: cinemaId } = req.params;
+        const hallDataFromRequest = req.body;
+
+        // Validate cinemaId
+        if (!mongoose.Types.ObjectId.isValid(cinemaId)) {
+            throw new CustomError('Invalid Cinema Id format.', 400);
+        }
+
+        //Validate that cinema exists in the database
+        let cinema = await Cinema.findById(cinemaId);
+        if (!cinema) {
+            throw new CustomError('Cinema not found.', 404);
+        }
+
+        // Validate hall data
+        const validatedHallData: THall = hallSchema.parse(hallDataFromRequest);
+
         let createdHallObject;
 
+        // Start transaction
         await session.withTransaction(async (ses) => {
             const hallDataForService = { ...validatedHallData, cinemaId };
 
-            //Create hall document
+            // Create hall document
             const newHallDocument = await createHallService(hallDataForService, ses);
 
-            //Add hall id to cinema
+            // Add hall ID to cinema
             await addHallToCinemaService(cinemaId, newHallDocument.id!, ses);
 
             createdHallObject = newHallDocument;
         });
 
         res.status(201).json({ data: createdHallObject });
-    } catch (error: any) {
-        if (error.message.includes('not found')) {
-            return res.status(404).json({ error: error.message });
-        }
-        res.status(500).json({ error: 'An unexpected error occurred during the hall creation process.' });
+    } catch (err: any) {
+        // Pass all errors to the error handler
+        next(err);
     } finally {
         await session.endSession();
     }
@@ -123,42 +115,36 @@ export const getHallById = async (req: Request, res: Response) => {
  * @desc Deletes a hall with the given ID, and removes it from cinema and deletes all sessions in a transaction
  * @access Private (Admin)
  */
-export const deleteHall = async (req: Request, res: Response) => {
-    const { hallId } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(hallId)) {
-        throw new Error('Invalid Hall ID format.');
-    }
-
+export const deleteHall = async (req: Request, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
-
     try {
-        await session.withTransaction(async () => {
-            const hall = await getHallByIdService(hallId, session)
-            if(!hall) {
-                throw new Error('Hall not found.')
-            }
-            await removeHallFromCinemaService(hall.cinemaId,hallId, session);
-            await deleteSessionsByHallIdService(hallId, session);
+        const { hallId } = req.params;
 
-            const deletedHall = await deleteHallByIdService(hallId, session);
+        if (!mongoose.Types.ObjectId.isValid(hallId)) throw new CustomError('Invalid Hall Id format.', 400);
+
+        await session.withTransaction(async (ses) => {
+            const hall = await getHallByIdService(hallId, ses);
+            if (!hall) {
+                throw new CustomError('Hall not found.', 404)
+            }
+            
+            if (!mongoose.Types.ObjectId.isValid(hall.cinemaId)) throw new CustomError('Invalid Cinema Id format.', 400);
+            const cinema = await Cinema.findById(hall.cinemaId);
+            if (!cinema) throw new CustomError('Cinema not found', 404);
+            
+            await removeHallFromCinemaService(hall.cinemaId, hallId, ses);
+            await deleteSessionsByHallIdService(hallId, ses);
+
+            const deletedHall = await deleteHallByIdService(hallId, ses);
 
             if (!deletedHall) {
-                throw new Error('Hall not found.');
+                throw new CustomError('Hall not found.', 404)
             }
         });
 
         res.status(204).send();
     } catch (err: any) {
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: err.errors });
-        }
-
-        if (err.message.includes('not found')) {
-            return res.status(404).json({ error: err.message });
-        }
-
-        res.status(500).json({ error: err.message });
+        next(err);
     } finally {
         await session.endSession();
     }
