@@ -183,12 +183,9 @@ Content-Type: application/json
 
 
 ### Delete Hall
-DELETE http://localhost:3123/admin/cinemas/68207e09ddb4d49f740049b6/halls
+DELETE http://localhost:3123/admin/halls/:id
 Content-Type: application/json
 
-{
-  "hallId": "68235a15dd68e0836a1b4a74"
-}
 
 ///cinemas:id/sessions'
 

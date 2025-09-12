@@ -43,8 +43,8 @@ export const sessionDisplaySchema = z.object({
     hallName: z.string(),
     movieId: z.string(),
     movieName: z.string(),
-    startTime: z.string().datetime(), // Validates the ISO string format
-    endTime: z.string().datetime(), // Validates the ISO string format
+    startTime: z.string().datetime(), 
+    endTime: z.string().datetime(), 
     availableSeats: z.number()
 });
 

@@ -18,8 +18,8 @@ adminRouter.post('/movies', authentication, authorizeRoles(['admin']), createMov
 adminRouter.patch('/movies/:id', authentication, authorizeRoles(['admin']), updateMovie);
 adminRouter.delete('/movies/:id', authentication, authorizeRoles(['admin']), deleteMovie);
 
-adminRouter.post('/cinemas', authentication, authorizeRoles(['admin']), createCinema)
 adminRouter.get('/cinemas', authentication, authorizeRoles(['admin']), getCinemas);
+adminRouter.post('/cinemas', authentication, authorizeRoles(['admin']), createCinema)
 adminRouter.get('/cinemas/:id', authentication, authorizeRoles(['admin']), getCinemaById);
 adminRouter.patch('/cinemas/:id', authentication, authorizeRoles(['admin']), updateCinema);
 adminRouter.delete('/cinemas/:id', authentication, authorizeRoles(['admin']), deleteCinema)

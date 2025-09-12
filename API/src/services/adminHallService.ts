@@ -4,6 +4,7 @@ import Cinema from '../models/cinema.model';
 import Session from '../models/session.model';
 import { hallSchema, THall } from '../utils';
 import { mapHallToTHall } from '../utils/mapping-functions';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * Fetches halls of specific cinema based on ID from the database, transforms it into DTO,
@@ -15,7 +16,7 @@ import { mapHallToTHall } from '../utils/mapping-functions';
 export const getCinemaHallsService = async (cinemaId: string | mongoose.Types.ObjectId): Promise<THall[]> => {
     const cinemaExists = await Cinema.findById(cinemaId).lean();
     if (!cinemaExists) {
-        throw new Error('Cinema not found');
+        throw new CustomError('Cinema not found', 404);
     }
 
     const hallsFromDB: IHall[] = await Hall.find({ cinemaId: cinemaId }).lean();
@@ -24,23 +25,7 @@ export const getCinemaHallsService = async (cinemaId: string | mongoose.Types.Ob
         return [];
     }
 
-    const hallDTOs: THall[] = hallsFromDB.map((hall) => ({
-        id: hall._id?.toString(),
-        name: hall.name,
-        cinemaId: hall.cinemaId.toString(),
-        layout: hall.layout,
-        seats: Array.isArray(hall.seats)
-            ? hall.seats.map((seat) => ({
-                  originalSeatId: seat._id.toString(),
-                  row: seat.row,
-                  column: seat.column,
-                  seatNumber: seat.seatNumber,
-                  isAvailable: seat.isAvailable,
-                  type: seat.type,
-                  price: seat.price
-              }))
-            : []
-    }));
+    const hallDTOs: THall[] = hallsFromDB.map(mapHallToTHall);
 
     return hallSchema.array().parse(hallDTOs);
 };
@@ -80,32 +65,16 @@ export const deleteHallByIdService = async (hallId: string, session?: mongoose.C
  */
 export const getHallByIdService = async (id: string | mongoose.Types.ObjectId, session?: mongoose.ClientSession): Promise<THall | null> => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('Invalid Hall id format');
+        throw new CustomError('Invalid Hall Id format.', 400)
     }
 
-    const hall = await Hall.findById(id, {session}).lean();
+    const hall = await Hall.findById(id).session(session ?? null);
 
     if (!hall) {
-        return null
+        return null;
     }
 
-    const hallDto: THall = {
-        id: hall._id?.toString(),
-        cinemaId: hall.cinemaId.toString(),
-        name: hall.name,
-        layout: hall.layout,
-        seats: hall.seats
-            ? hall.seats.map((seat: any) => ({
-                  originalSeatId: seat._id.toString(),
-                  row: seat.row,
-                  column: seat.column,
-                  seatNumber: seat.seatNumber,
-                  isAvailable: seat.isAvailable,
-                  type: seat.type,
-                  price: seat.price
-              }))
-            : []
-    };
+    const hallDto: THall = mapHallToTHall(hall)
 
     return hallSchema.parse(hallDto);
 };
