@@ -18,6 +18,7 @@ import { SeatType } from '../models';
 import Movie from '../models/movie.model';
 import Cinema from '../models/cinema.model';
 import { mapSessionToDisplayDTO, mapToHallSeatLayoutDTO } from '../utils/mapping-functions';
+import { CustomError } from '../middleware/errorHandler';
 
 /**
  * Creates a new session after checking business logic constraints.
@@ -32,9 +33,9 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
 
     const [hall, movie, cinema] = await Promise.all([Hall.findById(hallId), Movie.findById(movieId), Cinema.findById(cinemaId)]);
 
-    if (!hall) throw new Error('Hall not found');
-    if (!movie) throw new Error('Movie not found');
-    if (!cinema) throw new Error('Cinema not found');
+    if (!hall) throw new CustomError('Hall not found',404);
+    if (!movie) throw new CustomError('Movie not found', 404);
+    if (!cinema) throw new CustomError('Cinema not found', 404);
 
     // Checks for overlapping sessions using the provided startTime and endTime
     const existingSession = await Session.findOne({
@@ -52,7 +53,7 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
     });
 
     if (existingSession) {
-        throw new Error('Hall is alredy booked for this time slot.');
+        throw new CustomError('Hall is alredy booked for this time slot.',409);
     }
 
     // Get seats count from hall
@@ -114,11 +115,13 @@ export const getSessionsWithFiltersService = async (filters: SessionFilters): Pr
         { path: 'hallId', select: 'name' },
         { path: 'movieId', select: 'title' }
     ]);
+    console.log(populatedSessions)
 
     const formattedSessions: TSessionDisplay[] = populatedSessions
         .filter((session) => session.hallId && session.cinemaId && session.movieId)
         .map((session) => {
-            const populatedSession = session as any; // Using 'any' for simplicity with populated fields
+            const populatedSession = session as any
+             console.log('Populated Session:', populatedSession); // Debugging log
 
             return {
                 _id: populatedSession._id.toString(),
