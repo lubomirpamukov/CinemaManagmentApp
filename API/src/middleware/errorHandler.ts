@@ -1,25 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { Error } from 'mongoose';
 import { ZodError } from 'zod';
-import dotenv from 'dotenv';
-dotenv.config();
+import { CustomError } from '../errors/customError';
 
-export class CustomError extends Error {
-    public readonly statusCode: number;
-
-    constructor(message: string, statusCode: number) {
-        super(message);
-        this.statusCode = statusCode;
-        Object.setPrototypeOf(this, new.target.prototype);
-    }
-    formatError() {
-        console.log(process.env.DEBUG);
-        return {
-            error: this.message,
-            stack: process.env.DEBUG === 'true' ? this.stack : 'No stack for you bad boy'
-        };
-    }
-}
 
 export function errorHandler(err: Error , req: Request, res: Response, next: NextFunction) {
     // Handle custom errors
