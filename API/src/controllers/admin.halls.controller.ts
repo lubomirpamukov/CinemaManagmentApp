@@ -10,7 +10,7 @@ import {
 import { addHallToCinemaService } from '../services';
 import { hallSchema, THall } from '../utils/HallValidation';
 import mongoose from 'mongoose';
-import { CustomError } from '../middleware/errorHandler';
+import { CustomError } from '../errors/customError';
 import Cinema from '../models/cinema.model';
 
 /**
@@ -88,25 +88,16 @@ export const createHall = async (req: Request, res: Response, next: NextFunction
  * @desc Get a single hall by its ID
  * @access Private (Admin)
  */
-export const getHallById = async (req: Request, res: Response) => {
+export const getHallById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).json({ error: 'Invalid Hall ID format.' });
+            throw new CustomError('Invalid Hall ID format.', 400);
         }
         const hall = await getHallByIdService(id);
         res.status(200).json({ data: hall });
     } catch (err: any) {
-        // Handle Zod validation errors from the service layer
-        if (err.name === 'ZodError') {
-            return res.status(400).json({ error: err.errors });
-        }
-
-        // Handle the specific "not found" error from the service
-        if (err.message.includes('not found')) {
-            return res.status(404).json({ error: err.message });
-        }
-        res.status(500).json({ error: err.message });
+       next(err)
     }
 };
 

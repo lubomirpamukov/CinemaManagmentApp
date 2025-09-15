@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getUsersService, getUserByIdService, updateUserService, deleteUserService, createUserService } from '../services/adminUserService';
 import mongoose from 'mongoose';
 import { userCreationSchema, userDTOSchema } from '../utils';
-import { CustomError } from '../middleware/errorHandler';
+import { CustomError } from '../errors/customError';
 
 /**
  *

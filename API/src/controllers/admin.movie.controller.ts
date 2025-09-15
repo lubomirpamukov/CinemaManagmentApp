@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { getMoviesService, deleteMovieService, updateMovieService, createMovieService } from '../services/adminMovieService';
 import mongoose from 'mongoose';
 import { movieSchema } from '../utils';
-import { CustomError } from '../middleware/errorHandler';
+import { CustomError } from '../errors/customError';
 
 /**
  * @route GET /api/admin/movies

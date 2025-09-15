@@ -5,7 +5,7 @@ import User from '../models/user.model';
 import { generateToken, JwtRequest } from '../middleware/auth.middleware';
 import { userCreationSchema, userLoginSchema } from '../utils';
 import z, { ZodError } from 'zod';
-import { CustomError } from '../middleware/errorHandler';
+import { CustomError } from '../errors/customError';
 
 /**
  * @route POST /api/auth/register

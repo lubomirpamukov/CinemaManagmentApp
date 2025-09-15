@@ -9,7 +9,7 @@ import {
 import mongoose from 'mongoose';
 import { cinemaSchema } from '../utils';
 import { ZodError } from 'zod';
-import { CustomError } from '../middleware/errorHandler';
+import { CustomError } from '../errors/customError';
 
 /**
  * @route GET /api/admin/cinemas
