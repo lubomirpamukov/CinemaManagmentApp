@@ -18,7 +18,8 @@ import { SeatType } from '../models';
 import Movie from '../models/movie.model';
 import Cinema from '../models/cinema.model';
 import { mapSessionToDisplayDTO, mapToHallSeatLayoutDTO } from '../utils/mapping-functions';
-import { CustomError } from '../middleware/errorHandler';
+import { NotFoundError } from '../errors/notFoundError';
+import { ConflictError } from '../errors/conflictError';
 
 /**
  * Creates a new session after checking business logic constraints.
@@ -33,9 +34,9 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
 
     const [hall, movie, cinema] = await Promise.all([Hall.findById(hallId), Movie.findById(movieId), Cinema.findById(cinemaId)]);
 
-    if (!hall) throw new CustomError('Hall not found',404);
-    if (!movie) throw new CustomError('Movie not found', 404);
-    if (!cinema) throw new CustomError('Cinema not found', 404);
+    if (!hall) throw new NotFoundError('Hall not found');
+    if (!movie) throw new NotFoundError('Movie not found');
+    if (!cinema) throw new NotFoundError('Cinema not found');
 
     // Checks for overlapping sessions using the provided startTime and endTime
     const existingSession = await Session.findOne({
@@ -53,7 +54,7 @@ export const createSessionService = async (sessionData: TSession): Promise<TSess
     });
 
     if (existingSession) {
-        throw new CustomError('Hall is alredy booked for this time slot.',409);
+        throw new ConflictError('Hall is alredy booked for this time slot.');
     }
 
     // Get seats count from hall

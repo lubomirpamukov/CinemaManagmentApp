@@ -4,7 +4,7 @@ import Cinema from '../models/cinema.model';
 import Session from '../models/session.model';
 import { hallSchema, THall } from '../utils';
 import { mapHallToTHall } from '../utils/mapping-functions';
-import { CustomError } from '../middleware/errorHandler';
+import { NotFoundError } from '../errors/notFoundError';
 
 /**
  * Fetches halls of specific cinema based on ID from the database, transforms it into DTO,
@@ -16,7 +16,7 @@ import { CustomError } from '../middleware/errorHandler';
 export const getCinemaHallsService = async (cinemaId: string | mongoose.Types.ObjectId): Promise<THall[]> => {
     const cinemaExists = await Cinema.findById(cinemaId).lean();
     if (!cinemaExists) {
-        throw new CustomError('Cinema not found', 404);
+        throw new NotFoundError('Cinema not found');
     }
 
     const hallsFromDB: IHall[] = await Hall.find({ cinemaId: cinemaId }).lean();
@@ -58,20 +58,16 @@ export const deleteHallByIdService = async (hallId: string, session?: mongoose.C
 
 /**
  * Fetches a hall by its ID, transforms it into a DTO, and validates it.
- * @param {string | mongoose.Types.ObjectId} id The ID of the hall to fetch.
+ * @param {string | mongoose.Types.ObjectId} id The ID of the hall to fetch (Id must be validated).
  * @param {mongoose.ClientSession} [session] Optional mongoose session for transaction
  * @throws {Error} Throws an error if the hall is not found.
  * @returns {Promise<THall | null>} A promise that resolves to the validated hall DTO.
  */
-export const getHallByIdService = async (id: string | mongoose.Types.ObjectId, session?: mongoose.ClientSession): Promise<THall | null> => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new CustomError('Invalid Hall Id format.', 400)
-    }
-
+export const getHallByIdService = async (id: string | mongoose.Types.ObjectId, session?: mongoose.ClientSession): Promise<THall> => {
     const hall = await Hall.findById(id).session(session ?? null);
 
     if (!hall) {
-        return null;
+        throw new NotFoundError(`Hall with ${id} not found.`)
     }
 
     const hallDto: THall = mapHallToTHall(hall)
